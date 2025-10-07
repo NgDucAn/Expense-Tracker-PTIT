@@ -1,0 +1,52 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Background circle -->
+    <path
+        android:pathData="M60,60m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0"
+        android:fillColor="#F5F5F5"
+        android:fillAlpha="0.1"/>
+    
+    <!-- Receipt outline -->
+    <path
+        android:pathData="M45,30L75,30A5,5 0,0 1,80 35L80,85A5,5 0,0 1,75 90L45,90A5,5 0,0 1,40 85L40,35A5,5 0,0 1,45 30z"
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+    
+    <!-- Receipt lines -->
+    <path
+        android:pathData="M50,40L70,40"
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"/>
+    
+    <path
+        android:pathData="M50,50L65,50"
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"/>
+    
+    <path
+        android:pathData="M50,60L70,60"
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"/>
+    
+    <!-- X mark to indicate empty -->
+    <path
+        android:pathData="M52,70L68,78"
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"/>
+    
+    <path
+        android:pathData="M68,70L52,78"
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"/>
+</vector> 

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/ic_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_logo"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ExpenseTracker"
+        tools:targetApi="31">
+        <activity
+            android:name=".features.money.ui.navigation.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.ExpenseTracker">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="expensetracker" android:host="addexpense" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <!-- Add FileProvider for sharing transaction images -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.TotalExpenseAppWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/total_expense_appwidget_info" />
+        </receiver>
+
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.BalanceAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/balance_appwidget_info"/>
+        </receiver>
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.WeeklyExpenseAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/weekly_expense_appwidget_info"/>
+        </receiver>
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.MonthlyExpenseAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/monthly_expense_appwidget_info"/>
+        </receiver>
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.CategoryExpenseAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/category_expense_appwidget_info"/>
+        </receiver>
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.TodayIncomeAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/today_income_appwidget_info"/>
+        </receiver>
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.TopSpendingCategoryAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/top_spending_category_appwidget_info"/>
+        </receiver>
+        <receiver
+            android:name="com.duongpt.expensetracker.widgets.BudgetUsageAppWidgetProvider"
+            android:exported="true">
+          <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+          </intent-filter>
+          <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/budget_usage_appwidget_info"/>
+        </receiver>
+    </application>
+
+</manifest>
