@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.duongpt.expensetracker"
+    namespace = "com.ptit.expensetracker"
     compileSdk = 35
 
     packagingOptions {
@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.duongpt.expensetracker"
+        applicationId = "com.ptit.expensetracker"
         minSdk = 26
         targetSdk = 35
         versionCode = 5

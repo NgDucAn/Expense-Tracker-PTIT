@@ -1,52 +1,26 @@
 {
   "project_info": {
-    "project_number": "221181791952",
-    "project_id": "expensetracker-798dc73f",
-    "storage_bucket": "expensetracker-798dc73f.firebasestorage.app"
+    "project_number": "122290817929",
+    "project_id": "expense-tracker-app-92761",
+    "storage_bucket": "expense-tracker-app-92761.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:221181791952:android:3f1aaaeaac08edc54758d5",
+        "mobilesdk_app_id": "1:122290817929:android:653c74fb6d51a8ba5e2f58",
         "android_client_info": {
-          "package_name": "com.duongpt.expensetracker"
+          "package_name": "com.ptit.expensetracker"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "221181791952-nablkvg0jiqv90ogvloapthcl9pl1moc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.duongpt.expensetracker",
-            "certificate_hash": "54d0498eaf1852227b6aa5729f29aa0d8abf7ef0"
-          }
-        },
-        {
-          "client_id": "221181791952-o7bgpo99g6mbpv1q1jcd7bpnp15k2cn3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.duongpt.expensetracker",
-            "certificate_hash": "161200cf4f706cebdc70d70d5ec5ba47e0355350"
-          }
-        },
-        {
-          "client_id": "221181791952-6ul51t8v5qlf4tpd8a8q5aq50q176soc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDmJoTM5MTMgd-q0TrS_vUCsbBAT-tpRi0"
+          "current_key": "AIzaSyBaSxRdjo2zPRpjzvlt2yKEUOPdvUbyC4M"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "221181791952-6ul51t8v5qlf4tpd8a8q5aq50q176soc.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

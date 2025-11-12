@@ -1,0 +1,6 @@
+Tôi đang làm đồ án tốt nghiệp với ứng dụng android kotlin jetpack compose. Với đề tài là ứng dụng quản lý chi tiêu - expense tracker. Tôi có thêm một chức năng là nói " ok google, hôm nay tôi ăn trưa hết 50 nghìn" thì trợ ý ảo sẽ tự động mở app của tôi và ghi vào app đó. Tôi đang muốn thử nghiệm chức năng đó nhưng khi nói " ok google,  create item launcher 50 thousand" thì chưa tự động mở app của tôi dù tôi đã setup hết các thứ.
+
+adb shell am start -a android.intent.action.VIEW -n com.ptit.expensetracker/.MainActivity --es category "Lunch" --ei cost 50000 --es date "2025-03-03"
+
+Pass: Duongpt88$$
+SHA-1: 54:D0:49:8E:AF:18:52:22:7B:6A:A5:72:9F:29:AA:0D:8A:BF:7E:F0

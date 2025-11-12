@@ -1486,9 +1486,9 @@
     <string name="money_insider_tooltip_title_2">Choose the chart visualization here.</string>
     <string name="money_insider_tooltip_title_3">View your personal expense progress.</string>
     <string name="money_insider_week">Week:</string>
-    <string name="money_lover_package_name">com.duongpt.expensetracker</string>
+    <string name="money_lover_package_name">com.ptit.expensetracker</string>
     <string name="money_lover_subscription_title">Expense Tracker Premium</string>
-    <string name="moneylover_playstore_app">market://details?id=com.duongpt.expensetracker</string>
+    <string name="moneylover_playstore_app">market://details?id=com.ptit.expensetracker</string>
     <string name="moneylover_playstore_developer">market://search?q=pub:Expense Tracker</string>
     <string name="moneylover_social_facebook_international_id">fb://page/192450854108398</string>
     <string name="moneylover_social_facebook_international_name">https://www.facebook.com/moneylover.me</string>

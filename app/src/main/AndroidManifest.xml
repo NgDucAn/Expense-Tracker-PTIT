@@ -51,7 +51,7 @@
         </provider>
 
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.TotalExpenseAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.TotalExpenseAppWidgetProvider"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -62,7 +62,7 @@
         </receiver>
 
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.BalanceAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.BalanceAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -72,7 +72,7 @@
               android:resource="@xml/balance_appwidget_info"/>
         </receiver>
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.WeeklyExpenseAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.WeeklyExpenseAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -82,7 +82,7 @@
               android:resource="@xml/weekly_expense_appwidget_info"/>
         </receiver>
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.MonthlyExpenseAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.MonthlyExpenseAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -92,7 +92,7 @@
               android:resource="@xml/monthly_expense_appwidget_info"/>
         </receiver>
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.CategoryExpenseAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.CategoryExpenseAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -102,7 +102,7 @@
               android:resource="@xml/category_expense_appwidget_info"/>
         </receiver>
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.TodayIncomeAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.TodayIncomeAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -112,7 +112,7 @@
               android:resource="@xml/today_income_appwidget_info"/>
         </receiver>
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.TopSpendingCategoryAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.TopSpendingCategoryAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -122,7 +122,7 @@
               android:resource="@xml/top_spending_category_appwidget_info"/>
         </receiver>
         <receiver
-            android:name="com.duongpt.expensetracker.widgets.BudgetUsageAppWidgetProvider"
+            android:name="com.ptit.expensetracker.widgets.BudgetUsageAppWidgetProvider"
             android:exported="true">
           <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

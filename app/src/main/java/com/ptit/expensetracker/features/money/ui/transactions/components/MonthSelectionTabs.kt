@@ -1,0 +1,68 @@
+package com.ptit.expensetracker.features.money.ui.transactions.components
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.ptit.expensetracker.features.money.ui.transactions.MonthItem
+import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
+import com.ptit.expensetracker.ui.theme.TextPrimary
+import com.ptit.expensetracker.ui.theme.TextSecondary
+
+@Composable
+fun MonthSelectionTabs(
+    months: List<MonthItem>,
+    selectedIndex: Int,
+    onTabSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ScrollableTabRow(
+        selectedTabIndex = selectedIndex,
+        modifier = modifier.fillMaxWidth(),
+        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        edgePadding = 16.dp, // Padding on the edges
+        indicator = { tabPositions ->
+            if (selectedIndex in tabPositions.indices) {
+                TabRowDefaults.Indicator(
+                    Modifier.tabIndicatorOffset(tabPositions[selectedIndex]),
+                    color = AppColor.Dark.TabIndicatorColor
+                )
+            }
+        }
+    ) {
+        months.forEachIndexed { index, monthItem ->
+            Tab(
+                selected = selectedIndex == index,
+                onClick = { onTabSelected(index) },
+                text = {
+                    Text(
+                        text = monthItem.label,
+                        color = if (selectedIndex == index) TextPrimary else TextSecondary
+                    )
+                }
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF1F1F1F)
+@Composable
+fun MonthSelectionTabsPreview() {
+    // Create sample months for preview
+    val sampleMonths = MonthItem.buildMonthItems(monthsBack = 6) // Shorter list for preview
+    val thisMonthIndex = MonthItem.findThisMonthIndex(sampleMonths)
+    var selectedTab by remember { mutableStateOf(thisMonthIndex) }
+    
+    ExpenseTrackerTheme {
+        MonthSelectionTabs(
+            months = sampleMonths,
+            selectedIndex = selectedTab,
+            onTabSelected = { selectedTab = it }
+        )
+    }
+}

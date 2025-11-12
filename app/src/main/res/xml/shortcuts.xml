@@ -5,8 +5,8 @@
         app:queryPatterns="@array/expenseQueries">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity"
-            android:targetPackage="com.duongpt.expensetracker">
+            android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity"
+            android:targetPackage="com.ptit.expensetracker">
             <url-template android:value="expensetracker://addexpense{?amount,category,date}" />
             <parameter
                 android:name="amount"
@@ -42,8 +42,8 @@
         android:name="actions.intent.OPEN_APP_FEATURE">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity"
-            android:targetPackage="com.duongpt.expensetracker">
+            android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity"
+            android:targetPackage="com.ptit.expensetracker">
             <url-template android:value="expensetracker://open_feature?feature={feature}" />
             <parameter
                 android:name="feature"
@@ -128,7 +128,7 @@
         app:queryPatterns="@array/dateExpenseQueries">
         <app-widget
             android:identifier="TOTAL_EXPENSE_WIDGET"
-            android:targetClass="com.duongpt.expensetracker.widgets.TotalExpenseAppWidgetProvider">
+            android:targetClass="com.ptit.expensetracker.widgets.TotalExpenseAppWidgetProvider">
             <parameter
                 android:name="date"
                 android:key="date"
@@ -138,7 +138,7 @@
         <intent
             android:identifier="TOTAL_EXPENSE_FALLBACK"
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+            android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         </intent>
     </capability>
 
@@ -148,11 +148,11 @@
         app:queryPatterns="@array/balanceQueries">
       <app-widget
           android:identifier="BALANCE_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.BalanceAppWidgetProvider" />
+          android:targetClass="com.ptit.expensetracker.widgets.BalanceAppWidgetProvider" />
       <intent
           android:identifier="GET_BALANCE_FALLBACK"
           android:action="android.intent.action.VIEW"
-          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         <url-template android:value="expensetracker://balance" />
       </intent>
     </capability>
@@ -163,11 +163,11 @@
         app:queryPatterns="@array/weeklyQueries">
       <app-widget
           android:identifier="WEEKLY_EXPENSE_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.WeeklyExpenseAppWidgetProvider" />
+          android:targetClass="com.ptit.expensetracker.widgets.WeeklyExpenseAppWidgetProvider" />
       <intent
           android:identifier="WEEKLY_EXPENSE_FALLBACK"
           android:action="android.intent.action.VIEW"
-          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         <url-template android:value="expensetracker://weeklyexpense" />
       </intent>
     </capability>
@@ -182,11 +182,11 @@
         app:queryPatterns="@array/monthlyQueries">
       <app-widget
           android:identifier="MONTHLY_EXPENSE_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.MonthlyExpenseAppWidgetProvider" />
+          android:targetClass="com.ptit.expensetracker.widgets.MonthlyExpenseAppWidgetProvider" />
       <intent
           android:identifier="MONTHLY_EXPENSE_FALLBACK"
           android:action="android.intent.action.VIEW"
-          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         <url-template android:value="expensetracker://monthlyexpense" />
       </intent>
     </capability>
@@ -201,7 +201,7 @@
         app:queryPatterns="@array/categoryExpenseQueries">
       <app-widget
           android:identifier="CATEGORY_EXPENSE_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.CategoryExpenseAppWidgetProvider">
+          android:targetClass="com.ptit.expensetracker.widgets.CategoryExpenseAppWidgetProvider">
         <parameter
             android:name="category"
             android:key="category"
@@ -210,7 +210,7 @@
 <!--      <intent-->
 <!--          android:identifier="CATEGORY_EXPENSE_FALLBACK"-->
 <!--          android:action="android.intent.action.VIEW"-->
-<!--          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">-->
+<!--          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">-->
 <!--        <url-template android:value="expensetracker://categoryexpense?category={category}" />-->
 <!--        <parameter-->
 <!--            android:name="category"-->
@@ -224,11 +224,11 @@
         app:queryPatterns="@array/incomeQueries">
       <app-widget
           android:identifier="TODAYS_INCOME_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.TodayIncomeAppWidgetProvider" />
+          android:targetClass="com.ptit.expensetracker.widgets.TodayIncomeAppWidgetProvider" />
       <intent
           android:identifier="TODAYS_INCOME_FALLBACK"
           android:action="android.intent.action.VIEW"
-          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         <url-template android:value="expensetracker://todayincome" />
       </intent>
     </capability>
@@ -238,11 +238,11 @@
         app:queryPatterns="@array/topCategoryQueries">
       <app-widget
           android:identifier="TOP_SPENDING_CATEGORY_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.TopSpendingCategoryAppWidgetProvider" />
+          android:targetClass="com.ptit.expensetracker.widgets.TopSpendingCategoryAppWidgetProvider" />
       <intent
           android:identifier="TOP_SPENDING_CATEGORY_FALLBACK"
           android:action="android.intent.action.VIEW"
-          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         <url-template android:value="expensetracker://topcategory" />
       </intent>
     </capability>
@@ -252,11 +252,11 @@
         app:queryPatterns="@array/budgetUsageQueries">
       <app-widget
           android:identifier="BUDGET_USAGE_WIDGET"
-          android:targetClass="com.duongpt.expensetracker.widgets.BudgetUsageAppWidgetProvider" />
+          android:targetClass="com.ptit.expensetracker.widgets.BudgetUsageAppWidgetProvider" />
       <intent
           android:identifier="BUDGET_USAGE_FALLBACK"
           android:action="android.intent.action.VIEW"
-          android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity">
+          android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity">
         <url-template android:value="expensetracker://budgetusage" />
       </intent>
     </capability>

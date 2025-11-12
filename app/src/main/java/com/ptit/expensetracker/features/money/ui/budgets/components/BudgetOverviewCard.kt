@@ -1,0 +1,138 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
+package com.ptit.expensetracker.features.money.ui.budgets.components
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.ui.theme.AppColor
+
+/**
+ * Budget overview card component
+ * Displays a card with circular progress indicator showing spending,
+ * stats row showing totals, and a create budget button
+ *
+ * @param totalAmount Total budget amount to display
+ * @param spentAmount Amount spent so far
+ * @param progress Progress value between 0-1 representing percentage spent
+ * @param totalBudgetsText Text to display for total budgets
+ * @param totalSpentText Text to display for total spent
+ * @param daysLeftText Text to display for days remaining
+ * @param onCreateBudgetClick Callback when Create Budget button is clicked
+ */
+@Composable
+fun BudgetOverviewCard(
+    totalAmount: String = "2,000,000",
+    spentAmount: String = "700,000",
+    progress: Float = 0.35f,
+    totalBudgetsText: String = "2 M",
+    totalSpentText: String = "0",
+    daysLeftText: String = "19 days",
+    onCreateBudgetClick: () -> Unit = {}
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = AppColor.Dark.PrimaryColor.cardColor
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Circular progress with amount
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                // Enhanced circular progress indicator
+                StraightProgressIndicator(
+                    progress = progress,
+                    totalAmount = totalAmount,
+                    spentAmount = spentAmount,
+                    backgroundColor = Color(0xFFE0E0E0),
+                    foregroundColor = Color(0xFF4CAF50),
+                    showAnimation = true
+                )
+            }
+            
+            // Stats row
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                // Total budgets
+                StatColumn(
+                    value = totalBudgetsText,
+                    label = "Total budgets"
+                )
+                
+                // Total spent
+                StatColumn(
+                    value = totalSpentText,
+                    label = "Total spent"
+                )
+                
+                // End of month
+                StatColumn(
+                    value = daysLeftText,
+                    label = "End of month"
+                )
+            }
+            
+            // Create Budget button
+            Button(
+                onClick = onCreateBudgetClick,
+                modifier = Modifier
+                    .padding(horizontal = 32.dp)
+                    .height(40.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+            ) {
+                Text("Create Budget", color = Color.White)
+            }
+        }
+    }
+}
+
+/**
+ * Stat column used in the stats row
+ *
+ * @param value The statistic value to display
+ * @param label The label for the statistic
+ */
+@Composable
+private fun StatColumn(
+    value: String,
+    label: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = value,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        Text(
+            text = label,
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+    }
+} 

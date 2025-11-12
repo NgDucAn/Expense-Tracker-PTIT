@@ -5,8 +5,8 @@
         app:queryPatterns="@array/expenseQueries">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity"
-            android:targetPackage="com.duongpt.expensetracker">
+            android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity"
+            android:targetPackage="com.ptit.expensetracker">
             <url-template android:value="expensetracker://addexpense{?amount,category,date}" />
             <parameter
                 android:name="amount"
@@ -42,8 +42,8 @@
         android:name="actions.intent.OPEN_APP_FEATURE">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.duongpt.expensetracker.features.money.ui.navigation.MainActivity"
-            android:targetPackage="com.duongpt.expensetracker">
+            android:targetClass="com.ptit.expensetracker.features.money.ui.navigation.MainActivity"
+            android:targetPackage="com.ptit.expensetracker">
             <parameter
                 android:name="feature"
                 android:key="feature" />

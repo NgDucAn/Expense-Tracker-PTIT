@@ -1,0 +1,128 @@
+package com.ptit.expensetracker.features.money.ui.budgetdetails.components
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.R
+import com.ptit.expensetracker.features.money.ui.budgetdetails.BudgetDetailsState
+import com.ptit.expensetracker.features.money.domain.model.TransactionType
+import com.ptit.expensetracker.utils.formatAmountWithCurrency
+import com.ptit.expensetracker.utils.getStringResId
+import java.text.NumberFormat
+import java.util.Locale
+
+@Composable
+fun BudgetSummaryCard(
+    state: BudgetDetailsState,
+    modifier: Modifier = Modifier
+) {
+    val budget = state.budget ?: return
+    val context = LocalContext.current
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF2C2C2E)),
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                val iconRes = context.resources.getIdentifier(
+                    budget.category.icon, "drawable", context.packageName
+                )
+                Image(
+                    painter = painterResource(
+                        id = if (iconRes != 0) iconRes else R.drawable.ic_category_foodndrink
+                    ),
+                    contentDescription = budget.category.title,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(Color.Gray.copy(alpha = 0.5f))
+                )
+                Text(
+                    text = budget.category.title?.let {
+                        stringResource(id = getStringResId(context, it))
+                    } ?: run {
+                        "Select category"
+                    },
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+
+            Text(
+                text = formatAmountWithCurrency(budget.amount, budget.wallet.currency.symbol),
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+            )
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Spent", fontSize = 14.sp, color = Color.Gray)
+                    Text(
+                        formatAmountWithCurrency(state.spentAmount, budget.wallet.currency.symbol),
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
+                    Text("Left", fontSize = 14.sp, color = Color.Gray)
+                    Text(
+                        formatAmountWithCurrency(state.remainingBudget, budget.wallet.currency.symbol),
+                        fontSize = 18.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+            val progress = if (budget.amount > 0) (state.spentAmount / budget.amount).toFloat() else 0f
+            LinearProgressIndicator(
+                progress = progress,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .height(8.dp)
+                    .clip(RoundedCornerShape(4.dp)),
+                color = Color(0xFF4CAF50),
+                trackColor = Color.Gray.copy(alpha = 0.3f)
+            )
+            Text(
+                "Today",
+                fontSize = 12.sp,
+                color = Color.Gray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+            )
+        }
+    }
+} 
