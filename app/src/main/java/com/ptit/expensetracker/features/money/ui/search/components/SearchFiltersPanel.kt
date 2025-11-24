@@ -72,7 +72,7 @@ fun SearchFiltersPanel(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.containerColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -80,7 +80,8 @@ fun SearchFiltersPanel(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+
         ) {
             // Header
             Row(
@@ -91,14 +92,14 @@ fun SearchFiltersPanel(
                 Text(
                     text = "Search Filters",
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    fontWeight = FontWeight.Medium,
+                    color = TextSecondary
                 )
                 
                 TextButton(
                     onClick = onClearFilters,
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = AppColor.Dark.ExpenseAmountColor
+                        contentColor = Color(0xFFFF383C)
                     )
                 ) {
                     Text("Clear All")
@@ -130,8 +131,8 @@ fun SearchFiltersPanel(
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = TextAccent,
                             unfocusedBorderColor = TextSecondary,
-                            focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary
+                            focusedTextColor = TextMain,
+                            unfocusedTextColor = TextMain
                         )
                     )
                     
@@ -154,8 +155,8 @@ fun SearchFiltersPanel(
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = TextAccent,
                             unfocusedBorderColor = TextSecondary,
-                            focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary
+                            focusedTextColor = TextMain,
+                            unfocusedTextColor = TextMain
                         )
                     )
                 }
@@ -245,7 +246,7 @@ fun SearchFiltersPanel(
                     onClick = onClearFilters,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = TextSecondary
+                        contentColor = Color(0xFF2B3B48)
                     )
                 ) {
                     Text("Clear Filters")
@@ -255,7 +256,7 @@ fun SearchFiltersPanel(
                     onClick = onApplyFilters,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = TextAccent,
+                        containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
                         contentColor = Color.White
                     )
                 ) {
@@ -280,18 +281,11 @@ private fun FilterSection(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 12.dp)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = TextAccent,
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = title,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = TextPrimary
+                color = TextMain
             )
         }
         content()
@@ -308,10 +302,10 @@ private fun TransactionTypeChip(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (isSelected) TextAccent else Color.Transparent
-    val contentColor = if (isSelected) Color.White else TextSecondary
-    val borderColor = if (isSelected) TextAccent else TextSecondary
-    
+    val backgroundColor = if (isSelected) Color(0xFFFFF3E0) else Color.White
+    val contentColor = if (isSelected) Color(0xFFFCA419) else TextSecondary
+    val borderColor = if (isSelected) Color(0xFFFFF3E0) else Color.White
+
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
@@ -324,7 +318,7 @@ private fun TransactionTypeChip(
             text = label,
             color = contentColor,
             fontSize = 14.sp,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
         )
     }
 }
@@ -338,9 +332,9 @@ private fun CategoryChip(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (isSelected) TextAccent else Color.Transparent
-    val contentColor = if (isSelected) Color.White else TextSecondary
-    val borderColor = if (isSelected) TextAccent else TextSecondary
+    val backgroundColor = if (isSelected) Color(0xFFFFF3E0) else Color.White
+    val contentColor = if (isSelected) Color(0xFFFCA419) else TextSecondary
+    val borderColor = if (isSelected) Color(0xFFFFF3E0) else Color.White
     
     Box(
         modifier = Modifier
@@ -354,7 +348,7 @@ private fun CategoryChip(
             text = "Cat $categoryId", // In real app, would map to category name
             color = contentColor,
             fontSize = 14.sp,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium
         )
     }
 }
@@ -395,8 +389,8 @@ private fun DateRangeSelector(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = TextAccent,
                     unfocusedBorderColor = TextSecondary,
-                    focusedTextColor = TextPrimary,
-                    unfocusedTextColor = TextPrimary
+                    focusedTextColor = TextMain,
+                    unfocusedTextColor = TextMain
                 )
             )
             
@@ -418,8 +412,8 @@ private fun DateRangeSelector(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = TextAccent,
                     unfocusedBorderColor = TextSecondary,
-                    focusedTextColor = TextPrimary,
-                    unfocusedTextColor = TextPrimary
+                    focusedTextColor = TextMain,
+                    unfocusedTextColor = TextMain
                 )
             )
         }
@@ -473,7 +467,7 @@ private fun QuickDateButton(
     TextButton(
         onClick = onClick,
         colors = ButtonDefaults.textButtonColors(
-            contentColor = TextAccent
+            contentColor = AppColor.Light.PrimaryColor.TextButtonColor
         ),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
     ) {

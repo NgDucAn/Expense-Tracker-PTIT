@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,6 +56,8 @@ import com.ptit.expensetracker.features.money.ui.budgets.components.BudgetOvervi
 import com.ptit.expensetracker.features.money.ui.budgets.components.BudgetItem
 import com.ptit.expensetracker.features.money.ui.budgets.components.EmptyBudgetContent
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.utils.getDrawableResId
 import com.ptit.expensetracker.utils.getStringResId
 import kotlinx.coroutines.flow.collectLatest
@@ -171,11 +174,11 @@ fun BudgetScreenContent(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Running Budgets", color = Color.White)
+                    Text("Running Budgets", color = TextMain, fontWeight = FontWeight.Bold)
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColor.Dark.PrimaryColor.containerColor,
-                    titleContentColor = AppColor.Dark.PrimaryColor.contentColor,
+                    containerColor = AppColor.Light.PrimaryColor.containerColor,
+                    titleContentColor = AppColor.Light.PrimaryColor.contentColor,
                 ),
                 actions = {
                     // Wallet selector icon (similar to image)
@@ -194,13 +197,13 @@ fun BudgetScreenContent(
                                     painter = painterResource(id = R.drawable.ic_arrow_tooltip_home_up), // Placeholder, replace with actual icon
                                     contentDescription = "Select Wallet",
                                     modifier = Modifier.size(12.dp),
-                                    tint = Color.White
+                                    tint = TextMain
                                 )
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_arrow_tooltip_home_down), // Placeholder, replace with actual icon
                                     contentDescription = "Select Wallet",
                                     modifier = Modifier.size(12.dp),
-                                    tint = Color.White
+                                    tint = TextMain
                                 )
                             }
                         }
@@ -212,12 +215,13 @@ fun BudgetScreenContent(
                         Icon(
                             Icons.Filled.MoreVert,
                             contentDescription = "More options",
-                            tint = Color.White
+                            tint = TextMain
                         )
                     }
                     DropdownMenu(
                         expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
+                        onDismissRequest = { showMenu = false },
+                        modifier = Modifier.background(Color.White)
                     ) {
                         DropdownMenuItem(
                             text = { Text("Refresh") },
@@ -231,8 +235,8 @@ fun BudgetScreenContent(
                 }
             )
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor,
         modifier = modifier
     ) { paddingValues ->
         Column(
@@ -243,12 +247,12 @@ fun BudgetScreenContent(
             // TabRow for time periods
             TabRow(
                 selectedTabIndex = selectedTabIndex,
-                containerColor = AppColor.Dark.PrimaryColor.containerColor,
+                containerColor = AppColor.Light.PrimaryColor.containerColor,
                 contentColor = Color.White,
                 indicator = {
                     TabRowDefaults.Indicator(
                         Modifier.tabIndicatorOffset(it[selectedTabIndex]),
-                        color = Color.White // Or your accent color
+                        color = TextSecondary // Or your accent color
                     )
                 }
             ) {
@@ -259,7 +263,7 @@ fun BudgetScreenContent(
                         text = {
                             Text(
                                 title,
-                                color = if (selectedTabIndex == index) Color.White else Color.Gray
+                                color = if (selectedTabIndex == index) TextMain else TextSecondary
                             )
                         }
                     )
@@ -285,7 +289,7 @@ fun BudgetScreenContent(
                 } else {
                     // Main content with BudgetOverviewCard and list of BudgetItem
                     LazyColumn(
-                        modifier = Modifier.background(color = AppColor.Dark.PrimaryColor.containerColor),
+                        modifier = Modifier.background(color = AppColor.Light.PrimaryColor.containerColor),
                         contentPadding = PaddingValues(vertical = 8.dp), // Reduced from 16.dp to 8.dp
                         verticalArrangement = Arrangement.spacedBy(4.dp) // Reduced from 8.dp to 4.dp
                     ) {

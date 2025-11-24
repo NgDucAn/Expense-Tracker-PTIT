@@ -28,7 +28,7 @@ fun DebtStatsCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -132,7 +132,7 @@ fun DebtStatsCard(
                             fontWeight = FontWeight.Medium
                         )
                     }
-                    
+
                     LinearProgressIndicator(
                         progress = progressPercentage,
                         modifier = Modifier
@@ -144,7 +144,7 @@ fun DebtStatsCard(
                         },
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
-                    
+
                     Text(
                         text = "${formatAmount(paidAmount)} $currencySymbol",
                         color = MaterialTheme.colorScheme.onSurface,

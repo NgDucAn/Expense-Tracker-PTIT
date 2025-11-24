@@ -37,7 +37,7 @@ fun ImageSourceDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary,
+        containerColor = AppColor.Light.PrimaryColor.containerColorSecondary,
         shape = RoundedCornerShape(16.dp),
         text = {
             Column(
@@ -58,7 +58,7 @@ fun ImageSourceDialog(
                         .fillMaxWidth()
                         .clickable { onCameraClick() }
                         .background(
-                            color = AppColor.Dark.PrimaryColor.contentColor.copy(alpha = 0.1f),
+                            color = AppColor.Light.PrimaryColor.contentColor.copy(alpha = 0.1f),
                             shape = RoundedCornerShape(12.dp)
                         )
                         .padding(16.dp),
@@ -87,7 +87,7 @@ fun ImageSourceDialog(
                         .fillMaxWidth()
                         .clickable { onGalleryClick() }
                         .background(
-                            color = AppColor.Dark.PrimaryColor.contentColor.copy(alpha = 0.1f),
+                            color = AppColor.Light.PrimaryColor.contentColor.copy(alpha = 0.1f),
                             shape = RoundedCornerShape(12.dp)
                         )
                         .padding(16.dp),

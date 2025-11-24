@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ptit.expensetracker.ui.theme.AppColor
 
 @Composable
 fun TransactionsButton(
@@ -22,7 +23,7 @@ fun TransactionsButton(
             .fillMaxWidth()
             .height(50.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+        colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
     ) {
         Text("TRANSACTIONS LIST", color = Color.White, fontWeight = FontWeight.Bold)
     }

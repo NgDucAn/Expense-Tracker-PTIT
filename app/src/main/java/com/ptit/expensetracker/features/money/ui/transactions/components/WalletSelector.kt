@@ -7,23 +7,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.utils.getDrawableResId
 
@@ -38,7 +32,7 @@ fun WalletSelector(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(AppColor.Dark.WalletSelectorBackground)
+            .background(AppColor.Light.WalletSelectorBackground)
             .padding(horizontal = 12.dp, vertical = 6.dp)
             .clickable { 
                 android.util.Log.d("WalletSelector", "Wallet selector clicked, calling onWalletSelected callback")
@@ -60,7 +54,7 @@ fun WalletSelector(
         Text(
             text = walletName,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextPrimary,
+            color = TextMain,
             fontSize = 12.sp,
             fontWeight = if (isTotalWallet) FontWeight.SemiBold else FontWeight.Normal
         )
@@ -68,7 +62,7 @@ fun WalletSelector(
         Icon(
             imageVector = Icons.Filled.ArrowDropDown,
             contentDescription = "Select Wallet",
-            tint = TextSecondary,
+            tint = TextMain,
             modifier = Modifier.size(24.dp)
         )
     }

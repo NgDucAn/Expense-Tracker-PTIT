@@ -36,6 +36,7 @@ import java.util.Calendar
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun TransactionScreen(
@@ -178,6 +179,7 @@ fun TransactionScreenContent(
     onAddTransactionClick: () -> Unit = {},
     modifier: Modifier
 ) {
+    val backgroundColor = Color(0xFFF6F6F6)
     val currentBalance = state.currentWallet.currentBalance
     val currentWalletName = state.currentWallet.walletName
     val inflow = state.inflow
@@ -197,7 +199,7 @@ fun TransactionScreenContent(
         ModalBottomSheet(
             sheetState = sheetState,
             onDismissRequest = { isShowBottomSheet.value = false },
-            containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary,
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
             content = {
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     if (!isTotalWallet) {
@@ -225,8 +227,8 @@ fun TransactionScreenContent(
     }
 
     Scaffold(
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        containerColor = backgroundColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor,
         topBar = {
             TransactionTopAppBar(
                 currentBalance = currentBalance,
@@ -244,7 +246,8 @@ fun TransactionScreenContent(
         Column(
             modifier = Modifier
                 .padding(top = paddingValues.calculateTopPadding())
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .background(backgroundColor),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Normal navigation
@@ -270,7 +273,9 @@ fun TransactionScreenContent(
             } else if (groupedTransactions.isEmpty()) {
                 // Show empty state when no transactions
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(backgroundColor)
                 ) {
                     // Still show summary section even when empty
                     SummarySection(inflow = inflow, outflow = outflow)
@@ -290,9 +295,7 @@ fun TransactionScreenContent(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(
-                            color = AppColor.Dark.PrimaryColor.containerColor
-                        ),
+                        .background(backgroundColor),
                     contentPadding = PaddingValues(bottom = 16.dp)
                 ) {
                     item(key = "summary-section") {
@@ -334,7 +337,7 @@ private fun MoreBottomSheetContent(
             text = "More",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = onDarkSurface,
+            color = TextMain,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         // Set as main wallet
@@ -343,7 +346,7 @@ private fun MoreBottomSheetContent(
                 .fillMaxWidth()
                 .clickable(onClick = onEdit),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+            colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
         ) {
             Box(
                 modifier = Modifier
@@ -355,7 +358,7 @@ private fun MoreBottomSheetContent(
                     text = "Edit Wallet",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = onDarkSurface
+                    color = Color.White
                 )
             }
         }
@@ -365,7 +368,7 @@ private fun MoreBottomSheetContent(
                 .fillMaxWidth()
                 .clickable(onClick = onTransferMoney),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+            colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
         ) {
             Box(
                 modifier = Modifier
@@ -377,7 +380,7 @@ private fun MoreBottomSheetContent(
                     text = "Transfer money",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = onDarkSurface
+                    color = Color.White
                 )
             }
         }
@@ -394,7 +397,7 @@ fun DailyTransactionsCard(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = AppColor.Dark.PrimaryColor.cardColor
+        color = Color.White
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -406,7 +409,7 @@ fun DailyTransactionsCard(
             )
 
             HorizontalDivider(
-                color = AppColor.Dark.DividerColor,
+                color = AppColor.Light.DividerColor,
                 thickness = 1.dp,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
@@ -447,13 +450,13 @@ fun TransactionTopAppBar(
                 Text(
                     "Balance",
                     style = MaterialTheme.typography.labelMedium,
-                    color = TextSecondary,
+                    color = Color(0xFF505D6D),
                     fontSize = 12.sp
                 )
                 Text(
                     text = "${formatCurrency(currentBalance)} ₫",
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = BalanceColor
+                    color = Color(0xFF1E2A36)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -471,8 +474,8 @@ fun TransactionTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColor.Dark.PrimaryColor.containerColor,
-            titleContentColor = AppColor.Dark.PrimaryColor.contentColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            titleContentColor = AppColor.Light.PrimaryColor.contentColor
         ),
     )
 }

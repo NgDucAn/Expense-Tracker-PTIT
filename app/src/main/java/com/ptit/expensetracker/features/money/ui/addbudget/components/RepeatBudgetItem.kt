@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
 fun RepeatBudgetItem(
@@ -26,7 +28,7 @@ fun RepeatBudgetItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -41,20 +43,20 @@ fun RepeatBudgetItem(
                 onCheckedChange = onCheckedChange,
                 colors = CheckboxDefaults.colors(
                     checkedColor = Color.Green,
-                    uncheckedColor = Color.Gray
+                    uncheckedColor = Color(0xFFD9DBE9)
                 )
             )
             
             Column(modifier = Modifier.padding(start = 8.dp)) {
                 Text(
                     text = "Repeat this budget",
-                    color = Color.White,
+                    color = TextMain,
                     fontSize = 16.sp
                 )
                 
                 Text(
                     text = "Budget will renew automatically.",
-                    color = Color.Gray,
+                    color = TextSecondary,
                     fontSize = 14.sp
                 )
             }

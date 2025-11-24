@@ -27,10 +27,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.ptit.expensetracker" />
+                  <option name="mobileSdkAppId" value="1:122290817929:android:653c74fb6d51a8ba5e2f58" />
+                  <option name="projectId" value="expense-tracker-app-92761" />
+                  <option name="projectNumber" value="122290817929" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

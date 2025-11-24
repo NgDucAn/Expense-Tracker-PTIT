@@ -1,11 +1,13 @@
 package com.ptit.expensetracker.features.money.ui.transactions.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,9 +67,11 @@ fun EmptyTransactionsState(
         OutlinedButton(
             onClick = onAddTransactionClick,
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = TextAccent
+                containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                contentColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth(0.6f)
+            modifier = Modifier.fillMaxWidth(0.6f),
+            border = BorderStroke(0.dp, Color.Transparent)
         ) {
             Text(
                 text = "Add transaction",

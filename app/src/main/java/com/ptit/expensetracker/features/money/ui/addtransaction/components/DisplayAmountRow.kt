@@ -2,12 +2,9 @@ package com.ptit.expensetracker.features.money.ui.addtransaction.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -56,10 +53,8 @@ fun DisplayAmountRow(
         Card(
             shape = RoundedCornerShape(8.dp),
             colors = androidx.compose.material3.CardDefaults.cardColors(
-                containerColor = AppColor.Dark.PrimaryColor.cardColor
+                containerColor = Color(0xFFE4E7EC)
             ),
-            border = BorderStroke(1.dp, Color.Gray),
-
         ) {
             Text(
                 text = currency,
@@ -68,7 +63,7 @@ fun DisplayAmountRow(
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .background(AppColor.Dark.PrimaryColor.cardColor)
+                    .background(Color(0xFF505D6D))
             )
         }
 
@@ -79,12 +74,12 @@ fun DisplayAmountRow(
         ) {
             Text(
                 text = "Amount",
-                color = AmountColor,
+                color = Color(0xFF505D6D),
                 fontSize = 12.sp,
             )
             Text(
                 text = displayText,
-                color = AmountColor,
+                color = Color(0xFF1E2A36),
                 fontSize = 24.sp,
             )
         }

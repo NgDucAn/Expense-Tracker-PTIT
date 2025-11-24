@@ -13,11 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import java.text.NumberFormat
 import java.util.Locale
 
+@Preview(showBackground = true)
 @Composable
 fun AmountItem(
     amount: Double,
@@ -45,7 +49,7 @@ fun AmountItem(
     ) {
         Text(
             text = "Amount",
-            color = Color.Gray,
+            color = TextSecondary,
             fontSize = 16.sp,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -55,14 +59,14 @@ fun AmountItem(
         ) {
             Text(
                 text = currencyCode,
-                color = Color.White,
+                color = TextSecondary,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )
             
             Text(
                 text = displayText,
-                color = Color.White,
+                color = TextMain,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 4.dp)

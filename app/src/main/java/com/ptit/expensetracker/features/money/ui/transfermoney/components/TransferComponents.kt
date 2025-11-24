@@ -33,7 +33,7 @@ fun TransferTopBar(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = AppColor.Dark.PrimaryColor.containerColor,
+        color = AppColor.Light.PrimaryColor.containerColor,
         modifier = modifier.fillMaxWidth()
     ) {
         Box(

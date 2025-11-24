@@ -28,22 +28,22 @@ fun SummarySection(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        SummaryRow(label = "Inflow", amount = inflow, color = AppColor.Dark.InflowAmountColor)
+        SummaryRow(label = "Inflow", amount = inflow, color = AppColor.Light.InflowAmountColor)
         SummaryRow(
             label = "Outflow", 
             amount = outflow, 
-            color = AppColor.Dark.OutflowAmountColor,
+            color = AppColor.Light.OutflowAmountColor,
 
         )
         HorizontalDivider(
             modifier = Modifier
                 .height(1.dp),
-            color = AppColor.Dark.DividerColor,
+            color = Color(0x14000000),
         )
         SummaryRow(
             label = "", 
             amount = total, 
-            color = TextPrimary, 
+            color = TextMain,
             isTotal = true,
         )
     }

@@ -69,8 +69,8 @@ fun SpendingSummary(
         else -> Icons.AutoMirrored.Outlined.Send
     }
     val color = when {
-        changePercent > 0 -> AppColor.Dark.InflowAmountColor
-        changePercent < 0 -> AppColor.Dark.OutflowAmountColor
+        changePercent > 0 -> AppColor.Light.InflowAmountColor
+        changePercent < 0 -> AppColor.Light.OutflowAmountColor
         else -> Color.Yellow
     }
     Column(
@@ -135,11 +135,12 @@ fun HomeReportTabs(
         when (selectedMainTab) {
             MainTab.Trending -> TabRow(
                 selectedTabIndex = selectedTrendingTab.ordinal,
+                containerColor = Color.White,
                 indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
                         Modifier.tabIndicatorOffset(tabPositions[selectedTrendingTab.ordinal]),
                         color = if (selectedTrendingTab == TrendingSubTab.TotalSpent)
-                            AppColor.Dark.OutflowAmountColor else AppColor.Dark.InflowAmountColor
+                            AppColor.Light.OutflowAmountColor else AppColor.Light.InflowAmountColor
                     )
                 }
             ) {
@@ -151,12 +152,12 @@ fun HomeReportTabs(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
                                     subTab.title,
-                                    color = Color.White.copy(alpha = 0.5f)
+                                    color = Color(0xFF505D6D)
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 val value = if (subTab == TrendingSubTab.TotalSpent) totalSpent else totalIncome
                                 val color = if (subTab == TrendingSubTab.TotalSpent)
-                                    AppColor.Dark.OutflowAmountColor else AppColor.Dark.InflowAmountColor
+                                    AppColor.Light.OutflowAmountColor else AppColor.Light.InflowAmountColor
                                 Text(
                                     text = formatAmountWithCurrency(value, currencySymbol),
                                     color = color
@@ -216,6 +217,7 @@ fun HomeReportTabs(
             modifier = Modifier
                 .height(200.dp)
                 .fillMaxWidth()
+                .background(Color.White)
                 .padding(16.dp)
         ) {
             val isPreview = LocalInspectionMode.current
@@ -255,6 +257,7 @@ fun HomeReportTabs(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(Color.White)
                     .padding(vertical = 8.dp)
             ) {
                 IconButton(
@@ -267,13 +270,13 @@ fun HomeReportTabs(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowLeft,
                         contentDescription = "Previous",
-                        tint = AppColor.Dark.ReportButtonBackground
+                        tint = Color(0xFF1E2A36)
                     )
                 }
                 Text(
                     text = selectedMainTab.title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = AppColor.Dark.ReportButtonBackground,
+                    color = Color(0xFF1E2A36),
                     modifier = Modifier.align(Alignment.Center)
                 )
                 IconButton(
@@ -286,7 +289,7 @@ fun HomeReportTabs(
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
                         contentDescription = "Next",
-                        tint = AppColor.Dark.ReportButtonBackground
+                        tint = Color(0xFF1E2A36)
                     )
                 }
             }
@@ -300,8 +303,8 @@ fun HomeReportTabs(
                             .size(8.dp)
                             .clip(CircleShape)
                             .background(
-                                if (tab == selectedMainTab) AppColor.Dark.ReportButtonBackground
-                                else Color.Gray
+                                if (tab == selectedMainTab) Color(0xFF94A1B1)
+                                else Color(0xFFE4E7EC)
                             )
                     )
                     if (index < MainTab.values().size - 1) Spacer(modifier = Modifier.width(8.dp))

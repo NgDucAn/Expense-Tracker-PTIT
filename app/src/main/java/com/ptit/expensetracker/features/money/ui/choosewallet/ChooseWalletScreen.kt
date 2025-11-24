@@ -9,10 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +34,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.ptit.expensetracker.R
+import com.ptit.expensetracker.ui.theme.ScreenBgMain
+import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.utils.getDrawableResId
 
 @Composable
@@ -143,16 +143,16 @@ fun ChooseWalletScreenContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Choose Wallet", color = onDarkSurface) },
+                title = { Text("Choose Wallet", color = TextMain) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = onDarkSurface)
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = TextMain)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = AppColor.Dark.PrimaryColor.containerColor)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = AppColor.Light.PrimaryColor.containerColor)
             )
         },
-        containerColor = Color.Black
+        containerColor = ScreenBgMain
     ) { paddingValues ->
         Card(
             modifier = Modifier
@@ -160,7 +160,7 @@ fun ChooseWalletScreenContent(
                 .padding(16.dp)
                 .fillMaxSize(),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor),
+            colors = CardDefaults.cardColors(containerColor = ScreenBgMain),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             if (state.isLoading) {
@@ -188,8 +188,8 @@ fun ChooseWalletScreenContent(
                     Text(
                         text = "Select a wallet",
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = onDarkSurface,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF2B3B48),
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
                     )
                     // Highlight wallets in a separate card
@@ -197,7 +197,7 @@ fun ChooseWalletScreenContent(
                         modifier = Modifier
                             .fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
                         Column(
@@ -348,10 +348,9 @@ fun WalletItem(
         
         // Selection indicator
         if (isSelected) {
-            Icon(
-                imageVector = Icons.Default.Check,
+            Image(
+                painter = painterResource(id = R.drawable.ic_check),
                 contentDescription = "Selected",
-                tint = Color.Green,
                 modifier = Modifier.size(24.dp)
             )
         }

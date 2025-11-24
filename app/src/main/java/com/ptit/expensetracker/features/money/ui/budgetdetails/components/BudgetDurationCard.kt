@@ -40,7 +40,7 @@ fun BudgetDurationCard(
         .coerceAtLeast(0)
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor),
+        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.cardColor),
         modifier = modifier.fillMaxWidth()
     ) {
         Row(

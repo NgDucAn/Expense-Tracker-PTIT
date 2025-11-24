@@ -23,9 +23,13 @@ import com.ptit.expensetracker.features.money.ui.account.AccountState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.ui.theme.AppColor
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.PrimaryColor.cardColor
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.ReportButtonBackground
+import com.ptit.expensetracker.ui.theme.AppColor.Light.PrimaryColor.cardColor
+import com.ptit.expensetracker.ui.theme.AppColor.Light.ReportButtonBackground
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
 fun AccountContent(
@@ -41,15 +45,27 @@ fun AccountContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Black)
-            .padding(horizontal = 16.dp).padding(top = paddingValues.calculateTopPadding()),
+            .background(AppColor.Light.PrimaryColor.containerColor)
+            .padding(horizontal = 16.dp)
+            .padding(top = paddingValues.calculateTopPadding()),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Account",
+                color = TextMain,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
             ProfileCard(state, onIntent)
-            AccountActionsCard(state, onIntent)
             FeatureMenu(onNavigateToWallet, onNavigateToCategories, onNavigateToDebts)
+            AccountActionsCard(state, onIntent)
         }
         VersionInfo(version)
     }
@@ -93,7 +109,7 @@ private fun ProfileCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = if (state.isSigningIn) "Signing in..." else "Sign in with Google",
-                            color = ReportButtonBackground,
+                            color = TextMain,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -135,7 +151,7 @@ private fun AccountActionsCard(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.textButtonColors(
-                    contentColor =  AppColor.Dark.ReportButtonBackground,
+                    contentColor =  AppColor.Light.ReportButtonBackground,
                     containerColor = Color.White,
                 )
             ) {
@@ -143,7 +159,7 @@ private fun AccountActionsCard(
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = "Backup Data")
+                Text(text = "Backup Data", color = TextMain)
             }
             Button(
                 onClick = { onIntent(AccountIntent.RestoreData(context)) },
@@ -151,7 +167,7 @@ private fun AccountActionsCard(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.textButtonColors(
-                    contentColor =  AppColor.Dark.ReportButtonBackground,
+                    contentColor =  AppColor.Light.ReportButtonBackground,
                     containerColor = Color.White,
                 )
             ) {
@@ -159,18 +175,18 @@ private fun AccountActionsCard(
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = "Restore Data")
+                Text(text = "Restore Data", color = TextMain)
             }
             Button(
                 onClick = { onIntent(AccountIntent.SignOut) },
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.textButtonColors(
-                    contentColor =  AppColor.Dark.ReportButtonBackground,
+                    contentColor =  AppColor.Light.ReportButtonBackground,
                     containerColor = Color.White,
                 )
             ) {
-                Text(text = "Sign Out")
+                Text(text = "Sign Out", color = Color(0xFFFF383C))
             }
         }
     }
@@ -193,13 +209,13 @@ private fun FeatureMenu(
                 title = "Wallets",
                 onClick = onWallet
             )
-            Divider(color = Color.Gray.copy(alpha = 0.3f))
+            HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_placeholder,
                 title = "Category",
                 onClick = onCategories
             )
-            Divider(color = Color.Gray.copy(alpha = 0.3f))
+            HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_credit,
                 title = "Debts",
@@ -225,20 +241,19 @@ private fun FeatureItem(
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = title,
-            tint = Color.White,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = title,
-            color = Color.White,
+            color = TextMain,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_down_24dp),
             contentDescription = "Navigate",
-            tint = Color.White,
+            tint = TextSecondary,
             modifier = Modifier.rotate(-90f)
         )
     }
@@ -250,7 +265,8 @@ private fun VersionInfo(version: String) {
         text = "Version $version",
         style = MaterialTheme.typography.bodySmall,
         color = Color.Gray,
-        modifier = Modifier.padding(bottom = 8.dp)
+        modifier = Modifier
+            .padding(bottom = 8.dp)
             .fillMaxWidth(),
         textAlign = androidx.compose.ui.text.style.TextAlign.Center
     )

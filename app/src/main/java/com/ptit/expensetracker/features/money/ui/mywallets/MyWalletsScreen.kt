@@ -2,7 +2,6 @@ package com.ptit.expensetracker.features.money.ui.mywallets
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -147,7 +146,7 @@ fun MyWalletsScreen(
         ModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
             sheetState = bottomSheetState,
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         ) {
             AddWalletBottomSheetContent(onWalletTypeClick = onWalletTypeSelected)
         }
@@ -157,7 +156,7 @@ fun MyWalletsScreen(
         ModalBottomSheet(
             onDismissRequest = { showOptionsSheet = false },
             sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         ) {
             OptionsBottomSheetContent(
                 onSetDefault = {
@@ -238,7 +237,7 @@ fun MyWalletsScreenContent(
 //                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColor.Dark.PrimaryColor.containerColor
+                    containerColor = AppColor.Light.PrimaryColor.containerColor
                 )
             )
         },
@@ -251,8 +250,8 @@ fun MyWalletsScreenContent(
                     .padding(16.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = AppColor.Dark.PrimaryColor.TextButtonColor,
-                    contentColor = AppColor.Dark.PrimaryColor.contentColor
+                    containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                    contentColor = AppColor.Light.PrimaryColor.contentColor
                 )
             ) {
                 Icon(Icons.Filled.Add, contentDescription = null)
@@ -278,7 +277,7 @@ fun MyWalletsScreenContent(
                     .fillMaxSize(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = AppColor.Dark.PrimaryColor.cardColor
+                    containerColor = AppColor.Light.PrimaryColor.cardColor
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
@@ -304,14 +303,14 @@ fun MyWalletsScreenContent(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary
+                                containerColor = AppColor.Light.PrimaryColor.containerColorSecondary
                             ),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
                             Text(
                                 text = "You will soon be able to view transactions for each wallet here.",
                                 fontSize = 14.sp,
-                                color = AppColor.Dark.PrimaryColor.contentColor,
+                                color = AppColor.Light.PrimaryColor.contentColor,
                                 modifier = Modifier.padding(12.dp)
                             )
                         }
@@ -327,7 +326,7 @@ fun MyWalletsScreenContent(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary
+                                containerColor = AppColor.Light.PrimaryColor.containerColorSecondary
                             ),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
@@ -356,7 +355,7 @@ fun TotalBalanceCard(icon: Painter, totalBalance: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary),
+        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.containerColorSecondary),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -750,7 +749,7 @@ private fun OptionsBottomSheetContent(
                 .fillMaxWidth()
                 .clickable(onClick = onSetDefault),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+            colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
         ) {
             Box(
                 modifier = Modifier
@@ -772,7 +771,7 @@ private fun OptionsBottomSheetContent(
                 .fillMaxWidth()
                 .clickable(onClick = onEdit),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+            colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
         ) {
             Box(
                 modifier = Modifier
@@ -794,7 +793,7 @@ private fun OptionsBottomSheetContent(
                 .fillMaxWidth()
                 .clickable(onClick = onDelete),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+            colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
         ) {
             Box(
                 modifier = Modifier
@@ -816,7 +815,7 @@ private fun OptionsBottomSheetContent(
                 .fillMaxWidth()
                 .clickable(onClick = onTransfer),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+            colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
         ) {
             Box(
                 modifier = Modifier

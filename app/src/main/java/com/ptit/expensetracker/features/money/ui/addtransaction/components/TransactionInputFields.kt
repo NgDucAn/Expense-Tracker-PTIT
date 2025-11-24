@@ -72,14 +72,14 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ColorFilter
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.PrimaryColor.contentColor
+import com.ptit.expensetracker.ui.theme.AppColor.Light.PrimaryColor.contentColor
 import com.ptit.expensetracker.ui.theme.TextAccent
 import com.ptit.expensetracker.utils.DateTimeUtils
 import java.util.Calendar
 import coil.compose.AsyncImage
 
 // Define colors
-val InputTextColor = Color.White
+val InputTextColor = Color(0xFF1E2A36)
 
 /**
  * Main composable for transaction input fields
@@ -128,7 +128,7 @@ fun TransactionInputFields(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            color = AppColor.Dark.PrimaryColor.containerColorSecondary
+            color = Color.White
         ) {
             Column(
                 modifier = Modifier
@@ -211,14 +211,14 @@ fun TransactionInputFields(
             ) {
                 Button(
                     onClick = onToggleMoreDetails,
-                    colors = ButtonDefaults.buttonColors(containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary),
-                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor),
+                    shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterHorizontally)
                         .height(50.dp)
                 ) {
-                    Text("Add more details", color = AmountColor, fontSize = 16.sp)
+                    Text("Add more details", color = Color.White, fontSize = 16.sp)
                 }
             }
         }
@@ -235,7 +235,7 @@ fun TransactionInputFields(
                 Box(
                     modifier = Modifier.background(
                         shape = RoundedCornerShape(12.dp),
-                        color = AppColor.Dark.PrimaryColor.containerColorSecondary
+                        color = Color.White
                     )
                 ) {
                     if (withContacts.isEmpty()) {
@@ -297,7 +297,7 @@ fun TransactionInputFields(
                 Box(
                     modifier = Modifier.background(
                         shape = RoundedCornerShape(12.dp),
-                        color = AppColor.Dark.PrimaryColor.containerColorSecondary
+                        color = Color.White
                     )
                 ) {
                     AttachmentRow(
@@ -314,7 +314,7 @@ fun TransactionInputFields(
                 Box(
                     modifier = Modifier.background(
                         shape = RoundedCornerShape(12.dp),
-                        color = AppColor.Dark.PrimaryColor.containerColorSecondary
+                        color = Color.White
                     )
                 ) {
                     ExcludeFromReportRow(
@@ -378,7 +378,7 @@ private fun InputRow(
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
             contentDescription = "More",
-            tint = Color.Gray,
+            tint = Color(0xFF505D6D),
             modifier = Modifier.size(20.dp)
         )
     }
@@ -429,7 +429,7 @@ private fun DateRow(
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
             contentDescription = "More",
-            tint = Color.Gray,
+            tint = Color(0xFF505D6D),
             modifier = Modifier.size(20.dp)
         )
     }
@@ -535,14 +535,14 @@ private fun CategoryRow(
                     )
                 )
             } ?: "Select Category",
-            color = if (category != null) Color.White else Color.Gray,
+            color = if (category != null) Color(0xFF1E2A36) else Color(0xFF505D6D),
             fontSize = 20.sp,
             modifier = Modifier.weight(1f)
         )
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
             contentDescription = "More",
-            tint = Color.Gray,
+            tint = Color(0xFF505D6D),
             modifier = Modifier.size(20.dp)
         )
     }
@@ -568,7 +568,7 @@ private fun EditableNoteRow(
             painter = painterResource(R.drawable.ic_description),
             contentDescription = "Note",
             modifier = Modifier.size(24.dp),
-            tint = Color.White
+            tint = InputTextColor
         )
         TextField(
             value = description,
@@ -606,7 +606,7 @@ private fun AttachmentRow(
         // Show selected image with options
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             // Display the selected image
             AsyncImage(
@@ -674,17 +674,16 @@ private fun AttachmentRow(
             IconButton(
                 onClick = onTakePhotoClick,
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_photo),
+                Image(
+                    painter = painterResource(id = R.drawable.ic_add_photo),
                     contentDescription = "Add photo",
-                    tint = TextAccent,
                     modifier = Modifier.size(24.dp)
                 )
             }
 
             Text(
                 text = "Add photo",
-                color = TextAccent
+                color = InputTextColor
             )
         }
     }
@@ -816,16 +815,15 @@ private fun ContactsInputRow(
         ) {
             iconPainter?.let {
                 Image(
-                    painter = iconPainter,
+                    painter = painterResource(id = R.drawable.ic_with_friend),
                     contentDescription = "With",
                     modifier = Modifier.size(24.dp),
                 )
             } ?: run {
-                Icon(
-                    imageVector = icon,
+                Image(
+                    painter = painterResource(id = R.drawable.ic_with_friend),
                     contentDescription = "With",
                     modifier = Modifier.size(24.dp),
-                    tint = InputTextColor
                 )
             }
 
@@ -842,7 +840,7 @@ private fun ContactsInputRow(
                 TextButton(
                     onClick = onClick,
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = TextAccent
+                        contentColor = Color(0xFF505D6D)
                     )
                 ) {
                     Text(
@@ -854,7 +852,7 @@ private fun ContactsInputRow(
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowRight,
                     contentDescription = "More",
-                    tint = Color.Gray,
+                    tint = Color(0xFF505D6D),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -887,7 +885,7 @@ fun ContactChip(
 ) {
     Surface(
         modifier = Modifier,
-        color = AppColor.Dark.PrimaryColor.containerColor.copy(alpha = 0.5f),
+        color = AppColor.Light.PrimaryColor.containerColor.copy(alpha = 0.5f),
         shape = RoundedCornerShape(16.dp)
     ) {
         Row(
@@ -916,7 +914,7 @@ fun ContactChip(
             // Contact name
             Text(
                 text = contact.name,
-                color = Color.White,
+                color = InputTextColor,
                 fontSize = 14.sp
             )
 
@@ -930,7 +928,7 @@ fun ContactChip(
                 Icon(
                     imageVector = androidx.compose.material.icons.Icons.Default.Close,
                     contentDescription = "Remove",
-                    tint = Color.White,
+                    tint = Color.Black,
                     modifier = Modifier.size(14.dp)
                 )
             }

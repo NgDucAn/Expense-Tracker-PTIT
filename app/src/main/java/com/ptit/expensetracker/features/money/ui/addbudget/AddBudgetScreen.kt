@@ -53,6 +53,7 @@ import com.ptit.expensetracker.features.money.ui.addbudget.components.WalletPick
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.NumpadButton
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.TransactionNumpad
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 import java.util.Calendar
 import java.util.Date
 
@@ -189,14 +190,14 @@ fun AddBudgetScreenContent(
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    val backgroundColor = Color.Black
+    val backgroundColor =  AppColor.Light.PrimaryColor.containerColor
     val scrollState = rememberScrollState()
     val bottomSheetState = rememberModalBottomSheetState()
     
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (state.isEditMode) "Edit Budget" else "Add Budget", color = Color.White) },
+                title = { Text(if (state.isEditMode) "Edit Budget" else "Add Budget", color = TextMain) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = backgroundColor
                 ),
@@ -205,7 +206,7 @@ fun AddBudgetScreenContent(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Back",
-                            tint = Color.White
+                            tint = TextMain
                         )
                     }
                 }
@@ -215,7 +216,7 @@ fun AddBudgetScreenContent(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues) ,
             color = backgroundColor
         ) {
             Column(
@@ -229,7 +230,7 @@ fun AddBudgetScreenContent(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = AppColor.Dark.PrimaryColor.cardColor
+                        containerColor = AppColor.Light.PrimaryColor.cardColor
                     ),
                     shape = RoundedCornerShape(16.dp)
                 ) {
@@ -258,7 +259,7 @@ fun AddBudgetScreenContent(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = AppColor.Dark.PrimaryColor.cardColor
+                        containerColor = AppColor.Light.PrimaryColor.cardColor
                     ),
                     shape = RoundedCornerShape(16.dp)
                 ) {

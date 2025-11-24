@@ -119,11 +119,11 @@ fun EnterAmountScreenContent(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColor.Dark.NumpadColors.ButtonBackgroundColor
+                    containerColor = AppColor.Light.NumpadColors.ButtonBackgroundColor
                 )
             )
         },
-        containerColor = AppColor.Dark.NumpadColors.ButtonBackgroundColor
+        containerColor = AppColor.Light.NumpadColors.ButtonBackgroundColor
     ) { paddingValues ->
         Column(
             modifier = Modifier

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -22,9 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.features.money.domain.model.Category
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.utils.getDrawableResId
 import com.ptit.expensetracker.utils.getStringResId
 
@@ -45,7 +48,7 @@ fun CategoryItem(
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
-                .background(Color.Gray),
+                .background(Color(0xFFE4E7EC)),
             contentAlignment = Alignment.Center
         ) {
             if (category != null) {
@@ -63,14 +66,14 @@ fun CategoryItem(
             text = category?.title?.let {
                  stringResource(id = getStringResId(LocalContext.current, it))
             } ?: "Select category",
-            color = Color.White,
+            color = TextSecondary,
             fontSize = 16.sp
         )
         
         Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Select",
-            tint = Color.Gray
+            tint = TextSecondary
         )
     }
 } 

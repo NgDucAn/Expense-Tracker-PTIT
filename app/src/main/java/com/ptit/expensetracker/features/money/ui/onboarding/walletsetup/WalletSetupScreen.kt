@@ -18,17 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
-import kotlinx.coroutines.flow.collect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
@@ -123,7 +120,7 @@ fun WalletSetupScreenContent(
     // Bottom-sheet state for numpad
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Scaffold(
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
         bottomBar = {
             // Confirm button
             Button(
@@ -135,12 +132,12 @@ fun WalletSetupScreenContent(
                     .padding(16.dp)
                     .height(52.dp),
                 shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = AppColor.Dark.PrimaryColor.TextButtonColor)
+                colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
             ) {
                 if (state.isCreating) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text(text = "CREATE WALLET", fontSize = 16.sp, color = Color.White)
+                    Text(text = "CREATE WALLET", fontSize = 16.sp, color = Color.Black)
                 }
             }
         }
@@ -158,7 +155,7 @@ fun WalletSetupScreenContent(
                     text = "First, create a wallet",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = AppColor.Dark.PrimaryColor.contentColor,
+                    color = AppColor.Light.PrimaryColor.contentColor,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -178,7 +175,7 @@ fun WalletSetupScreenContent(
             // Root Card containing icon, name, currency, and balance
             Card(
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -199,7 +196,7 @@ fun WalletSetupScreenContent(
                             modifier = Modifier
                                 .size(80.dp)
                                 .background(
-                                    AppColor.Dark.PrimaryColor.containerColorSecondary,
+                                    AppColor.Light.PrimaryColor.containerColor,
                                     CircleShape
                                 )
                                 .clickable { onChangeIcon() },
@@ -214,7 +211,7 @@ fun WalletSetupScreenContent(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "CHANGE ICON",
-                            color = AppColor.Dark.PrimaryColor.TextButtonColor,
+                            color = AppColor.Light.PrimaryColor.TextButtonColor,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -224,13 +221,13 @@ fun WalletSetupScreenContent(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor)
+                        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.containerColor)
                     ) {
                         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
                                 text = "Wallet name",
                                 style = MaterialTheme.typography.titleSmall,
-                                color = AppColor.Dark.PrimaryColor.contentColor
+                                color = AppColor.Light.PrimaryColor.contentColor
                             )
 
                             Box(
@@ -244,15 +241,15 @@ fun WalletSetupScreenContent(
                                     value = state.walletName,
                                     onValueChange = onUpdateName,
                                     singleLine = true,
-                                    textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = AppColor.Dark.PrimaryColor.contentColor),
-                                    cursorBrush = SolidColor(AppColor.Dark.PrimaryColor.TextButtonColor),
+                                    textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = AppColor.Light.PrimaryColor.contentColor),
+                                    cursorBrush = SolidColor(AppColor.Light.PrimaryColor.TextButtonColor),
                                     decorationBox = { inner ->
                                         if (state.walletName.isEmpty()) {
                                             Text(
                                                 text = "Name",
                                                 style = TextStyle(
                                                     fontSize = 20.sp,
-                                                    color = AppColor.Dark.PrimaryColor.disabledContentColor
+                                                    color = AppColor.Light.PrimaryColor.disabledContentColor
                                                 )
                                             )
                                         }
@@ -269,13 +266,13 @@ fun WalletSetupScreenContent(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor)
+                        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.containerColor)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
                                 text = "Currency",
                                 style = MaterialTheme.typography.titleSmall,
-                                color = AppColor.Dark.PrimaryColor.contentColor
+                                color = AppColor.Light.PrimaryColor.contentColor
                             )
                             Row(
                                 modifier = Modifier
@@ -288,12 +285,12 @@ fun WalletSetupScreenContent(
                                 Text(
                                     text = state.selectedCurrency?.currencyName ?: "Choose currency",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = AppColor.Dark.PrimaryColor.contentColor
+                                    color = AppColor.Light.PrimaryColor.contentColor
                                 )
                                 Icon(
                                     imageVector = Icons.Default.ArrowDropDown,
                                     contentDescription = null,
-                                    tint = AppColor.Dark.PrimaryColor.contentColor,
+                                    tint = AppColor.Light.PrimaryColor.contentColor,
                                     modifier = Modifier.rotate(-90f)
                                 )
                             }
@@ -305,7 +302,7 @@ fun WalletSetupScreenContent(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                        colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor)
+                        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.containerColor)
                     ) {
                         Column(
                             modifier = Modifier.padding(12.dp),
@@ -314,7 +311,7 @@ fun WalletSetupScreenContent(
                             Text(
                                 text = "Initial Balance",
                                 style = MaterialTheme.typography.titleSmall,
-                                color = AppColor.Dark.PrimaryColor.contentColor
+                                color = AppColor.Light.PrimaryColor.contentColor
                             )
                             Box(
                                 modifier = Modifier
@@ -327,7 +324,7 @@ fun WalletSetupScreenContent(
                                 Text(
                                     text = state.formattedAmount,
                                     style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
-                                    color = AppColor.Dark.PrimaryColor.TextButtonColor
+                                    color = AppColor.Light.PrimaryColor.TextButtonColor
                                 )
                             }
                         }
@@ -343,7 +340,7 @@ fun WalletSetupScreenContent(
         ModalBottomSheet(
             onDismissRequest = onChangeBalance,
             sheetState = bottomSheetState,
-            containerColor = AppColor.Dark.PrimaryColor.containerColorSecondary
+            containerColor = AppColor.Light.PrimaryColor.containerColorSecondary
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -352,7 +349,7 @@ fun WalletSetupScreenContent(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = AppColor.Dark.PrimaryColor.cardColor)
+                    colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.cardColor)
                 ) {
                     Column(
                         modifier = Modifier.padding(12.dp),
@@ -361,7 +358,7 @@ fun WalletSetupScreenContent(
                         Text(
                             text = "Initial Balance",
                             style = MaterialTheme.typography.titleSmall,
-                            color = AppColor.Dark.PrimaryColor.contentColor
+                            color = AppColor.Light.PrimaryColor.contentColor
                         )
                         Box(
                             modifier = Modifier
@@ -374,7 +371,7 @@ fun WalletSetupScreenContent(
                             Text(
                                 text = state.formattedAmount,
                                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
-                                color = AppColor.Dark.PrimaryColor.TextButtonColor
+                                color = AppColor.Light.PrimaryColor.TextButtonColor
                             )
                         }
                     }
@@ -384,7 +381,7 @@ fun WalletSetupScreenContent(
                     Modifier
                         .fillMaxWidth()
                         .background(
-                            AppColor.Dark.NumpadColors.ButtonBackgroundColor,
+                            AppColor.Light.NumpadColors.ButtonBackgroundColor,
                             shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                         )
                         .padding(8.dp)

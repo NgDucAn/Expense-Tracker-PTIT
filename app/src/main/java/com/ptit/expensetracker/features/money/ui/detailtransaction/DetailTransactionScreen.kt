@@ -50,7 +50,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.PrimaryColor.cardColor
+import com.ptit.expensetracker.ui.theme.AppColor.Light.PrimaryColor.cardColor
 import com.ptit.expensetracker.utils.getDrawableResId
 
 @Composable
@@ -149,7 +149,7 @@ fun DetailTransactionScreen(
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor
+        containerColor = AppColor.Light.PrimaryColor.containerColor
     ) { paddingValues ->
         DetailTransactionContent(
             state = state,

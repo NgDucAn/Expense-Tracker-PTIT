@@ -22,10 +22,10 @@ fun SaveButton(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp),
-        shape = RoundedCornerShape(12.dp),
+            .height(46.dp),
+        shape = RoundedCornerShape(50.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = AppColor.Dark.PrimaryColor.TextButtonColor,
+            containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
             contentColor = Color.White
         )
     ) {

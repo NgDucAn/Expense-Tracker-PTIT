@@ -1,0 +1,161 @@
+package com.ptit.expensetracker.features.money.ui.onboarding.onboard.components
+
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.R
+import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
+import com.ptit.expensetracker.ui.theme.TextMain
+
+@Composable
+fun OnboardingItem(
+    modifier: Modifier = Modifier,
+    title: String,
+    description: String,
+    @DrawableRes topIllustrationRes: Int? = null,
+    continueButtonText: String = "Continue",
+    skipButtonText: String = "Skip",
+    onContinueClick: () -> Unit,
+    onSkipClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            topIllustrationRes?.let { resId ->
+                Image(
+                    painter = painterResource(id = resId),
+                    contentDescription = "Onboarding illustration",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+            Text(
+                text = title,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                color = TextMain,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = description,
+                fontWeight = FontWeight.W400,
+                color = Color(0xFF2B3B48),
+                textAlign = TextAlign.Center,
+                fontSize = 14.sp
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Button(
+                onClick = onContinueClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(26.dp)
+            ) {
+                Text(text = continueButtonText, fontSize = 16.sp)
+            }
+
+            TextButton(onClick = onSkipClick) {
+                Text(text = skipButtonText, color = Color(0xFF6B7280))
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+private fun RowContent(step: OnboardingStep) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(48.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = step.iconRes),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Text(
+            text = step.description,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+            color = Color(0xFF111827)
+        )
+    }
+}
+
+data class OnboardingStep(
+    @DrawableRes val iconRes: Int,
+    val description: String
+)
+
+@Preview(showBackground = true)
+@Composable
+private fun OnboardingItemPreview() {
+    ExpenseTrackerTheme {
+        OnboardingItem(
+            title = "Welcome to Expense Tracker",
+            description = "Take control of your finances with smart budgeting, expense tracking, and personalized insights.",
+            topIllustrationRes = android.R.drawable.ic_dialog_info,
+            onContinueClick = {},
+            onSkipClick = {}
+        )
+    }
+}

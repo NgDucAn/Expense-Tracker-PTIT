@@ -1,6 +1,5 @@
 package com.ptit.expensetracker.features.money.ui.debtmanagement.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,14 +11,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ptit.expensetracker.features.money.domain.model.Currency
 import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.utils.formatAmount
@@ -36,7 +32,7 @@ fun WalletSelector(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         modifier = modifier,
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
         contentColor = MaterialTheme.colorScheme.onSurface,
         dragHandle = {
             Surface(
@@ -108,7 +104,7 @@ private fun WalletItem(
             containerColor = if (isSelected) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
-                AppColor.Dark.PrimaryColor.cardColor
+                AppColor.Light.PrimaryColor.cardColor
             }
         ),
         border = if (isSelected) {

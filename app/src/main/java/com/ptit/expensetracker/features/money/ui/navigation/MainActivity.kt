@@ -10,8 +10,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ptit.expensetracker.core.extention.hideNavigationBar
+import com.ptit.expensetracker.core.extention.setStatusBarStyle
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -27,10 +30,11 @@ class MainActivity : ComponentActivity() {
     private val shouldShowBalanceSheet = mutableStateOf(false)
     private val shouldShowWeeklyExpenseSheet = mutableStateOf(false)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideNavigationBar()
         enableEdgeToEdge()
+        setStatusBarStyle(isLightStatusBar = true)
 
         setContent {
             ExpenseTrackerTheme {

@@ -1,23 +1,35 @@
 package com.ptit.expensetracker.features.money.ui.onboarding.splash
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
-import kotlinx.coroutines.flow.collect
-import androidx.compose.ui.tooling.preview.Preview
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
-import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.delay
+import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun SplashScreen(
@@ -49,28 +61,51 @@ fun SplashScreen(
         }
     }
 
-    // Simple splash UI
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Expense Tracker",
-            style = MaterialTheme.typography.headlineMedium
-        )
-    }
+    SplashScreenContent()
 }
 
 @Composable
 fun SplashScreenContent() {
+    val title = stringResource(id = R.string.app_name)
+
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Expense Tracker",
-            style = MaterialTheme.typography.headlineMedium
+        Image(
+            painter = painterResource(id = R.drawable.img_bg_splash),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 48.dp)
+                .padding(bottom = 72.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(
+                        color = Color(0xFFE5E5E5).copy(alpha = 0.9f),
+                        shape = RoundedCornerShape(20.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                // Placeholder for logo while assets are not provided
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                text = title,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                color = Color.White
+            )
+        }
     }
 }
 

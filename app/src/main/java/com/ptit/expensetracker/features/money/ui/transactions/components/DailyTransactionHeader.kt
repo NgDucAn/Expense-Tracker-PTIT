@@ -35,7 +35,7 @@ fun DailyTransactionHeader(date: Date, dailyTotal: Double) {
             Text(
                 text = dayFormatter.format(date),
                 style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Normal),
-                color = TextPrimary,
+                color = TextMain,
                 fontSize = 30.sp
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -43,7 +43,7 @@ fun DailyTransactionHeader(date: Date, dailyTotal: Double) {
                 Text(
                     text = dayOfWeekFormatter.format(date),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextPrimary,
+                    color = TextMain,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
@@ -56,7 +56,7 @@ fun DailyTransactionHeader(date: Date, dailyTotal: Double) {
         Text(
             text = formatCurrency(dailyTotal),
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
-            color = TextPrimary
+            color = TextMain
         )
     }
 }

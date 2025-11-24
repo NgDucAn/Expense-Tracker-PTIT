@@ -1,15 +1,10 @@
 package com.ptit.expensetracker.features.money.ui.budgets.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 /**
  * Empty state content for the Budget screen
@@ -45,22 +42,22 @@ fun EmptyBudgetContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Illustration
-        Image(
-            painter = painterResource(id = R.drawable.ic_help_wallet_info),
-            contentDescription = "Empty Budget Illustration",
-            modifier = Modifier
-                .size(120.dp)
-                .padding(bottom = 24.dp),
-            contentScale = ContentScale.Fit
-        )
+//        // Illustration
+//        Image(
+//            painter = painterResource(id = R.drawable.ic_help_wallet_info),
+//            contentDescription = "Empty Budget Illustration",
+//            modifier = Modifier
+//                .size(120.dp)
+//                .padding(bottom = 24.dp),
+//            contentScale = ContentScale.Fit
+//        )
         
         // Title
         Text(
             text = "No Running Budgets",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = TextMain,
             textAlign = TextAlign.Center
         )
         
@@ -70,9 +67,9 @@ fun EmptyBudgetContent(
         Text(
             text = "Start planning and tracking your expenses by creating a budget.",
             fontSize = 14.sp,
-            color = Color.White.copy(alpha = 0.7f),
+            color = TextSecondary,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 32.dp)
+            modifier = Modifier.padding(horizontal = 30.dp)
         )
         
         Spacer(modifier = Modifier.height(32.dp))
@@ -84,14 +81,14 @@ fun EmptyBudgetContent(
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = AppColor.Dark.PrimaryColor.TextButtonColor,
-                contentColor = AppColor.Dark.PrimaryColor.contentColor
+                containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                contentColor = Color.White
             )
         ) {
             Text(
                 text = "Create Budget",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.SemiBold
             )
         }
         

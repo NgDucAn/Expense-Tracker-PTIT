@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -96,7 +95,7 @@ fun DebtManagementScreenContent(
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = AppColor.Dark.PrimaryColor.containerColor
+        color = AppColor.Light.PrimaryColor.containerColor
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -155,7 +154,7 @@ fun DebtManagementScreenContent(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColor.Dark.PrimaryColor.containerColor
+                    containerColor = AppColor.Light.PrimaryColor.containerColor
                 )
             )
 
@@ -245,7 +244,7 @@ fun WalletInfoCard(
             .clip(RoundedCornerShape(12.dp)),
         onClick = onWalletClick,
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         )
     ) {
         Row(
@@ -297,7 +296,7 @@ fun DebtTabRow(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp)),
-        containerColor = AppColor.Dark.PrimaryColor.cardColor,
+        containerColor = AppColor.Light.PrimaryColor.cardColor,
         contentColor = MaterialTheme.colorScheme.primary
     ) {
         DebtTab.values().forEach { tab ->

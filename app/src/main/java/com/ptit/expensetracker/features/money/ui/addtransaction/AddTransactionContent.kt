@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +32,7 @@ import kotlin.String
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun AddTransactionContent(
@@ -47,7 +47,7 @@ fun AddTransactionContent(
         topBar = {
             AddTransactionTopAppBar(onCloseClick = onCloseClick, title = title)
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -123,14 +123,14 @@ fun AddTransactionContent(
                     .padding(horizontal = 24.dp),
                 shape = RoundedCornerShape(size = 12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = AppColor.Dark.PrimaryColor.contentColor,
-                    containerColor = AppColor.Dark.PrimaryColor.TextButtonColor,
-                    disabledContainerColor = AppColor.Dark.PrimaryColor.disabledContainerColor,
-                    disabledContentColor = AppColor.Dark.PrimaryColor.disabledContentColor
+                    contentColor = AppColor.Light.PrimaryColor.contentColor,
+                    containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                    disabledContainerColor = AppColor.Light.PrimaryColor.disabledContainerColor,
+                    disabledContentColor = AppColor.Light.PrimaryColor.disabledContentColor
                 ),
                 enabled = !state.amount.equals(0) && state.category != null && state.wallet != null
             ) {
-                Text(text = saveButtonText, fontSize = 16.sp)
+                Text(text = saveButtonText, fontSize = 16.sp, color = Color.White)
             }
 
             // Conditionally show numpad

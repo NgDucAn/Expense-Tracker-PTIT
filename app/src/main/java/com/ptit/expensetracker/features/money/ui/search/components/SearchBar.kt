@@ -72,26 +72,25 @@ fun SearchBar(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(
-                containerColor = AppColor.Dark.PrimaryColor.cardColor
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                containerColor = Color.White
+            )
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // Search Icon
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Search",
-                    tint = if (isFocused) TextAccent else TextSecondary,
+                    tint = if (isFocused) TextMain else TextSecondary,
                     modifier = Modifier.size(20.dp)
                 )
                 
                 Spacer(modifier = Modifier.width(12.dp))
-                
+
                 // Search TextField
                 OutlinedTextField(
                     value = searchText,
@@ -112,8 +111,8 @@ fun SearchBar(
                         unfocusedContainerColor = Color.Transparent,
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
-                        focusedTextColor = TextPrimary,
-                        unfocusedTextColor = TextPrimary,
+                        focusedTextColor = TextMain,
+                        unfocusedTextColor = TextMain,
                         cursorColor = TextAccent
                     ),
                     keyboardOptions = KeyboardOptions(
@@ -171,7 +170,7 @@ fun SearchBar(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sort),
                             contentDescription = "Filters",
-                            tint = if (hasActiveFilters) TextAccent else TextSecondary,
+                            tint = if (hasActiveFilters) TextMain else TextSecondary,
                             modifier = Modifier.size(20.dp)
                         )
                         
@@ -181,7 +180,7 @@ fun SearchBar(
                                     .size(8.dp)
                                     .offset(x = 12.dp, y = (-1).dp)
                                     .background(
-                                        AppColor.Dark.ExpenseAmountColor,
+                                        AppColor.Light.ExpenseAmountColor,
                                         RoundedCornerShape(4.dp)
                                     )
                             )
@@ -204,7 +203,7 @@ fun SearchBar(
                     .zIndex(1f),
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = AppColor.Dark.PrimaryColor.cardColor
+                    containerColor = AppColor.Light.PrimaryColor.cardColor
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {

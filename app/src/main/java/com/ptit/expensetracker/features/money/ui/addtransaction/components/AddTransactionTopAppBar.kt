@@ -1,15 +1,10 @@
 package com.ptit.expensetracker.features.money.ui.addtransaction.components
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -29,16 +24,16 @@ fun AddTransactionTopAppBar(
         title = { Text(title, fontSize = 17.sp, fontWeight = FontWeight.Medium) },
         navigationIcon = {
             TextButton (onClick = onCloseClick, colors = ButtonDefaults.textButtonColors(
-                contentColor = AppColor.Dark.PrimaryColor.contentColor,
+                contentColor = AppColor.Light.PrimaryColor.contentColor,
                 containerColor = Color.Transparent
             )) {
-                Text(text = "Cancel", fontSize = 16.sp, fontWeight = FontWeight.Normal)
+                Text(text = "Cancel", fontSize = 16.sp, fontWeight = FontWeight.Normal, color = Color(0xFF2B3B48))
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColor.Dark.PrimaryColor.containerColor,
-            titleContentColor = AppColor.Dark.PrimaryColor.contentColor,
-            navigationIconContentColor = AppColor.Dark.PrimaryColor.contentColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            titleContentColor = AppColor.Light.PrimaryColor.contentColor,
+            navigationIconContentColor = AppColor.Light.PrimaryColor.contentColor
         )
     )
 }

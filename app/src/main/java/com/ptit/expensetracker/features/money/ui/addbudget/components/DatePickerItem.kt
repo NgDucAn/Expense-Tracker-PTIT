@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -18,6 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -39,7 +42,7 @@ fun DatePickerItem(
         Icon(
             imageVector = Icons.Default.DateRange,
             contentDescription = "Calendar",
-            tint = Color.White,
+            tint = Color(0xFFFCA419),
             modifier = Modifier.size(24.dp)
         )
         
@@ -50,14 +53,14 @@ fun DatePickerItem(
                 .weight(1f)
                 .padding(start = 16.dp),
             text = "$label: $dateText",
-            color = Color.White,
+            color = TextMain,
             fontSize = 16.sp
         )
         
         Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Select",
-            tint = Color.Gray
+            tint = TextSecondary
         )
     }
 } 

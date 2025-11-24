@@ -16,7 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,9 +30,9 @@ import com.ptit.expensetracker.features.money.ui.addtransaction.components.Numpa
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.TransactionNumpad
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.utils.Constants
 import com.ptit.expensetracker.utils.getDrawableResId
-import com.ptit.expensetracker.utils.getStringResId
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -148,16 +147,16 @@ fun AddWalletScreenContent(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text(if (state.isEditMode) "Edit wallet" else "Add wallet") },
+                title = { Text(if (state.isEditMode) "Edit wallet" else "Add wallet", color = TextMain) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close")
+                        Icon(Icons.Filled.Close, contentDescription = "Close", tint = TextMain)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColor.Dark.PrimaryColor.containerColor,
-                    titleContentColor = AppColor.Dark.PrimaryColor.contentColor,
-                    navigationIconContentColor = AppColor.Dark.PrimaryColor.contentColor
+                    containerColor = AppColor.Light.PrimaryColor.containerColor,
+                    titleContentColor = AppColor.Light.PrimaryColor.contentColor,
+                    navigationIconContentColor = AppColor.Light.PrimaryColor.contentColor
                 )
             )
         },
@@ -167,21 +166,22 @@ fun AddWalletScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .navigationBarsPadding()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .padding(horizontal = 32.dp),
+                shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = AppColor.Dark.PrimaryColor.TextButtonColor,
-                    contentColor = AppColor.Dark.PrimaryColor.contentColor
+                    containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                    contentColor = AppColor.Light.PrimaryColor.contentColor
                 )
             ) {
                 Text(
                     if (state.isEditMode) "UPDATE" else "SAVE", 
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White,
                 )
             }
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor,
     ) { paddingValues ->
         Card(
             modifier = Modifier
@@ -190,7 +190,7 @@ fun AddWalletScreenContent(
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = AppColor.Dark.PrimaryColor.cardColor
+                containerColor = AppColor.Light.PrimaryColor.containerColor
             )
         ) {
             Column(
@@ -204,7 +204,7 @@ fun AddWalletScreenContent(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = AppColor.Dark.PrimaryColor.cardColor
+                        containerColor = Color.White
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
@@ -234,16 +234,16 @@ fun AddWalletScreenContent(
                                     singleLine = true,
                                     textStyle = TextStyle(
                                         fontSize = 20.sp,
-                                        color = AppColor.Dark.PrimaryColor.contentColor
+                                        color = AppColor.Light.PrimaryColor.contentColor
                                     ),
-                                    cursorBrush = SolidColor(AppColor.Dark.PrimaryColor.TextButtonColor),
+                                    cursorBrush = SolidColor(AppColor.Light.PrimaryColor.TextButtonColor),
                                     decorationBox = { innerTextField ->
                                         if (state.walletName.isEmpty()) {
                                             Text(
                                                 text = "Name",
                                                 style = TextStyle(
                                                     fontSize = 20.sp,
-                                                    color = AppColor.Dark.PrimaryColor.disabledContentColor
+                                                    color = AppColor.Light.PrimaryColor.disabledContentColor
                                                 )
                                             )
                                         }
@@ -265,7 +265,7 @@ fun AddWalletScreenContent(
                                 contentDescription = "Currency Icon",
                                 modifier = Modifier.size(40.dp)
                             )
-                            Text(text = state.currency?.currencyName ?: "Currency", fontSize = 16.sp)
+                            Text(text = state.currency?.currencyName ?: "Currency", fontSize = 16.sp, color = TextMain)
                         }
                     }
                 }
@@ -275,7 +275,7 @@ fun AddWalletScreenContent(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = AppColor.Dark.PrimaryColor.cardColor
+                        containerColor = Color.White
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
@@ -283,7 +283,7 @@ fun AddWalletScreenContent(
                         modifier = Modifier.padding(12.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("Initial Balance", style = MaterialTheme.typography.titleSmall)
+                        Text("Initial Balance", style = MaterialTheme.typography.titleSmall, color = TextMain)
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -295,7 +295,7 @@ fun AddWalletScreenContent(
                             Text(
                                 text = state.formattedAmount,
                                 style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
-                                color = AppColor.Dark.PrimaryColor.TextButtonColor
+                                color = AppColor.Light.PrimaryColor.TextButtonColor
                             )
                         }
                     }
@@ -306,7 +306,7 @@ fun AddWalletScreenContent(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = AppColor.Dark.PrimaryColor.cardColor
+                        containerColor = Color.White
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
@@ -331,8 +331,8 @@ fun AddWalletScreenContent(
                                 checked = state.enableNotification,
                                 onCheckedChange = onNotificationToggle,
                                 colors = SwitchDefaults.colors(
-                                    checkedThumbColor = AppColor.Dark.PrimaryColor.contentColor,
-                                    checkedTrackColor = AppColor.Dark.PrimaryColor.TextButtonColor
+                                    checkedThumbColor = Color.White,
+                                    checkedTrackColor = AppColor.Light.PrimaryColor.TextButtonColor
                                 )
                             )
                         }
@@ -354,8 +354,8 @@ fun AddWalletScreenContent(
                                 checked = state.excludedFromTotal,
                                 onCheckedChange = onExcludedFromTotalToggle,
                                 colors = SwitchDefaults.colors(
-                                    checkedThumbColor = AppColor.Dark.PrimaryColor.contentColor,
-                                    checkedTrackColor = AppColor.Dark.PrimaryColor.TextButtonColor
+                                    checkedThumbColor = Color.White,
+                                    checkedTrackColor = AppColor.Light.PrimaryColor.TextButtonColor
                                 )
                             )
                         }
@@ -375,7 +375,7 @@ fun AddWalletScreenContent(
                     Modifier
                         .fillMaxWidth()
                         .background(
-                            AppColor.Dark.NumpadColors.ButtonBackgroundColor,
+                            AppColor.Light.NumpadColors.ButtonBackgroundColor,
                             shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                         )
                         .padding(8.dp)

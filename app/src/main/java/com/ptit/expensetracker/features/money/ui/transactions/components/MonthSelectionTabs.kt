@@ -5,11 +5,13 @@ import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ptit.expensetracker.features.money.ui.transactions.MonthItem
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
+import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextPrimary
 import com.ptit.expensetracker.ui.theme.TextSecondary
 
@@ -23,14 +25,14 @@ fun MonthSelectionTabs(
     ScrollableTabRow(
         selectedTabIndex = selectedIndex,
         modifier = modifier.fillMaxWidth(),
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor,
         edgePadding = 16.dp, // Padding on the edges
         indicator = { tabPositions ->
             if (selectedIndex in tabPositions.indices) {
                 TabRowDefaults.Indicator(
                     Modifier.tabIndicatorOffset(tabPositions[selectedIndex]),
-                    color = AppColor.Dark.TabIndicatorColor
+                    color = AppColor.Light.TabIndicatorColor
                 )
             }
         }
@@ -42,7 +44,7 @@ fun MonthSelectionTabs(
                 text = {
                     Text(
                         text = monthItem.label,
-                        color = if (selectedIndex == index) TextPrimary else TextSecondary
+                        color = if (selectedIndex == index) TextMain else Color(0xFF505D6D)
                     )
                 }
             )

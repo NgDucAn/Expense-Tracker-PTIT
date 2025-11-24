@@ -44,8 +44,8 @@ import com.patrykandpatrick.vico.compose.common.shape.toVicoShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.InflowAmountColor
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.OutflowAmountColor
+import com.ptit.expensetracker.ui.theme.AppColor.Light.InflowAmountColor
+import com.ptit.expensetracker.ui.theme.AppColor.Light.OutflowAmountColor
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent

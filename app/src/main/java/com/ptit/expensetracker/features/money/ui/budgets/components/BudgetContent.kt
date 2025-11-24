@@ -118,8 +118,8 @@ fun BudgetContent(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
-            containerColor = AppColor.Dark.PrimaryColor.containerColor,
-            contentColor = AppColor.Dark.PrimaryColor.contentColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            contentColor = AppColor.Light.PrimaryColor.contentColor
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
@@ -152,14 +152,14 @@ fun BudgetSummaryCard(
                 fontSize = 18.sp,
                 color = Color.Black
             )
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // Budget Progress
-            val progress = if (totalBudgetAmount > 0) 
+            val progress = if (totalBudgetAmount > 0)
                 (totalSpentAmount / totalBudgetAmount).coerceIn(0.0, 1.0).toFloat()
             else 0f
-            
+
             LinearProgressIndicator(
                 progress = progress,
                 modifier = Modifier
@@ -172,9 +172,9 @@ fun BudgetSummaryCard(
                 },
                 trackColor = Color.LightGray
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Budget Amounts
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -185,16 +185,16 @@ fun BudgetSummaryCard(
                     fontSize = 14.sp,
                     color = Color.Gray
                 )
-                
+
                 Text(
                     text = "Total: $currencySymbol$totalBudgetAmount",
                     fontSize = 14.sp,
                     color = Color.Gray
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Remaining Amount
             val remainingAmount = totalBudgetAmount - totalSpentAmount
             Text(

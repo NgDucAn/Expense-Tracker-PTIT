@@ -22,11 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ptit.expensetracker.features.money.ui.addtransaction.AddTransactionIntent
 import com.ptit.expensetracker.ui.theme.AppColor
 
 // Import only what we need
-private val NumpadDividerColor = AppColor.Dark.NumpadColors.DividerColor
+private val NumpadDividerColor = AppColor.Light.NumpadColors.DividerColor
 val suggest: List<String> = listOf(
 "500000.0",
 "2000000.0",
@@ -50,7 +49,7 @@ fun TransactionNumpad(
             .then(
                 Modifier
                     .fillMaxWidth()
-                    .background(AppColor.Dark.NumpadColors.ButtonBackgroundColor)
+                    .background(AppColor.Light.NumpadColors.ButtonBackgroundColor)
             )
     ) {
         if (suggestedAmounts!= null) {
@@ -199,7 +198,7 @@ private fun RowScope.NumpadButtonComponent(
                     .weight(1f)
                     .height(50.dp)
                     .border(0.5.dp, NumpadDividerColor)
-            )
+            ),
     ) {
         if (button.hasIcon()) {
             button.getIcon()?.let { icon ->

@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 /**
  * Budget overview card component
@@ -46,7 +48,7 @@ fun BudgetOverviewCard(
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -63,8 +65,8 @@ fun BudgetOverviewCard(
                     progress = progress,
                     totalAmount = totalAmount,
                     spentAmount = spentAmount,
-                    backgroundColor = Color(0xFFE0E0E0),
-                    foregroundColor = Color(0xFF4CAF50),
+                    backgroundColor = Color(0xFFE4E7EC),
+                    foregroundColor = Color(0xFFFCA419),
                     showAnimation = true
                 )
             }
@@ -99,11 +101,16 @@ fun BudgetOverviewCard(
             Button(
                 onClick = onCreateBudgetClick,
                 modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .height(40.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                    .fillMaxWidth()
+                    .height(44.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
             ) {
-                Text("Create Budget", color = Color.White)
+                Text(
+                    "Create Budget",
+                    color = Color.White,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
+                )
             }
         }
     }
@@ -127,12 +134,12 @@ private fun StatColumn(
             text = value,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = TextMain
         )
         Text(
             text = label,
             fontSize = 12.sp,
-            color = Color.Gray
+            color = TextSecondary
         )
     }
 } 

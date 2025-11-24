@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -132,8 +133,8 @@ fun SearchTransactionsScreenContent(
     var showFilters by remember { mutableStateOf(false) }
 
     Scaffold(
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor,
         topBar = {
             SearchTopAppBar(
                 onBackClick = onBackClick,
@@ -249,7 +250,7 @@ private fun SearchTopAppBar(
                     text = "Search Transactions",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = TextPrimary
+                    color = TextMain
                 )
                 Text(
                     text = if (isTotalWallet) "All Wallets" else currentWalletName,
@@ -263,13 +264,13 @@ private fun SearchTopAppBar(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = TextPrimary
+                    tint = TextMain
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColor.Dark.PrimaryColor.containerColor,
-            titleContentColor = AppColor.Dark.PrimaryColor.contentColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            titleContentColor = AppColor.Light.PrimaryColor.contentColor
         )
     )
 }
@@ -328,36 +329,36 @@ private fun SearchInitialState(
         contentPadding = PaddingValues(vertical = 24.dp)
     ) {
         // Search Icon and Instructions
-        item {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    modifier = Modifier.size(64.dp),
-                    tint = TextSecondary
-                )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                Text(
-                    text = "Search Transactions",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextPrimary
-                )
-                
-                Text(
-                    text = "Enter keywords or use filters to search",
-                    fontSize = 14.sp,
-                    color = TextSecondary,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-        }
+//        item {
+//            Column(
+//                horizontalAlignment = Alignment.CenterHorizontally,
+//                verticalArrangement = Arrangement.Center,
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.Search,
+//                    contentDescription = "Search",
+//                    modifier = Modifier.size(64.dp),
+//                    tint = TextSecondary
+//                )
+//
+//                Spacer(modifier = Modifier.height(16.dp))
+//
+//                Text(
+//                    text = "Search Transactions",
+//                    fontSize = 20.sp,
+//                    fontWeight = FontWeight.Bold,
+//                    color = TextPrimary
+//                )
+//
+//                Text(
+//                    text = "Enter keywords or use filters to search",
+//                    fontSize = 14.sp,
+//                    color = TextSecondary,
+//                    modifier = Modifier.padding(top = 8.dp)
+//                )
+//            }
+//        }
         
         // Recent Searches
         if (recentSearches.isNotEmpty()) {
@@ -390,7 +391,7 @@ private fun SearchInitialState(
                         .fillMaxWidth(),
                     onClick = { onRecentSearchClick(searchTerm) },
                     colors = CardDefaults.cardColors(
-                        containerColor = AppColor.Dark.SecondaryColor.color2
+                        containerColor = AppColor.Light.SecondaryColor.color2
                     )
                 ) {
                     Row(
@@ -432,7 +433,7 @@ private fun SearchInitialState(
                 text = "Quick Search:",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = TextPrimary,
+                color = TextSecondary,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -447,8 +448,8 @@ private fun SearchInitialState(
                         onClick = { onQuickSearchClick(term) },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.elevatedButtonColors(
-                            containerColor = AppColor.Dark.SecondaryColor.color2,
-                            contentColor = TextPrimary
+                            containerColor = Color(0xFFE4E7EC),
+                            contentColor = Color(0xFF2B3B48)
                         )
                     ) {
                         Text(
@@ -484,22 +485,22 @@ private fun SearchEmptyState(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "No results",
-            modifier = Modifier.size(64.dp),
-            tint = TextSecondary
-        )
-        
+//        Icon(
+//            imageVector = Icons.Default.Search,
+//            contentDescription = "No results",
+//            modifier = Modifier.size(64.dp),
+//            tint = TextSecondary
+//        )
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         Text(
             text = "No transactions found",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = TextMain
         )
-        
+
         if (searchCriteria.isTextOnlySearch) {
             Text(
                 text = "No transactions match \"${searchCriteria.searchText}\"",
@@ -515,15 +516,16 @@ private fun SearchEmptyState(
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
-        
+
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         // Action buttons
         if (searchCriteria.isTextOnlySearch) {
             OutlinedButton(
                 onClick = onClearSearch,
+                modifier= Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = TextAccent
+                    contentColor = Color(0xFF2B3B48)
                 )
             ) {
                 Text("Clear Search")
@@ -536,12 +538,12 @@ private fun SearchEmptyState(
                 OutlinedButton(
                     onClick = onClearSearch,
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = TextAccent
+                        contentColor = Color(0xFF2B3B48)
                     )
                 ) {
                     Text("Clear Search Results")
                 }
-                
+
                 TextButton(onClick = onClearAllFilters) {
                     Text(
                         "Clear All Filters",
@@ -612,7 +614,7 @@ private fun SearchResultsSummary(
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.SecondaryColor.color2
+            containerColor = AppColor.Light.SecondaryColor.color2
         )
     ) {
         Row(

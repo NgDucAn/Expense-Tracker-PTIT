@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -25,7 +23,6 @@ import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextPrimary
 import com.ptit.expensetracker.ui.theme.TextAccent
 import com.ptit.expensetracker.features.money.domain.model.Transaction
-import com.ptit.expensetracker.features.money.ui.transactions.DailyTransactions
 import com.ptit.expensetracker.features.money.ui.budgets.transactions.components.DailyTransactionsCard
 import com.ptit.expensetracker.features.money.ui.budgets.transactions.components.EmptyBudgetTransactionsContent
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -41,7 +38,6 @@ import com.ptit.expensetracker.features.money.domain.model.Category
 import com.ptit.expensetracker.features.money.domain.model.CategoryType
 import com.ptit.expensetracker.features.money.ui.transactions.getPlaceholderTransactions
 import com.ptit.expensetracker.utils.getStringResId
-import java.util.Calendar
 
 @Composable
 fun BudgetTransactionsScreenContent(
@@ -60,12 +56,12 @@ fun BudgetTransactionsScreenContent(
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = AppColor.Dark.PrimaryColor.containerColor
+                    containerColor = AppColor.Light.PrimaryColor.containerColor
                 )
             )
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-        contentColor = AppColor.Dark.PrimaryColor.contentColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor,
         modifier = modifier
     ) { paddingValues ->
         when {
@@ -88,7 +84,7 @@ fun BudgetTransactionsScreenContent(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(AppColor.Dark.PrimaryColor.containerColor)
+                        .background(AppColor.Light.PrimaryColor.containerColor)
                         .padding(paddingValues),
                     contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
@@ -100,7 +96,7 @@ fun BudgetTransactionsScreenContent(
                                 modifier = Modifier
                                     .padding(horizontal = 12.dp, vertical = 4.dp)
                                     .clip(RoundedCornerShape(12.dp))
-                                    .background(AppColor.Dark.PrimaryColor.cardColor)
+                                    .background(AppColor.Light.PrimaryColor.cardColor)
                             )
                         }
                     }

@@ -171,7 +171,7 @@ fun TransferMoneyContent(
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
         modifier = Modifier.padding(top = insetTop)
     ) {
         Column(
@@ -197,7 +197,7 @@ fun TransferMoneyContent(
                     // Group all "From" items in a single Surface
                     Surface(
                         modifier = sectionModifier,
-                        color = AppColor.Dark.PrimaryColor.containerColorSecondary,
+                        color = AppColor.Light.PrimaryColor.containerColorSecondary,
                         shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
                     ) {
                         Column(modifier = Modifier) {
@@ -250,7 +250,7 @@ fun TransferMoneyContent(
                     // Group all "To" items in a single Surface
                     Surface(
                         modifier = sectionModifier,
-                        color = AppColor.Dark.PrimaryColor.containerColorSecondary,
+                        color = AppColor.Light.PrimaryColor.containerColorSecondary,
                         shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
                     ) {
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
@@ -324,7 +324,7 @@ fun TransferMoneyContent(
                     // Group all "Options" items in a single Surface
                     Surface(
                         modifier = sectionModifier,
-                        color = AppColor.Dark.PrimaryColor.containerColorSecondary,
+                        color = AppColor.Light.PrimaryColor.containerColorSecondary,
                         shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
                     ) {
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {

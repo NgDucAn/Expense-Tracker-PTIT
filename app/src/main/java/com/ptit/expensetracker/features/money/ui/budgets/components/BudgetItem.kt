@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
 fun BudgetItem(
@@ -35,7 +37,7 @@ fun BudgetItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.cardColor
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -61,49 +63,50 @@ fun BudgetItem(
                         text = categoryName,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.White
+                        color = TextMain
                     )
                 }
-                
+
                 // Amount
                 Text(
                     text = amount,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = TextMain
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(4.dp))
-            
+
             // Left amount text
             Text(
                 text = "Left $leftAmount",
                 fontSize = 12.sp,
-                color = Color.Gray,
+                color = TextSecondary,
                 modifier = Modifier.align(Alignment.End)
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Progress bar
             LinearProgressIndicator(
-                progress = progress,
+                progress = { progress },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp),
-                color = Color(0xFF4CAF50),
-                trackColor = Color(0xFF333333),
-                strokeCap = StrokeCap.Round
+                color = Color(0xFFFCA419),
+                trackColor = Color(0xFFE4E7EC),
+                strokeCap = StrokeCap.Round,
             )
-            
+
             Spacer(modifier = Modifier.height(4.dp))
-            
+
             // Today text
             Text(
                 text = "Today",
-                fontSize = 10.sp,
-                color = Color.Gray,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = TextSecondary,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }

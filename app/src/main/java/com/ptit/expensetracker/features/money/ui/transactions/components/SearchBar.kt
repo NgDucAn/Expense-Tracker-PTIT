@@ -15,14 +15,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,7 +72,7 @@ fun SearchBar(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(
-                containerColor = AppColor.Dark.PrimaryColor.cardColor
+                containerColor = AppColor.Light.PrimaryColor.cardColor
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
@@ -183,7 +181,7 @@ fun SearchBar(
                                     .size(8.dp)
                                     .offset(x = 12.dp, y = (-1).dp)
                                     .background(
-                                        AppColor.Dark.ExpenseAmountColor,
+                                        AppColor.Light.ExpenseAmountColor,
                                         RoundedCornerShape(4.dp)
                                     )
                             )
@@ -206,7 +204,7 @@ fun SearchBar(
                     .zIndex(1f),
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = AppColor.Dark.PrimaryColor.cardColor
+                    containerColor = AppColor.Light.PrimaryColor.cardColor
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {

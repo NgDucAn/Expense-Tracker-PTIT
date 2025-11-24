@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Wallet
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
 fun WalletPickerItem(
@@ -37,7 +40,6 @@ fun WalletPickerItem(
         Icon(
             painter = painterResource(R.drawable.ic_wallet),
             contentDescription = "Wallet",
-            tint = Color.White,
             modifier = Modifier.size(24.dp)
         )
         
@@ -46,14 +48,14 @@ fun WalletPickerItem(
                 .weight(1f)
                 .padding(start = 16.dp),
             text = wallet?.walletName ?: "Select wallet",
-            color = Color.White,
+            color = TextMain,
             fontSize = 16.sp
         )
         
         Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = "Select",
-            tint = Color.Gray
+            tint = TextSecondary
         )
     }
 } 

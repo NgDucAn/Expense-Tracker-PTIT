@@ -26,12 +26,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletWithCurrencyEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.CurrencyEntity
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
 import com.ptit.expensetracker.features.money.ui.home.components.HomeReportTabs
+import com.ptit.expensetracker.features.money.ui.home.components.MainTab
+import com.ptit.expensetracker.features.money.ui.home.components.SpendingSubTab
+import com.ptit.expensetracker.features.money.ui.home.components.TrendingSubTab
 import com.ptit.expensetracker.utils.getDrawableResId
 
 @Composable
@@ -71,13 +75,13 @@ fun HomeScreenContent(
     state: HomeScreenState,
     onToggleBalanceVisibility: () -> Unit,
     onSeeAllWalletsClick: () -> Unit = {},
-    onSelectMainTab: (com.ptit.expensetracker.features.money.ui.home.components.MainTab) -> Unit,
-    onSelectTrendingTab: (com.ptit.expensetracker.features.money.ui.home.components.TrendingSubTab) -> Unit,
-    onSelectSpendingTab: (com.ptit.expensetracker.features.money.ui.home.components.SpendingSubTab) -> Unit
+    onSelectMainTab: (MainTab) -> Unit,
+    onSelectTrendingTab: (TrendingSubTab) -> Unit,
+    onSelectSpendingTab: (SpendingSubTab) -> Unit
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = AppColor.Dark.PrimaryColor.containerColor
+        color = AppColor.Light.PrimaryColor.containerColor
     ) {
         Column(
             modifier = Modifier
@@ -95,7 +99,7 @@ fun HomeScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(AppColor.Dark.PrimaryColor.cardColor)
+                    .background(Color.White)
                     .padding(16.dp)
             )
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -105,7 +109,7 @@ fun HomeScreenContent(
                         .fillMaxWidth()
                         .height(400.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(AppColor.Dark.PrimaryColor.cardColor)
+                        .background(Color.White)
                 ) {
                     HomeReportTabs(
                         selectedMainTab = state.selectedMainTab,
@@ -138,21 +142,21 @@ fun TopBalanceBar(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween // Đẩy các phần tử ra xa nhau
     ) {
         Column {
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Total balance",
-                color = TextSecondary, // Màu chữ phụ
+                color = Color(0xFF505D6D), // Màu chữ phụ
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = if (isVisible) balance else "••••••• đ", // Hiển thị hoặc ẩn số dư
-                    color = BalanceColor,
-                    fontSize = 28.sp, // Kích thước lớn hơn
+                    color = Color.Black,
+                    fontSize = 28.sp, // Kích thướ c lớn hơn
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -163,18 +167,28 @@ fun TopBalanceBar(
                     Icon(
                         imageVector = if (isVisible) Icons.Filled.AccountBox else Icons.Filled.AccountBox,
                         contentDescription = if (isVisible) "Hide balance" else "Show balance",
-                        tint = IconTint
+                        tint = Color.Black
                     )
                 }
             }
         }
-        // Icon tìm kiếm
-        IconButton(onClick = { /* TODO: Handle search click */ }) {
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "Search",
-                tint = IconTint
-            )
+
+        Row() {
+            // Icon chatbot
+            IconButton(onClick = { /* TODO: Handle search click */ }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_ai_chatbot),
+                    contentDescription = "Chat Bot"
+                )
+            }
+            // Icon tìm kiếm
+            IconButton(onClick = { /* TODO: Handle search click */ }) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = Color(0xFF1E2A36)
+                )
+            }
         }
     }
 }
@@ -195,13 +209,13 @@ fun MyWalletsSection(
         ) {
             Text(
                 text = "My Wallets",
-                color = MaterialTheme.colorScheme.onSurface,
+                color = Color(0xFF1E2A36),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
                 text = "See all",
-                color = TextAccent,
+                color = Color(0xFFFCA419),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.clickable { onSeeAllClick() }
@@ -248,8 +262,9 @@ fun WalletItem(wallet: WalletWithCurrencyEntity) {
         Text(
             text = wallet.wallet.walletName,
             modifier = Modifier.weight(1f),
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 16.sp
+            color = Color(0xFF1E2A36),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold
         )
         // Số dư của ví
         Text(
@@ -258,7 +273,7 @@ fun WalletItem(wallet: WalletWithCurrencyEntity) {
                 wallet.wallet.currentBalance,
                 wallet.currency.currencyCode
             ),
-            color = MaterialTheme.colorScheme.onSurface,
+            color = Color(0xFF1E2A36),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -329,13 +344,13 @@ fun ReportSectionHeader() {
     ) {
         Text(
             text = "Report this month",
-            color = TextSecondary,
+            color = Color(0xFF2B3B48),
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )
         Text(
             text = "See reports",
-            color = TextAccent,
+            color = Color(0xFFFCA419),
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )

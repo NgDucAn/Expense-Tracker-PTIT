@@ -64,7 +64,7 @@ fun SpendingBarChart(
 ) {
 
     val fillColor = remember {
-        Fill(AppColor.Dark.OutflowAmountColor.toArgb())
+        Fill(AppColor.Light.OutflowAmountColor.toArgb())
     }
     // Define lighter and normal colors and their components for Last Week and This Week
     val lightColor = Color(fillColor.color).copy(alpha = 0.5f)

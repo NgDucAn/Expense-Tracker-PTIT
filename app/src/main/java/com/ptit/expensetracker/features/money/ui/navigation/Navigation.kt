@@ -56,8 +56,9 @@ import com.ptit.expensetracker.ui.theme.AppColor
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import com.ptit.expensetracker.features.money.ui.addwallet.AddWalletViewModel
-import com.ptit.expensetracker.ui.theme.AppColor.Dark.SecondaryColor.color1
+import com.ptit.expensetracker.ui.theme.AppColor.Light.SecondaryColor.color1
 import com.ptit.expensetracker.features.money.ui.onboarding.splash.SplashScreen
 import com.ptit.expensetracker.features.money.ui.onboarding.walletsetup.WalletSetupScreen
 import com.ptit.expensetracker.features.money.ui.onboarding.iconpicker.IconPickerScreen
@@ -176,8 +177,8 @@ fun AppNavigation(
                         color = color1
                     )
                     NavigationBar(
-                        containerColor = AppColor.Dark.PrimaryColor.containerColor,
-                        contentColor = AppColor.Dark.PrimaryColor.contentColor
+                        containerColor = AppColor.Light.PrimaryColor.containerColor,
+                        contentColor = AppColor.Light.PrimaryColor.contentColor
                     ) {
                         val currentDestination = currentBackStackEntry?.destination
 
@@ -199,7 +200,7 @@ fun AppNavigation(
                                 onClick = { navController.navigate(Screen.AddTransaction.createRoute()) },
                                 modifier = Modifier
                                     .background(
-                                        color = AppColor.Dark.PrimaryColor.TextButtonColor,
+                                        color = AppColor.Light.PrimaryColor.TextButtonColor,
                                         shape = CircleShape
                                     )
                                     .padding(2.dp)
@@ -207,7 +208,7 @@ fun AppNavigation(
                                 Icon(
                                     Icons.Filled.Add,
                                     contentDescription = "Add Expense",
-                                    tint = AppColor.Dark.PrimaryColor.contentColor
+                                    tint = Color.White
                                 )
                             }
                         }
@@ -224,7 +225,7 @@ fun AppNavigation(
                 }
             }
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
     ) { innerPadding ->
         // Apply padding only when not on full-screen pages
         val contentModifier = if (isFullScreenPage) {
@@ -643,7 +644,14 @@ fun RowScope.AppBottomNavigationItem(
 ) {
     NavigationBarItem(
         icon = { Icon(screen.icon, contentDescription = screen.label) },
-        label = { Text(screen.label, fontSize = 10.sp) },
+        label = {
+            Text(
+                text = screen.label,
+                fontSize = 10.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
         onClick = {
             // Navigate to the selected screen
@@ -659,10 +667,10 @@ fun RowScope.AppBottomNavigationItem(
             }
         },
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = AppColor.Dark.PrimaryColor.contentColor,
-            selectedTextColor = AppColor.Dark.PrimaryColor.contentColor,
-            unselectedIconColor = AppColor.Dark.PrimaryColor.containerColorSecondary,
-            unselectedTextColor = AppColor.Dark.PrimaryColor.containerColorSecondary,
+            selectedIconColor = Color(0xFF2B3B48),
+            selectedTextColor = Color(0xFF2B3B48),
+            unselectedIconColor = Color(0xFF94A1B1),
+            unselectedTextColor = Color(0xFF94A1B1),
             indicatorColor = Color.Transparent
         )
     )

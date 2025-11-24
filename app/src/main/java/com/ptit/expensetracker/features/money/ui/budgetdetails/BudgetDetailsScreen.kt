@@ -86,7 +86,7 @@ fun BudgetDetailsScreen(
                 onDeleteBudget = { viewModel.processIntent(BudgetDetailsIntent.DeleteBudget) }
             )
         },
-        containerColor = AppColor.Dark.PrimaryColor.containerColor,
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
         modifier = modifier
     ) { paddingValues ->
         BudgetDetailsContent(

@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
@@ -66,23 +65,23 @@ enum class NumpadButton(val displayText: String, val type: ButtonType) {
      * Gets the color for this button's content (text or icon)
      */
     fun getContentColor() = when (type) {
-        ButtonType.DIGIT -> AppColor.Dark.NumpadColors.ButtonContentColor
-        ButtonType.OPERATOR -> AppColor.Dark.NumpadColors.OperatorContentColor
+        ButtonType.DIGIT -> AppColor.Light.NumpadColors.ButtonContentColor
+        ButtonType.OPERATOR -> AppColor.Light.NumpadColors.OperatorContentColor
         ButtonType.FUNCTION -> when (this) {
-            SAVE -> AppColor.Dark.NumpadColors.SaveButtonTextColor
-            else -> AppColor.Dark.NumpadColors.OperatorContentColor
+            SAVE -> AppColor.Light.NumpadColors.SaveButtonTextColor
+            else -> AppColor.Light.NumpadColors.OperatorContentColor
         }
 
-        ButtonType.ACTION -> AppColor.Dark.NumpadColors.ButtonContentColor
+        ButtonType.ACTION -> AppColor.Light.NumpadColors.ButtonContentColor
     }
 
     /**
      * Gets the background color for this button
      */
     fun getBackgroundColor() = when (this) {
-        ACTION -> AppColor.Dark.NumpadColors.ActionBackgroundColor
-        SAVE -> AppColor.Dark.NumpadColors.SaveButtonBackgroundColor
-        else -> AppColor.Dark.NumpadColors.ButtonBackgroundColor
+        ACTION -> AppColor.Light.NumpadColors.ActionBackgroundColor
+        SAVE -> AppColor.Light.NumpadColors.SaveButtonBackgroundColor
+        else -> AppColor.Light.NumpadColors.ButtonBackgroundColor
     }
 }
 

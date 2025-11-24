@@ -30,7 +30,9 @@ import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Category
 import com.ptit.expensetracker.features.money.domain.model.CategoryGroup
 import com.ptit.expensetracker.features.money.domain.model.CategoryType
+import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
+import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.utils.getDrawableResId
 import com.ptit.expensetracker.utils.getStringResId
 
@@ -211,14 +213,14 @@ fun NewCategoryItem(onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Default.AddCircle,
             contentDescription = stringResource(R.string.new_category_desc),
-            tint = Color.Green,
+            tint = AppColor.Light.PrimaryColor.TextButtonColor,
             modifier = Modifier.size(40.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = stringResource(R.string.new_category_label),
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.Green,
+            color = AppColor.Light.PrimaryColor.TextButtonColor,
             fontWeight = FontWeight.Bold
         )
     }
@@ -310,14 +312,14 @@ fun HelpItem() {
     ) {
         Text(
             text = stringResource(R.string.need_help_message),
-            color = Color.Green,
+            color = TextMain,
             fontSize = 14.sp
         )
         Spacer(Modifier.width(4.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_help_outline),
             contentDescription = null,
-            tint = Color.Green,
+            tint = TextMain,
             modifier = Modifier.size(16.dp)
         )
     }

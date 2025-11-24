@@ -1,6 +1,5 @@
 package com.ptit.expensetracker.features.money.ui.transactions.components
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -73,7 +72,7 @@ fun SearchFiltersPanel(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = AppColor.Dark.PrimaryColor.containerColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -99,7 +98,7 @@ fun SearchFiltersPanel(
                 TextButton(
                     onClick = onClearFilters,
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = AppColor.Dark.ExpenseAmountColor
+                        contentColor = AppColor.Light.ExpenseAmountColor
                     )
                 ) {
                     Text("Clear All")

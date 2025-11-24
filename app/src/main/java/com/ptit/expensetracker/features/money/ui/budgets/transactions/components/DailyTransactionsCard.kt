@@ -26,7 +26,7 @@ fun DailyTransactionsCard(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        color = AppColor.Dark.PrimaryColor.cardColor
+        color = AppColor.Light.PrimaryColor.cardColor
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             // Header with date and total
@@ -37,7 +37,7 @@ fun DailyTransactionsCard(
 
             // Divider between header and items
             HorizontalDivider(
-                color = AppColor.Dark.DividerColor,
+                color = AppColor.Light.DividerColor,
                 thickness = 1.dp,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )

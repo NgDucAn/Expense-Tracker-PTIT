@@ -40,8 +40,8 @@ fun TransactionItem(
     showWalletIndicator: Boolean = false
 ) {
     val amountColor = when (transaction.transactionType) {
-        TransactionType.INFLOW -> AppColor.Dark.IncomeAmountColor
-        TransactionType.OUTFLOW -> AppColor.Dark.ExpenseAmountColor
+        TransactionType.INFLOW -> AppColor.Light.IncomeAmountColor
+        TransactionType.OUTFLOW -> AppColor.Light.ExpenseAmountColor
     }
     val iconBackgroundColor = getIconBackgroundColor(transaction.category)
 
@@ -76,7 +76,7 @@ fun TransactionItem(
                 Text(
                     text = stringResource(id = getStringResId(LocalContext.current, transaction.category.title)),
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-                    color = TextPrimary
+                    color = TextMain
                 )
                 
                 // Show wallet indicator when in total wallet view
@@ -149,8 +149,8 @@ fun getCategoryIcon(category: Category): ImageVector {
 
 fun getIconBackgroundColor(category: Category): Color {
     return when (category.metaData.lowercase()) {
-        "loan" -> AppColor.Dark.CategoryIconBackgroundLoan
-        "food_beverage" -> AppColor.Dark.CategoryIconBackgroundFood
+        "loan" -> AppColor.Light.CategoryIconBackgroundLoan
+        "food_beverage" -> AppColor.Light.CategoryIconBackgroundFood
         else -> Color.Gray
     }
 }
