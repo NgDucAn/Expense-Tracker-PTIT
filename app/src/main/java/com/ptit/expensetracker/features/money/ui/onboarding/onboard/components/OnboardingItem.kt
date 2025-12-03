@@ -153,7 +153,7 @@ private fun OnboardingItemPreview() {
         OnboardingItem(
             title = "Welcome to Expense Tracker",
             description = "Take control of your finances with smart budgeting, expense tracking, and personalized insights.",
-            topIllustrationRes = android.R.drawable.ic_dialog_info,
+            topIllustrationRes = R.drawable.img_bg_ob1,
             onContinueClick = {},
             onSkipClick = {}
         )
