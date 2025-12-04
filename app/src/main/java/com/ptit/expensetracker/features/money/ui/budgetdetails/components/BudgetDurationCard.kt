@@ -24,6 +24,8 @@ import java.time.temporal.ChronoUnit
 import androidx.compose.ui.res.painterResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.utils.getDrawableResId
 
 @Composable
@@ -52,18 +54,18 @@ fun BudgetDurationCard(
             Icon(
                 imageVector = Icons.Filled.AccountCircle,
                 contentDescription = null,
-                tint = Color.White,
+                tint = TextMain,
                 modifier = Modifier.size(24.dp)
             )
             Column(modifier = Modifier.padding(start = 12.dp)) {
                 Text(
                     "${startLocal.format(DateTimeFormatter.ofPattern("dd/MM"))} - " +
                     "${endLocal.format(DateTimeFormatter.ofPattern("dd/MM"))}",
-                    fontSize = 16.sp, color = Color.White
+                    fontSize = 16.sp, color = TextMain
                 )
                 Text(
                     "$daysLeft days left",
-                    fontSize = 14.sp, color = Color.Gray
+                    fontSize = 14.sp, color = TextSecondary
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -77,7 +79,7 @@ fun BudgetDurationCard(
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
-                Text(state.budget?.wallet?.walletName ?: "Total", fontSize = 16.sp, color = Color.White)
+                Text(state.budget?.wallet?.walletName ?: "Total", fontSize = 16.sp, color = TextMain)
             }
         }
     }

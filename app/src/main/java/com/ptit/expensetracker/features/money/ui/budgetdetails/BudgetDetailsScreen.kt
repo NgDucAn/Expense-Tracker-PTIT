@@ -20,6 +20,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
 import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.text.font.FontWeight
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.features.money.ui.budgetdetails.components.BudgetSummaryCard
 import com.ptit.expensetracker.features.money.ui.budgetdetails.components.BudgetDurationCard
 import com.ptit.expensetracker.features.money.ui.budgetdetails.components.BudgetGraphCard
@@ -30,7 +33,6 @@ import com.ptit.expensetracker.features.money.domain.model.CategoryType
 import com.ptit.expensetracker.features.money.domain.model.Currency
 import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.features.money.domain.model.Budget
-import com.ptit.expensetracker.ui.theme.AppColor
 import java.util.Date
 
 @Composable
@@ -60,8 +62,20 @@ fun BudgetDetailsScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Budget") },
-            text = { Text("Are you sure you want to delete this budget?") },
+            title = { 
+                Text(
+                    "Delete Budget", 
+                    color = TextMain,
+                    fontWeight = FontWeight.Bold
+                ) 
+            },
+            text = { 
+                Text(
+                    "Are you sure you want to delete this budget?",
+                    color = TextMain
+                ) 
+            },
+            containerColor = AppColor.Light.PrimaryColor.cardColor,
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteDialog = false
@@ -72,7 +86,7 @@ fun BudgetDetailsScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text("Cancel", color = TextMain)
                 }
             }
         )

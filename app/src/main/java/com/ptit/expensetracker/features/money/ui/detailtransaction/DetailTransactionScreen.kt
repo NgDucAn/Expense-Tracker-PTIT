@@ -51,6 +51,8 @@ import androidx.compose.ui.res.painterResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.AppColor.Light.PrimaryColor.cardColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.utils.getDrawableResId
 
 @Composable
@@ -198,12 +200,12 @@ fun ShareTransactionDialog(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .background(Color(0xFF2C2C2E))
+                    .background(AppColor.Light.PrimaryColor.cardColor)
                     .padding(16.dp)
             ) {
                 Text(
                     text = "Transaction Preview",
-                    color = Color.White,
+                    color = TextMain,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -315,13 +317,13 @@ private suspend fun renderTransactionToBitmap(transaction: Transaction?, context
             val canvas = android.graphics.Canvas(bitmap)
             
             // Set background color
-            canvas.drawColor(android.graphics.Color.parseColor("#1C1C1E"))
+            canvas.drawColor(android.graphics.Color.parseColor("#FFFFFF"))
             
             // Draw transaction information directly onto the canvas
             val paint = android.graphics.Paint().apply {
                 isAntiAlias = true
                 textSize = 60f  // Heading text size
-                color = android.graphics.Color.WHITE
+                color = android.graphics.Color.parseColor("#1E2A36") // TextMain color
             }
             
             // Draw transaction title (category)
@@ -342,7 +344,7 @@ private suspend fun renderTransactionToBitmap(transaction: Transaction?, context
             canvas.drawText(amount, 50f, 300f, paint)
             
             // Reset color and size for details
-            paint.color = android.graphics.Color.WHITE
+            paint.color = android.graphics.Color.parseColor("#1E2A36") // TextMain color
             paint.textSize = 50f
             
             // Draw description if available
@@ -455,7 +457,7 @@ fun DetailTransactionContent(
                         Text(
                             text = stringResource(getStringResId(LocalContext.current, transaction.category.title)),
                             style = MaterialTheme.typography.titleLarge,
-                            color = Color.White,
+                            color = TextMain,
                             modifier = Modifier.padding(start = 12.dp)
                         )
                     }
@@ -480,7 +482,7 @@ fun DetailTransactionContent(
                             content = {
                                 Text(
                                     text = transaction.description,
-                                    color = Color.White,
+                                    color = TextMain,
                                     overflow = TextOverflow.Ellipsis
                                 )
                             }
@@ -492,7 +494,7 @@ fun DetailTransactionContent(
                             val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy", Locale.getDefault())
                             Text(
                                 text = dateFormat.format(transaction.transactionDate),
-                                color = Color.White
+                                color = TextMain
                             )
                         }
                     )
@@ -501,7 +503,7 @@ fun DetailTransactionContent(
                         content = {
                             Text(
                                 text = transaction.wallet.walletName,
-                                color = Color.White
+                                color = TextMain
                             )
                         }
                     )
@@ -525,12 +527,12 @@ fun DetailTransactionContent(
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_with),
                                 contentDescription = null,
-                                tint = Color.White,
+                                tint = TextMain,
                                 modifier = Modifier.size(24.dp)
                             )
                             Text(
                                 text = "With",
-                                color = Color.White.copy(alpha = 0.7f),
+                                color = TextSecondary,
                                 style = MaterialTheme.typography.labelLarge,
                                 modifier = Modifier.padding(start = 8.dp)
                             )
@@ -556,7 +558,7 @@ fun DetailTransactionContent(
         ) {
             Text(
                 text = "Error loading transaction details",
-                color = Color.White
+                color = TextMain
             )
         }
     }
@@ -565,29 +567,38 @@ fun DetailTransactionContent(
     if (state.showDeleteConfirmation) {
         AlertDialog(
             onDismissRequest = onDismissDialog,
-            title = { Text("Delete Transaction") },
-            text = { Text("Are you sure you want to delete this transaction? This action cannot be undone.") },
+            title = { 
+                Text(
+                    "Delete Transaction",
+                    color = TextMain,
+                    style = MaterialTheme.typography.titleLarge
+                ) 
+            },
+            text = { 
+                Text(
+                    "Are you sure you want to delete this transaction? This action cannot be undone.",
+                    color = TextMain
+                ) 
+            },
             confirmButton = {
                 Button(
                     onClick = onConfirmDelete,
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF453A))
                 ) {
-                    Text("Delete")
+                    Text("Delete", color = Color.White)
                 }
             },
             dismissButton = {
                 OutlinedButton(onClick = onDismissDialog) {
-                    Text("Cancel")
+                    Text("Cancel", color = TextMain)
                 }
             },
-            containerColor = Color(0xFF2C2C2E),
-            titleContentColor = Color.White,
-            textContentColor = Color.White
+            containerColor = AppColor.Light.PrimaryColor.cardColor
         )
     }
 }
 
-@Preview()
+@Preview(showBackground = true, backgroundColor = 0xFFF6F6F6)
 @Composable
 fun DetailTransactionContentPreview() {
     val mockTransaction = Transaction(
