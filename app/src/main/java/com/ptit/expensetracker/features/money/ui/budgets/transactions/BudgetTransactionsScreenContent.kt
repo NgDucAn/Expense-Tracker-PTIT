@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.PaddingValues
 import com.ptit.expensetracker.ui.theme.AppColor
-import com.ptit.expensetracker.ui.theme.TextPrimary
+import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextAccent
 import com.ptit.expensetracker.features.money.domain.model.Transaction
 import com.ptit.expensetracker.features.money.ui.budgets.transactions.components.DailyTransactionsCard
@@ -49,14 +49,20 @@ fun BudgetTransactionsScreenContent(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = stringResource(id = getStringResId(LocalContext.current, state.category.title)), color = TextPrimary) },
+                title = { 
+                    Text(
+                        text = stringResource(id = getStringResId(LocalContext.current, state.category.title)), 
+                        color = TextMain
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextPrimary)
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextMain)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = AppColor.Light.PrimaryColor.containerColor
+                    containerColor = AppColor.Light.PrimaryColor.containerColor,
+                    titleContentColor = AppColor.Light.PrimaryColor.contentColor
                 )
             )
         },

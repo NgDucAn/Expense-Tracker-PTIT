@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.remember
 import com.ptit.expensetracker.features.money.ui.budgetdetails.components.BudgetLineChart
 import com.ptit.expensetracker.utils.formatAmountWithCurrency
+import com.ptit.expensetracker.ui.theme.AppColor
 import java.util.Date
 
 @Composable
@@ -28,7 +29,7 @@ fun BudgetGraphCard(
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF2C2C2E)),
+        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.cardColor),
         modifier = modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

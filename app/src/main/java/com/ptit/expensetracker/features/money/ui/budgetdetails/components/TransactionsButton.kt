@@ -22,7 +22,7 @@ fun TransactionsButton(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(50.dp),
         colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
     ) {
         Text("TRANSACTIONS LIST", color = Color.White, fontWeight = FontWeight.Bold)

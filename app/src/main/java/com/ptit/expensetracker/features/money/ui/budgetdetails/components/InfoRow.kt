@@ -9,6 +9,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
 fun InfoRow(
@@ -23,7 +25,7 @@ fun InfoRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(label, fontSize = 14.sp, color = Color.LightGray)
-        Text(value, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+        Text(label, fontSize = 14.sp, color = TextSecondary)
+        Text(value, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextMain)
     }
 } 
