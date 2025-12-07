@@ -27,6 +27,9 @@ import com.ptit.expensetracker.features.money.ui.budgetdetails.BudgetDetailsStat
 import com.ptit.expensetracker.features.money.domain.model.TransactionType
 import com.ptit.expensetracker.utils.formatAmountWithCurrency
 import com.ptit.expensetracker.utils.getStringResId
+import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -39,7 +42,7 @@ fun BudgetSummaryCard(
     val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF2C2C2E)),
+        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.cardColor),
         modifier = modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -68,7 +71,7 @@ fun BudgetSummaryCard(
                     },
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = TextMain
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +81,7 @@ fun BudgetSummaryCard(
                 text = formatAmountWithCurrency(budget.amount, budget.wallet.currency.symbol),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = TextMain,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -86,20 +89,20 @@ fun BudgetSummaryCard(
             )
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Spent", fontSize = 14.sp, color = Color.Gray)
+                    Text("Spent", fontSize = 14.sp, color = TextSecondary)
                     Text(
                         formatAmountWithCurrency(state.spentAmount, budget.wallet.currency.symbol),
                         fontSize = 18.sp,
-                        color = Color.White,
+                        color = TextMain,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
                 Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                    Text("Left", fontSize = 14.sp, color = Color.Gray)
+                    Text("Left", fontSize = 14.sp, color = TextSecondary)
                     Text(
                         formatAmountWithCurrency(state.remainingBudget, budget.wallet.currency.symbol),
                         fontSize = 18.sp,
-                        color = Color.White,
+                        color = TextMain,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
@@ -118,7 +121,7 @@ fun BudgetSummaryCard(
             Text(
                 "Today",
                 fontSize = 12.sp,
-                color = Color.Gray,
+                color = TextSecondary,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp)

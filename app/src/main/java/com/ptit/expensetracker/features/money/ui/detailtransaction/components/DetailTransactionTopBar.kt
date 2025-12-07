@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +34,7 @@ fun DetailTransactionTopBar(
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = "Close",
-                    tint = Color.White
+                    tint = TextMain
                 )
             }
         },
@@ -42,33 +43,34 @@ fun DetailTransactionTopBar(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_w_add),
                     contentDescription = "Copy",
-                    tint = Color.White
+                    tint = TextMain
                 )
             }
             IconButton(onClick = onShareClick) {
                 Icon(
                     imageVector = Icons.Filled.Share,
                     contentDescription = "Share",
-                    tint = Color.White
+                    tint = TextMain
                 )
             }
             IconButton(onClick = onEditClick) {
                 Icon(
                     imageVector = Icons.Filled.Edit,
                     contentDescription = "Edit",
-                    tint = Color.White
+                    tint = TextMain
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = "Delete",
-                    tint = Color.White
+                    tint = TextMain
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppColor.Light.PrimaryColor.containerColor
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            titleContentColor = AppColor.Light.PrimaryColor.contentColor
         )
     )
 }

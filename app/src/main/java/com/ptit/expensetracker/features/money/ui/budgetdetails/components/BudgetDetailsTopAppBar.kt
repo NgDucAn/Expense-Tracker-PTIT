@@ -13,6 +13,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.ui.text.font.FontWeight
+import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,22 +26,23 @@ fun BudgetDetailsTopAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text("Budget details", color = Color.White) },
+        title = { Text("Budget details", color = TextMain, fontWeight = FontWeight.Bold) },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = TextMain)
             }
         },
         actions = {
             IconButton(onClick = onEditBudget) {
-                Icon(Icons.Filled.Edit, contentDescription = "Edit Budget", tint = Color.White)
+                Icon(Icons.Filled.Edit, contentDescription = "Edit Budget", tint = TextMain)
             }
             IconButton(onClick = onDeleteBudget) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete Budget", tint = Color.White)
+                Icon(Icons.Filled.Delete, contentDescription = "Delete Budget", tint = TextMain)
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(0xFF1C1C1E)
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            titleContentColor = AppColor.Light.PrimaryColor.contentColor
         ),
         modifier = modifier
     )

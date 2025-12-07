@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.ui.theme.TextMain
 
 @Composable
 fun PersonItem(
@@ -47,7 +48,7 @@ fun PersonItem(
         
         Text(
             text = name,
-            color = Color.White,
+            color = TextMain,
             fontSize = 16.sp
         )
     }
@@ -67,7 +68,7 @@ fun TransactionDetailItem(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = Color.White,
+            tint = TextMain,
             modifier = Modifier.size(24.dp)
         )
         
