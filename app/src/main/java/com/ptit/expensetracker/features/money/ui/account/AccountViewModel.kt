@@ -70,6 +70,7 @@ class AccountViewModel @Inject constructor(
                     displayName = user.displayName,
                     photoUrl = user.photoUrl?.toString()
                 )
+                logFirebaseIdToken()
             }
         }
     }
@@ -180,5 +181,20 @@ class AccountViewModel @Inject constructor(
                 _viewState.value = _viewState.value.copy(isRestoreLoading = false)
             }
         }
+    }
+
+    /**
+     * Fetch and log Firebase ID token to Logcat for debugging backend calls.
+     * Token is short-lived (~1h); refreshes by using forceRefresh = true.
+     */
+    private fun logFirebaseIdToken() {
+        val user = auth.currentUser ?: return
+        user.getIdToken(true)
+            .addOnSuccessListener { result ->
+                Log.d("FirebaseIdToken", "ID token: ${result.token}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("FirebaseIdToken", "Failed to get ID token: ${e.message}")
+            }
     }
 }
