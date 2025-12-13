@@ -73,11 +73,14 @@ fun DebtSummaryCard(
                             overflow = TextOverflow.Ellipsis
                         )
                         
+                        // Hiển thị nhãn theo loại nợ:
+                        // - PAYABLE_ORIGINAL (IS_DEBT): "Bạn nợ" (Tôi đi vay → Tôi phải trả lại)
+                        // - RECEIVABLE_ORIGINAL (IS_LOAN): "Nợ bạn" (Tôi cho vay → Người khác nợ tôi)
                         Text(
                             text = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                                "Bạn nợ"
+                                "Bạn nợ"  // Tab "Phải trả": IS_DEBT (Tôi đi vay)
                             } else {
-                                "Nợ bạn"
+                                "Nợ bạn"  // Tab "Được nhận": IS_LOAN (Tôi cho vay)
                             },
                             color = TextSecondary,
                             fontSize = 12.sp
@@ -108,18 +111,21 @@ fun DebtSummaryCard(
                         textColor = MaterialTheme.colorScheme.onSurface
                     )
                     
+                    // Hiển thị số tiền còn lại:
+                    // - Tab "Phải trả" (IS_DEBT): "Còn nợ" (màu đỏ - tôi còn phải trả)
+                    // - Tab "Được nhận" (IS_LOAN): "Còn thu" (màu xanh - người khác còn nợ tôi)
                     AmountInfo(
                         label = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                            "Còn nợ"
+                            "Còn nợ"  // Tab "Phải trả": Tôi còn phải trả lại
                         } else {
-                            "Còn thu"
+                            "Còn thu"  // Tab "Được nhận": Người khác còn nợ tôi
                         },
                         amount = debtSummary.remainingAmount,
                         currencySymbol = getCurrencySymbol(debtSummary),
                         textColor = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                            MaterialTheme.colorScheme.error
+                            MaterialTheme.colorScheme.error  // Màu đỏ cho khoản nợ phải trả
                         } else {
-                            MaterialTheme.colorScheme.primary
+                            MaterialTheme.colorScheme.primary  // Màu xanh cho khoản nợ được nhận
                         }
                     )
                 }
@@ -135,11 +141,14 @@ fun DebtSummaryCard(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
+                            // Hiển thị tiến độ thanh toán:
+                            // - Tab "Phải trả": "Đã trả" (Tôi đã trả bao nhiêu)
+                            // - Tab "Được nhận": "Đã thu" (Tôi đã thu bao nhiêu)
                             Text(
                                 text = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                                    "Đã trả"
+                                    "Đã trả"  // Tab "Phải trả": Số tiền tôi đã trả
                                 } else {
-                                    "Đã thu"
+                                    "Đã thu"  // Tab "Được nhận": Số tiền tôi đã thu
                                 },
                                 color = TextSecondary,
                                 fontSize = 11.sp
@@ -216,11 +225,14 @@ fun DebtSummaryCard(
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
+                        // Hiển thị text button theo loại nợ:
+                        // - Tab "Phải trả": "Trả nợ" (Tôi trả nợ lại cho người khác)
+                        // - Tab "Được nhận": "Thu nợ" (Tôi thu nợ từ người khác)
                         Text(
                             text = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                                "Trả nợ"
+                                "Trả nợ"  // Tab "Phải trả": Trả nợ lại cho người khác
                             } else {
-                                "Thu nợ"
+                                "Thu nợ"  // Tab "Được nhận": Thu nợ từ người khác
                             },
                             fontSize = 12.sp
                         )

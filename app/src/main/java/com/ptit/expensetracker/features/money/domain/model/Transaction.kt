@@ -30,7 +30,16 @@ data class Transaction(
     val isDebtRelated: Boolean get() = DebtCategoryMetadata.ALL_DEBT_CATEGORIES.contains(category.metaData)
     
     /**
-     * Get the debt type if this is a debt transaction
+     * Xác định loại nợ nếu đây là giao dịch nợ
+     * 
+     * Logic phân loại:
+     * - PAYABLE (Tab "Phải trả"): 
+     *   + IS_DEBT (Tôi đi vay người khác → Tôi phải trả lại)
+     *   + IS_REPAYMENT (Tôi trả nợ lại cho người khác)
+     * 
+     * - RECEIVABLE (Tab "Được nhận"): 
+     *   + IS_LOAN (Tôi cho người khác vay → Người khác nợ tôi)
+     *   + IS_DEBT_COLLECTION (Tôi thu nợ từ người khác)
      */
     val debtType: DebtType? get() = when (category.metaData) {
         in DebtCategoryMetadata.PAYABLE_ORIGINAL,
@@ -41,13 +50,25 @@ data class Transaction(
     }
     
     /**
-     * Check if this is an original debt transaction (not a repayment)
+     * Kiểm tra xem đây có phải là giao dịch nợ gốc (không phải thanh toán)
+     * 
+     * Giao dịch nợ gốc:
+     * - IS_DEBT: Tôi đi vay người khác (Tab "Phải trả")
+     * - IS_LOAN: Tôi cho người khác vay (Tab "Được nhận")
+     * 
+     * Giao dịch thanh toán:
+     * - IS_REPAYMENT: Tôi trả nợ (Tab "Phải trả")
+     * - IS_DEBT_COLLECTION: Tôi thu nợ (Tab "Được nhận")
      */
     val isOriginalDebt: Boolean get() = category.metaData in 
         (DebtCategoryMetadata.PAYABLE_ORIGINAL + DebtCategoryMetadata.RECEIVABLE_ORIGINAL)
     
     /**
-     * Check if this is a repayment transaction
+     * Kiểm tra xem đây có phải là giao dịch thanh toán/thu nợ
+     * 
+     * Giao dịch thanh toán:
+     * - IS_REPAYMENT: Tôi trả nợ lại cho người khác (Tab "Phải trả")
+     * - IS_DEBT_COLLECTION: Tôi thu nợ từ người khác (Tab "Được nhận")
      */
     val isRepayment: Boolean get() = category.metaData in 
         (DebtCategoryMetadata.PAYABLE_REPAYMENT + DebtCategoryMetadata.RECEIVABLE_REPAYMENT)

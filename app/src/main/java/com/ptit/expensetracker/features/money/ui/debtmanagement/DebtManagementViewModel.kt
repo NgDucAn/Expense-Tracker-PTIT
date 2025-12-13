@@ -6,20 +6,32 @@ import com.ptit.expensetracker.core.platform.BaseViewModel
 
 import com.ptit.expensetracker.features.money.domain.model.DebtCategoryMetadata
 import com.ptit.expensetracker.features.money.domain.model.DebtSummary
+import com.ptit.expensetracker.features.money.domain.model.DebtType
 import com.ptit.expensetracker.features.money.domain.model.Wallet
+import com.ptit.expensetracker.features.money.domain.model.Transaction
+import com.ptit.expensetracker.features.money.domain.model.TransactionType
+import com.ptit.expensetracker.features.money.domain.model.Category
+import com.ptit.expensetracker.core.functional.Either
 import com.ptit.expensetracker.features.money.domain.usecases.GetDebtSummaryUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.GetWalletsUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.GetCategoryByNameUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.CreatePartialPaymentUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.GetDebtPaymentHistoryUseCase
+import com.ptit.expensetracker.utils.formatAmount
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtFilterOptions
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtSortBy
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtTab
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import java.util.Date
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * ViewModel for the DebtManagement screen.
@@ -29,10 +41,14 @@ import javax.inject.Inject
 @HiltViewModel
 class DebtManagementViewModel @Inject constructor(
     private val getDebtSummaryUseCase: GetDebtSummaryUseCase,
-    private val getWalletsUseCase: GetWalletsUseCase
+    private val getWalletsUseCase: GetWalletsUseCase,
+    private val getCategoryByNameUseCase: GetCategoryByNameUseCase,
+    private val createPartialPaymentUseCase: CreatePartialPaymentUseCase,
+    private val getDebtPaymentHistoryUseCase: GetDebtPaymentHistoryUseCase
 ) : BaseViewModel<DebtManagementState, DebtManagementIntent, DebtManagementEvent>() {
 
     override val _viewState = MutableStateFlow(DebtManagementState())
+    private var historyJob: Job? = null
 
     init {
         processIntent(DebtManagementIntent.LoadInitialData)
@@ -56,8 +72,13 @@ class DebtManagementViewModel @Inject constructor(
             
             // Debt management
             is DebtManagementIntent.ViewDebtDetails -> viewDebtDetails(intent.debtSummary)
-            is DebtManagementIntent.AddPartialPayment -> addPartialPayment(intent.debtSummary)
+            is DebtManagementIntent.AddPartialPayment -> openPaymentSheet(intent.debtSummary)
             is DebtManagementIntent.ViewPaymentHistory -> viewPaymentHistory(intent.debtSummary)
+            DebtManagementIntent.ClosePaymentHistory -> closePaymentHistory()
+            is DebtManagementIntent.UpdatePaymentAmount -> updatePaymentAmount(intent.amountText)
+            is DebtManagementIntent.UpdatePaymentNote -> updatePaymentNote(intent.note)
+            DebtManagementIntent.ConfirmPayment -> confirmPayment()
+            DebtManagementIntent.DismissPaymentSheet -> dismissPaymentSheet()
             
             // Filter management
             DebtManagementIntent.ShowFilterDialog -> showFilterDialog()
@@ -73,50 +94,9 @@ class DebtManagementViewModel @Inject constructor(
     private fun loadInitialData() {
         viewModelScope.launch {
             _viewState.update { it.copy(isLoading = true, error = null) }
-            
+
             try {
-                // First load wallets
-                getWalletsUseCase(UseCase.None()) { walletsResult ->
-                    walletsResult.fold(
-                        { 
-                            _viewState.update { 
-                                it.copy(
-                                    isLoading = false,
-                                    error = "Không thể tải danh sách ví"
-                                ) 
-                            }
-                        },
-                        { wallets ->
-                            viewModelScope.launch {
-                                wallets.collect() { listWallets ->
-                                    // Update available wallets in state
-                                    _viewState.update {
-                                        it.copy(availableWallets = listWallets)
-                                    }
-
-                                    // Then load debt data
-                                    getDebtSummaryUseCase(GetDebtSummaryUseCase.Params(null)) { debtResult ->
-                                        debtResult.fold(
-                                            {
-                                                _viewState.update {
-                                                    it.copy(
-                                                        isLoading = false,
-                                                        error = "Không thể tải dữ liệu nợ"
-                                                    )
-                                                }
-                                            },
-                                            { debtInfo ->
-                                                val allDebts = debtInfo.payableDebts + debtInfo.receivableDebts
-                                                updateStateWithData(listWallets, allDebts)
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-
-                        }
-                    )
-                }
+                loadWalletsAndDebt(walletId = _viewState.value.selectedWallet?.id)
             } catch (e: Exception) {
                 _viewState.update { 
                     it.copy(
@@ -161,16 +141,255 @@ class DebtManagementViewModel @Inject constructor(
         emitEvent(DebtManagementEvent.NavigateToDebtDetails(debtSummary))
     }
 
-    private fun addPartialPayment(debtSummary: DebtSummary) {
+    private fun openPaymentSheet(debtSummary: DebtSummary) {
         if (debtSummary.isPaid) {
             emitEvent(DebtManagementEvent.ShowToast("Nợ này đã được thanh toán đầy đủ"))
             return
         }
-        emitEvent(DebtManagementEvent.NavigateToAddPartialPayment(debtSummary))
+        _viewState.update {
+            it.copy(
+                showPaymentSheet = true,
+                paymentTarget = debtSummary,
+                paymentAmountInput = "",
+                paymentNoteInput = "",
+                paymentSubmitting = false
+            )
+        }
     }
 
     private fun viewPaymentHistory(debtSummary: DebtSummary) {
-        emitEvent(DebtManagementEvent.NavigateToPaymentHistory(debtSummary))
+        // Hủy collecting cũ nếu đang chạy để tránh đè job
+        historyJob?.cancel()
+
+        val isPayable = DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)
+        val historyTitle = if (isPayable) "Lịch sử trả nợ" else "Lịch sử thu nợ"
+        val historyDebtType = if (isPayable) DebtType.PAYABLE else DebtType.RECEIVABLE
+
+        // Mở sheet và set loading
+        _viewState.update {
+            it.copy(
+                showHistorySheet = true,
+                historyLoading = true,
+                historyError = null,
+                historyItems = emptyList(),
+                historyTitle = historyTitle,
+                historyDebtType = historyDebtType
+            )
+        }
+
+        historyJob = viewModelScope.launch {
+            when (val result = getDebtPaymentHistoryUseCase.run(
+                GetDebtPaymentHistoryUseCase.Params(
+                    originalDebtId = debtSummary.originalTransaction.id,
+                    debtReference = debtSummary.debtId
+                )
+            )) {
+                is Either.Left -> {
+                    _viewState.update {
+                        it.copy(
+                            historyLoading = false,
+                            historyError = "Không tải được lịch sử"
+                        )
+                    }
+                    emitEvent(DebtManagementEvent.ShowToast("Không tải được lịch sử"))
+                }
+                is Either.Right -> {
+                    // Collect Flow để cập nhật realtime
+                    result.right.collectLatest { records ->
+                        _viewState.update {
+                            it.copy(
+                                historyLoading = false,
+                                historyError = null,
+                                historyItems = records,
+                                showHistorySheet = true
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun closePaymentHistory() {
+        historyJob?.cancel()
+        historyJob = null
+        _viewState.update {
+            it.copy(
+                showHistorySheet = false,
+                historyItems = emptyList(),
+                historyLoading = false,
+                historyError = null,
+                historyTitle = null,
+                historyDebtType = null
+            )
+        }
+    }
+
+    private fun updatePaymentAmount(amountText: String) {
+        _viewState.update { it.copy(paymentAmountInput = amountText) }
+    }
+
+    private fun updatePaymentNote(note: String) {
+        _viewState.update { it.copy(paymentNoteInput = note) }
+    }
+
+    private fun dismissPaymentSheet() {
+        _viewState.update {
+            it.copy(
+                showPaymentSheet = false,
+                paymentTarget = null,
+                paymentAmountInput = "",
+                paymentNoteInput = "",
+                paymentSubmitting = false
+            )
+        }
+    }
+
+    private fun confirmPayment() {
+        val state = _viewState.value
+        val target = state.paymentTarget ?: return
+        val amount = state.paymentAmountInput
+            .replace(",", "")
+            .replace(" ", "")
+            .toDoubleOrNull()
+        if (amount == null || amount <= 0) {
+            emitEvent(DebtManagementEvent.ShowToast("Số tiền không hợp lệ"))
+            return
+        }
+        if (amount > target.remainingAmount) {
+            emitEvent(DebtManagementEvent.ShowToast("Số tiền vượt quá số còn lại"))
+            return
+        }
+
+        viewModelScope.launch {
+            _viewState.update { it.copy(paymentSubmitting = true) }
+            
+            try {
+                /**
+                 * Xác định loại nợ dựa trên category gốc:
+                 * - Payable (Tab "Phải trả"): IS_DEBT (Tôi đi vay người khác)
+                 * - Receivable (Tab "Được nhận"): IS_LOAN (Tôi cho người khác vay)
+                 */
+                val isPayable = DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(target.originalTransaction.category.metaData)
+                
+                /**
+                 * Xác định transaction type dựa trên loại nợ:
+                 * - Payable (Phải trả): Trả nợ = tiền ra (OUTFLOW, màu đỏ)
+                 * - Receivable (Được nhận): Thu nợ = tiền vào (INFLOW, màu xanh)
+                 */
+                val transactionType = if (isPayable) {
+                    TransactionType.OUTFLOW  // Trả nợ = chi tiêu (tiền ra)
+                } else {
+                    TransactionType.INFLOW   // Thu nợ = thu nhập (tiền vào)
+                }
+                
+                /**
+                 * Tìm category phù hợp cho giao dịch thanh toán/thu nợ:
+                 * - Payable: Dùng IS_REPAYMENT (trả nợ lại cho người khác)
+                 * - Receivable: Dùng IS_DEBT_COLLECTION (thu nợ từ người khác)
+                 */
+                val categoryMeta = if (isPayable) {
+                    DebtCategoryMetadata.REPAYMENT
+                } else {
+                    DebtCategoryMetadata.DEBT_COLLECTION
+                }
+                
+                val category = fetchCategoryByMeta(categoryMeta) ?: run {
+                    _viewState.update { it.copy(paymentSubmitting = false) }
+                    emitEvent(DebtManagementEvent.ShowToast("Không tìm thấy danh mục ${if (isPayable) "trả nợ" else "thu nợ"}"))
+                    return@launch
+                }
+
+                // Tạo transaction thanh toán/thu nợ
+                val paymentDescription = state.paymentNoteInput.ifBlank { 
+                    if (isPayable) "Trả nợ: ${target.personName}" else "Thu nợ: ${target.personName}"
+                }
+
+                // Tạo transaction thanh toán/thu nợ với đầy đủ thông tin debt
+                val paymentTx = Transaction(
+                    id = 0, // Transaction mới
+                    wallet = target.originalTransaction.wallet,
+                    transactionType = transactionType,
+                    amount = amount,
+                    transactionDate = Date(),
+                    description = paymentDescription,
+                    category = category,
+                    withPerson = target.originalTransaction.withPerson,
+                    parentDebtId = target.originalTransaction.id,
+                    debtReference = target.debtId,
+                    debtMetadata = target.originalTransaction.debtMetadata
+                )
+
+                // Lưu transaction qua CreatePartialPaymentUseCase (tự động cập nhật wallet balance)
+                createPartialPaymentUseCase(
+                    CreatePartialPaymentUseCase.Params(
+                        originalDebtId = target.originalTransaction.id,
+                        debtReference = target.debtId,
+                        paymentTransaction = paymentTx
+                    )
+                ) { result ->
+                    result.fold(
+                        { failure ->
+                            _viewState.update { it.copy(paymentSubmitting = false) }
+                            emitEvent(DebtManagementEvent.ShowToast("Lưu giao dịch thất bại: ${failure}"))
+                        },
+                        { savedTransaction ->
+                            // Sau khi lưu thành công, reload dữ liệu nợ để cập nhật UI
+                            viewModelScope.launch {
+                                try {
+                                    // Đảm bảo database đã commit transaction mới
+                                    // Delay nhỏ để Room database có thời gian commit transaction
+                                    // Room thường commit trong 50-100ms, delay 150ms đảm bảo an toàn
+                                    kotlinx.coroutines.delay(150)
+                                    
+                                    // Reload dữ liệu nợ để cập nhật UI
+                                    // Sau delay, database đã commit nên query sẽ thấy transaction mới
+                                    loadDebtDataForWallet(_viewState.value.selectedWallet?.id)
+                                    
+                                    // Đảm bảo state đã được cập nhật trước khi hiển thị message
+                                    _viewState.update { it.copy(paymentSubmitting = false) }
+                                    
+                                    emitEvent(DebtManagementEvent.ShowSuccessMessage(
+                                        if (isPayable) "Đã ghi nhận trả nợ ${formatAmount(amount)} ${target.originalTransaction.wallet.currency.symbol}" 
+                                        else "Đã ghi nhận thu nợ ${formatAmount(amount)} ${target.originalTransaction.wallet.currency.symbol}"
+                                    ))
+                                    dismissPaymentSheet()
+                                } catch (e: Exception) {
+                                    android.util.Log.e("DebtManagementVM", "Error reloading debt data", e)
+                                    _viewState.update { it.copy(paymentSubmitting = false) }
+                                    emitEvent(DebtManagementEvent.ShowToast("Lỗi cập nhật UI: ${e.message}"))
+                                }
+                            }
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("DebtManagementVM", "Error processing payment", e)
+                _viewState.update { it.copy(paymentSubmitting = false) }
+                emitEvent(DebtManagementEvent.ShowToast("Đã xảy ra lỗi: ${e.message}"))
+            }
+        }
+    }
+
+    /**
+     * Trả về metadata danh mục phù hợp cho giao dịch thanh toán/thu nợ.
+     */
+    private fun resolvePaymentCategoryMeta(target: DebtSummary): String {
+        return if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(target.originalTransaction.category.metaData)) {
+            DebtCategoryMetadata.REPAYMENT
+        } else {
+            DebtCategoryMetadata.DEPT_COLLECTION_SAFE_FALLBACK()
+        }
+    }
+
+    /**
+     * Lấy Category theo metadata (title/meta). Trả null nếu không có.
+     */
+    private suspend fun fetchCategoryByMeta(meta: String): Category? {
+        return when (val result = getCategoryByNameUseCase.run(GetCategoryByNameUseCase.Params(meta))) {
+            is Either.Right -> result.right
+            is Either.Left -> null
+        }
     }
 
     private fun showFilterDialog() {
@@ -214,20 +433,7 @@ class DebtManagementViewModel @Inject constructor(
     private fun loadDebtDataForWallet(walletId: Int?) {
         viewModelScope.launch {
             try {
-                getDebtSummaryUseCase(GetDebtSummaryUseCase.Params(walletId)) { result ->
-                    result.fold(
-                        { failure ->
-                            _viewState.update { 
-                                it.copy(error = "Không thể tải dữ liệu nợ: ${failure}") 
-                            }
-                        },
-                        { debtInfo ->
-                            val currentState = _viewState.value
-                            val allDebts = debtInfo.payableDebts + debtInfo.receivableDebts
-                            updateStateWithData(currentState.availableWallets, allDebts)
-                        }
-                    )
-                }
+                loadWalletsAndDebt(walletId)
             } catch (e: Exception) {
                 _viewState.update { 
                     it.copy(error = "Đã xảy ra lỗi khi tải dữ liệu: ${e.message}") 
@@ -236,39 +442,49 @@ class DebtManagementViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Cập nhật state với dữ liệu nợ đã phân loại
+     * 
+     * Logic phân loại:
+     * - Tab "Phải trả" (Payable): IS_DEBT (Tôi đi vay người khác → Tôi phải trả lại)
+     * - Tab "Được nhận" (Receivable): IS_LOAN (Tôi cho người khác vay → Người khác nợ tôi)
+     */
     private fun updateStateWithData(wallets: List<Wallet>, allDebtSummaries: List<DebtSummary>) {
-        // We need to determine debt type from the original transaction category
-        val payableDebts = allDebtSummaries.filter { debt ->
+        // Phân loại nợ theo metadata của giao dịch gốc:
+        // - Payable (Tab "Phải trả"): IS_DEBT (Tôi đi vay → Tôi phải trả lại)
+        // - Receivable (Tab "Được nhận"): IS_LOAN (Tôi cho vay → Người khác nợ tôi)
+        val payableRaw = allDebtSummaries.filter { debt ->
             DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debt.originalTransaction.category.metaData)
         }
-        val receivableDebts = allDebtSummaries.filter { debt ->
+        val receivableRaw = allDebtSummaries.filter { debt ->
             DebtCategoryMetadata.RECEIVABLE_ORIGINAL.contains(debt.originalTransaction.category.metaData)
         }
-        
-        // Apply current filter
-        val filteredPayableDebts = applyFilterToDebts(payableDebts)
-        val filteredReceivableDebts = applyFilterToDebts(receivableDebts)
-        
-        // Separate paid and unpaid debts using isPaid property
+
+        // Áp filter lên dữ liệu gốc để tránh lọc chồng nhiều lần
+        val filteredPayableDebts = applyFilterToDebts(payableRaw)
+        val filteredReceivableDebts = applyFilterToDebts(receivableRaw)
+
+        // Phân chia đã trả/chưa trả
         val unpaidPayableDebts = filteredPayableDebts.filter { !it.isPaid }
         val paidPayableDebts = filteredPayableDebts.filter { it.isPaid }
         val unpaidReceivableDebts = filteredReceivableDebts.filter { !it.isPaid }
         val paidReceivableDebts = filteredReceivableDebts.filter { it.isPaid }
-        
-        // Calculate statistics
-        val totalPayableAmount = payableDebts.sumOf { it.remainingAmount }
-        val totalReceivableAmount = receivableDebts.sumOf { it.remainingAmount }
-        val totalUnpaidPayable = unpaidPayableDebts.sumOf { it.remainingAmount }
-        val totalUnpaidReceivable = unpaidReceivableDebts.sumOf { it.remainingAmount }
-        
-        // Get currency symbol from selected wallet or default
-        val currencySymbol = _viewState.value.selectedWallet?.currency?.symbol 
-            ?: wallets.firstOrNull()?.currency?.symbol 
-            ?: "đ"
+
+        // Thống kê:
+        // - totalXAmount: tổng gốc (đã vay/đã cho vay) = sum(totalAmount)
+        // - totalUnpaidX: số còn nợ/chưa thu = sum(remainingAmount)
+        val totalPayableAmount = filteredPayableDebts.sumOf { it.totalAmount }
+        val totalReceivableAmount = filteredReceivableDebts.sumOf { it.totalAmount }
+        val totalUnpaidPayable = filteredPayableDebts.sumOf { it.remainingAmount }
+        val totalUnpaidReceivable = filteredReceivableDebts.sumOf { it.remainingAmount }
+
+        val currencySymbol = resolveCurrencySymbol(wallets)
 
         _viewState.update { currentState ->
             currentState.copy(
                 availableWallets = wallets,
+                allPayableDebts = payableRaw,
+                allReceivableDebts = receivableRaw,
                 payableDebts = filteredPayableDebts,
                 receivableDebts = filteredReceivableDebts,
                 unpaidPayableDebts = unpaidPayableDebts,
@@ -290,12 +506,11 @@ class DebtManagementViewModel @Inject constructor(
     private fun applyFilterToDebtData() {
         val currentState = _viewState.value
         
-        // Apply filter to current debt data
-        val filteredPayableDebts = applyFilterToDebts(currentState.payableDebts)
-        val filteredReceivableDebts = applyFilterToDebts(currentState.receivableDebts)
-        
-        // Update state with filtered data
-        updateStateWithData(currentState.availableWallets, filteredPayableDebts + filteredReceivableDebts)
+        // Cập nhật trực tiếp để tránh gọi lại use case, filter sẽ được áp trong updateStateWithData
+        updateStateWithData(
+            wallets = currentState.availableWallets,
+            allDebtSummaries = currentState.allPayableDebts + currentState.allReceivableDebts
+        )
     }
 
     private fun applyFilterToDebts(debts: List<DebtSummary>): List<DebtSummary> {
@@ -341,5 +556,87 @@ class DebtManagementViewModel @Inject constructor(
            DebtSortBy.DATE_DESC ->
                 filteredDebts.sortedByDescending { it.originalTransaction.transactionDate }
         }
+    }
+
+    /**
+     * Load wallets (snapshot) rồi load dữ liệu nợ cho 1 wallet hoặc tất cả.
+     * Tách riêng để dùng lại cho load lần đầu, refresh, và khi chọn wallet.
+     * 
+     * Sử dụng suspendCoroutine để đợi callback hoàn thành, đảm bảo state được cập nhật
+     * trước khi function return. Điều này quan trọng để UI được cập nhật đúng sau khi trả nợ/thu nợ.
+     */
+    private suspend fun loadWalletsAndDebt(walletId: Int?) {
+        // Sử dụng suspendCoroutine để đợi callback hoàn thành
+        suspendCoroutine<Unit> { continuation ->
+            // Lấy danh sách ví một lần (first) để tránh collect vô hạn trong VM
+            getWalletsUseCase(UseCase.None()) { walletsResult ->
+                walletsResult.fold(
+                    {
+                        _viewState.update {
+                            it.copy(
+                                isLoading = false,
+                                isRefreshing = false,
+                                error = "Không thể tải danh sách ví"
+                            )
+                        }
+                        // Resume ngay cả khi lỗi để không block
+                        continuation.resume(Unit)
+                    },
+                    { walletsFlow ->
+                        viewModelScope.launch {
+                            try {
+                                val wallets = walletsFlow.first()
+                                _viewState.update { it.copy(availableWallets = wallets) }
+
+                                // Sau khi có ví, lấy dữ liệu nợ (theo walletId hoặc tất cả nếu null)
+                                getDebtSummaryUseCase(GetDebtSummaryUseCase.Params(walletId)) { debtResult ->
+                                    debtResult.fold(
+                                        {
+                                            _viewState.update {
+                                                it.copy(
+                                                    isLoading = false,
+                                                    isRefreshing = false,
+                                                    error = "Không thể tải dữ liệu nợ"
+                                                )
+                                            }
+                                            // Resume để tiếp tục
+                                            continuation.resume(Unit)
+                                        },
+                                        { debtInfo ->
+                                            // Thành công: Cập nhật state với dữ liệu nợ mới
+                                            val allDebts = debtInfo.payableDebts + debtInfo.receivableDebts
+                                            updateStateWithData(wallets, allDebts)
+                                            // Resume sau khi đã cập nhật state - đây là điểm quan trọng
+                                            // để đảm bảo UI được cập nhật trước khi function return
+                                            continuation.resume(Unit)
+                                        }
+                                    )
+                                }
+                            } catch (e: Exception) {
+                                // Xử lý exception trong quá trình lấy wallets
+                                android.util.Log.e("DebtManagementVM", "Error loading wallets", e)
+                                _viewState.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        isRefreshing = false,
+                                        error = "Lỗi khi tải dữ liệu: ${e.message}"
+                                    )
+                                }
+                                continuation.resume(Unit)
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    /**
+     * Ưu tiên symbol từ ví đã chọn, nếu không có lấy ví đầu tiên, fallback "đ".
+     */
+    private fun resolveCurrencySymbol(wallets: List<Wallet>): String {
+        return _viewState.value.selectedWallet?.currency?.symbol
+            ?: wallets.firstOrNull()?.currency?.symbol
+            ?: "đ"
     }
 } 

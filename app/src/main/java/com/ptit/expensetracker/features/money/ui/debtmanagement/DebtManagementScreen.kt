@@ -16,12 +16,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ptit.expensetracker.R
+import com.ptit.expensetracker.features.money.domain.model.DebtSummary
 import com.ptit.expensetracker.features.money.domain.model.DebtType
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtStatsCard
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtSummaryCard
@@ -29,6 +32,11 @@ import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtT
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.WalletSelector
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.utils.getDrawableResId
+import com.ptit.expensetracker.utils.formatAmount
+import com.ptit.expensetracker.features.money.domain.model.PaymentRecord
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -229,6 +237,33 @@ fun DebtManagementScreenContent(
     // Filter dialog
     if (state.showFilterDialog) {
         // TODO: Implement filter dialog
+    }
+
+    // Payment bottom sheet
+    if (state.showPaymentSheet && state.paymentTarget != null) {
+        PaymentSheet(
+            debt = state.paymentTarget,
+            amountText = state.paymentAmountInput,
+            noteText = state.paymentNoteInput,
+            isSubmitting = state.paymentSubmitting,
+            currencySymbol = state.currencySymbol,
+            onAmountChange = { onIntent(DebtManagementIntent.UpdatePaymentAmount(it)) },
+            onNoteChange = { onIntent(DebtManagementIntent.UpdatePaymentNote(it)) },
+            onConfirm = { onIntent(DebtManagementIntent.ConfirmPayment) },
+            onDismiss = { onIntent(DebtManagementIntent.DismissPaymentSheet) }
+        )
+    }
+
+    // History bottom sheet
+    if (state.showHistorySheet) {
+        PaymentHistorySheet(
+            title = state.historyTitle ?: "Lịch sử",
+            items = state.historyItems,
+            isLoading = state.historyLoading,
+            error = state.historyError,
+            debtType = state.historyDebtType,
+            onDismiss = { onIntent(DebtManagementIntent.ClosePaymentHistory) }
+        )
     }
 }
 
@@ -441,6 +476,210 @@ fun ReceivableDebtContent(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PaymentSheet(
+    debt: DebtSummary,
+    amountText: String,
+    noteText: String,
+    isSubmitting: Boolean,
+    currencySymbol: String,
+    onAmountChange: (String) -> Unit,
+    onNoteChange: (String) -> Unit,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        dragHandle = null,
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "Thanh toán nợ",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = "${debt.personName} • Còn lại ${formatAmount(debt.remainingAmount)} $currencySymbol",
+                style = MaterialTheme.typography.bodyMedium,
+                color = TextSecondary
+            )
+
+            OutlinedTextField(
+                value = amountText,
+                onValueChange = onAmountChange,
+                label = { Text("Số tiền") },
+                placeholder = { Text("Nhập số tiền cần thanh toán") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal
+                ),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = noteText,
+                onValueChange = onNoteChange,
+                label = { Text("Ghi chú") },
+                placeholder = { Text("Ví dụ: trả một phần") },
+                singleLine = false,
+                minLines = 2,
+                maxLines = 3,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = onDismiss
+                ) {
+                    Text("Huỷ")
+                }
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = onConfirm,
+                    enabled = !isSubmitting
+                ) {
+                    if (isSubmitting) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Xác nhận")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PaymentHistorySheet(
+    title: String,
+    items: List<PaymentRecord>,
+    isLoading: Boolean,
+    error: String?,
+    debtType: DebtType?,
+    onDismiss: () -> Unit
+) {
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            when {
+                isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                error != null -> {
+                    Text(
+                        text = error,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                items.isEmpty() -> {
+                    Text(
+                        text = "Chưa có lịch sử",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(items, key = { it.transactionId }) { record ->
+                            PaymentHistoryRow(
+                                record = record,
+                                debtType = debtType
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
+private fun PaymentHistoryRow(
+    record: PaymentRecord,
+    debtType: DebtType?
+) {
+    val amountColor = when (debtType) {
+        DebtType.PAYABLE -> MaterialTheme.colorScheme.error // Trả nợ = tiền ra
+        DebtType.RECEIVABLE -> MaterialTheme.colorScheme.primary // Thu nợ = tiền vào
+        else -> MaterialTheme.colorScheme.onSurface
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = formatDate(record.date),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            if (!record.description.isNullOrBlank()) {
+                Text(
+                    text = record.description ?: "",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        Text(
+            text = formatAmount(record.amount),
+            style = MaterialTheme.typography.bodyMedium,
+            color = amountColor,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+private fun formatDate(date: Date): String {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return formatter.format(date)
 }
 
 @Composable
