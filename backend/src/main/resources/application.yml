@@ -3,12 +3,13 @@ spring:
     name: expense-tracker-backend
 
   datasource:
-    url: jdbc:h2:mem:expensetracker;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/expensetracker
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     properties:
@@ -22,6 +23,11 @@ server:
 firebase:
   # Set your Firebase project id here (optional; can be inferred from credentials)
   project-id: ""
+
+gemini:
+  api-key: "AIzaSyAuWNhP2swmtQmqs-XpcUuJOmCdx-ezgrs" # set via environment variable GEMINI_API_KEY or here for local dev
+  model: "gemini-2.5-flash"
+  base-url: "https://generativelanguage.googleapis.com"
 
 logging:
   level:

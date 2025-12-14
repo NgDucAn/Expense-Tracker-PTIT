@@ -40,6 +40,14 @@ public class AiChatMessage {
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
+
+    /**
+     * Soft-delete marker for transcript visibility.
+     * If not null, this message should not be shown in UI history.
+     * Memory summary may still contain information derived from it.
+     */
+    @Column(name = "deleted_at")
+    private OffsetDateTime deletedAt;
 }
 
 

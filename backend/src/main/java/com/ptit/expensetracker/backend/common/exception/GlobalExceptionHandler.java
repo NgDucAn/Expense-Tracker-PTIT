@@ -35,7 +35,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ApiErrorResponse> handleApiException(ApiException ex,
                                                                HttpServletRequest request) {
-        return buildResponse(ex.getMessage(), ex.getErrorCode(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        // Default 400 for known ApiException unless overridden elsewhere
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        if ("UNAUTHORIZED".equals(ex.getErrorCode())) {
+            status = HttpStatus.UNAUTHORIZED;
+        } else if ("NOT_FOUND".equals(ex.getErrorCode())) {
+            status = HttpStatus.NOT_FOUND;
+        }
+        return buildResponse(ex.getMessage(), ex.getErrorCode(), status, request);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

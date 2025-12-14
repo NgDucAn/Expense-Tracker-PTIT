@@ -29,4 +29,10 @@ Authentication
   - Token is verified server-side via Firebase Admin SDK.
 - Test endpoint: `GET /api/me` returns `{ "userId": "<firebase_uid>" }` when token is valid.
 
+Gemini setup (required for /api/ai/chat)
+----------------------------------------
+- Set Gemini API key: environment variable `GEMINI_API_KEY` or in `application.yml` under `gemini.api-key`.
+- Default model: `gemini-1.5-flash-latest`.
+- Endpoint used: `https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent`.
+
 
