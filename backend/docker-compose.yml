@@ -5,11 +5,12 @@ services:
     environment:
       POSTGRES_DB: expensetracker
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   app:
     build: .
@@ -18,10 +19,12 @@ services:
       - "8081:8081"
     environment:
       DB_USERNAME: postgres
-      DB_PASSWORD: password
+      DB_PASSWORD: ${DB_PASSWORD}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/expensetracker
+      SPRING_PROFILES_ACTIVE: prod
     depends_on:
       - postgres
+    restart: unless-stopped
 
 volumes:
   postgres_data:
