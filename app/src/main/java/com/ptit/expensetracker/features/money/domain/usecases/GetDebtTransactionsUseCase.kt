@@ -37,6 +37,8 @@ class GetDebtTransactionsUseCase @Inject constructor(
             }
 
             // Filter by debt type (payable or receivable)
+            // PAYABLE: IS_DEBT (Tôi vay) + IS_REPAYMENT (Tôi trả nợ) - Tab "Phải trả"
+            // RECEIVABLE: IS_LOAN (Tôi cho vay) + IS_DEBT_COLLECTION (Tôi thu nợ) - Tab "Được nhận"
             val categoryFilter = when (params.debtType) {
                 DebtType.PAYABLE -> DebtCategoryMetadata.PAYABLE_ORIGINAL + DebtCategoryMetadata.PAYABLE_REPAYMENT
                 DebtType.RECEIVABLE -> DebtCategoryMetadata.RECEIVABLE_ORIGINAL + DebtCategoryMetadata.RECEIVABLE_REPAYMENT

@@ -28,12 +28,11 @@ class GetDebtSummaryUseCase @Inject constructor(
 
     override suspend fun run(params: Params): Either<Failure, DebtInfo> {
         return try {
-            // Get the selected wallet
+            // Get the selected wallet; khi walletId null sẽ lấy tất cả ví và trả về DebtInfo không gắn ví
             val walletWithCurrencyEntity = if (params.walletId != null) {
                 walletRepository.getWalletById(params.walletId).first()
-            } else  null
-
-            if (walletWithCurrencyEntity == null) {
+            } else null
+            if (params.walletId != null && walletWithCurrencyEntity == null) {
                 Log.w(TAG, "No wallet found for ID: ${params.walletId}")
                 return Either.Left(Failure.DatabaseError)
             }
@@ -52,22 +51,44 @@ class GetDebtSummaryUseCase @Inject constructor(
 
             Log.d(TAG, "Found ${debtTransactions.size} debt transactions")
 
-            // Calculate payable debts (money we owe)
+            /**
+             * Tính toán khoản nợ cho Tab "Phải trả" (Payable)
+             * 
+             * Logic:
+             * - originalCategories: IS_DEBT (Tôi đi vay người khác → Tôi phải trả lại)
+             * - repaymentCategories: IS_REPAYMENT (Tôi trả nợ lại cho người khác)
+             * 
+             * Ví dụ:
+             * - Giao dịch gốc: IS_DEBT 1,000,000đ (Tôi vay) → INFLOW
+             * - Giao dịch trả: IS_REPAYMENT 300,000đ (Tôi trả) → OUTFLOW
+             * - Còn lại: 700,000đ (Tôi còn nợ)
+             */
             val payableDebts = calculateDebtSummaries(
                 transactions = debtTransactions,
-                originalCategories = DebtCategoryMetadata.PAYABLE_ORIGINAL,
-                repaymentCategories = DebtCategoryMetadata.PAYABLE_REPAYMENT
+                originalCategories = DebtCategoryMetadata.PAYABLE_ORIGINAL,  // IS_DEBT
+                repaymentCategories = DebtCategoryMetadata.PAYABLE_REPAYMENT  // IS_REPAYMENT
             )
 
-            // Calculate receivable debts (money owed to us)
+            /**
+             * Tính toán khoản nợ cho Tab "Được nhận" (Receivable)
+             * 
+             * Logic:
+             * - originalCategories: IS_LOAN (Tôi cho người khác vay → Người khác nợ tôi)
+             * - repaymentCategories: IS_DEBT_COLLECTION (Tôi thu nợ từ người khác)
+             * 
+             * Ví dụ:
+             * - Giao dịch gốc: IS_LOAN 2,000,000đ (Tôi cho vay) → OUTFLOW
+             * - Giao dịch thu: IS_DEBT_COLLECTION 500,000đ (Tôi thu) → INFLOW
+             * - Còn lại: 1,500,000đ (Người khác còn nợ tôi)
+             */
             val receivableDebts = calculateDebtSummaries(
                 transactions = debtTransactions,
-                originalCategories = DebtCategoryMetadata.RECEIVABLE_ORIGINAL,
-                repaymentCategories = DebtCategoryMetadata.RECEIVABLE_REPAYMENT
+                originalCategories = DebtCategoryMetadata.RECEIVABLE_ORIGINAL,  // IS_LOAN
+                repaymentCategories = DebtCategoryMetadata.RECEIVABLE_REPAYMENT  // IS_DEBT_COLLECTION
             )
 
             val debtInfo = DebtInfo(
-                wallet = Wallet.fromEntity(walletWithCurrencyEntity!!),
+                wallet = walletWithCurrencyEntity?.let { Wallet.fromEntity(it) },
                 payableDebts = payableDebts,
                 receivableDebts = receivableDebts
             )
@@ -106,21 +127,54 @@ class GetDebtSummaryUseCase @Inject constructor(
             repaymentCategories.contains(tx.category.metaData)
         }
         
-        // First, try to group by debtReference
-        val withDebtReference = relevantTransactions.filter { it.debtReference != null }
-        val withoutDebtReference = relevantTransactions.filter { it.debtReference == null }
+        // Tạo map để track transaction gốc theo ID
+        // Điều này giúp match transaction thanh toán với transaction gốc qua parentDebtId
+        val originalTransactionMap = relevantTransactions
+            .filter { originalCategories.contains(it.category.metaData) }
+            .associateBy { it.id }
         
-        val debtReferenceGroups = withDebtReference.groupBy { it.debtReference!! }
+        // Group transactions với logic cải thiện
+        val grouped = mutableMapOf<String, MutableList<Transaction>>()
         
-        // For transactions without debtReference, group by person and try to match them
-        val personGroups = withoutDebtReference.groupBy { tx ->
-            val persons = parseDebtPersonFromJson(tx.withPerson)
-            persons?.firstOrNull()?.let { person ->
-                "${person.id}_${person.name}" // Create a unique key for person
-            } ?: "unknown_${tx.id}"
+        relevantTransactions.forEach { tx ->
+            val groupKey = when {
+                // Ưu tiên 1: Nếu có debtReference, dùng debtReference
+                tx.debtReference != null -> tx.debtReference!!
+                
+                // Ưu tiên 2: Nếu là transaction thanh toán và có parentDebtId, tìm transaction gốc
+                tx.parentDebtId != null -> {
+                    val original = originalTransactionMap[tx.parentDebtId]
+                    if (original != null) {
+                        // Nếu transaction gốc có debtReference, dùng nó
+                        // Nếu không, tạo key từ person hoặc ID của transaction gốc
+                        original.debtReference ?: run {
+                            val persons = parseDebtPersonFromJson(original.withPerson)
+                            persons?.firstOrNull()?.let { person ->
+                                "${person.id}_${person.name}"
+                            } ?: "legacy_${tx.parentDebtId}"
+                        }
+                    } else {
+                        // Transaction gốc không tìm thấy, tạo key từ parentDebtId
+                        "legacy_${tx.parentDebtId}"
+                    }
+                }
+                
+                // Ưu tiên 3: Nếu là transaction gốc, tạo key từ person hoặc ID
+                originalCategories.contains(tx.category.metaData) -> {
+                    val persons = parseDebtPersonFromJson(tx.withPerson)
+                    persons?.firstOrNull()?.let { person ->
+                        "${person.id}_${person.name}"
+                    } ?: "legacy_${tx.id}"
+                }
+                
+                // Fallback: Tạo key từ ID
+                else -> "unknown_${tx.id}"
+            }
+            
+            grouped.getOrPut(groupKey) { mutableListOf() }.add(tx)
         }
         
-        return debtReferenceGroups + personGroups
+        return grouped
     }
 
     private fun createDebtSummary(
@@ -140,9 +194,13 @@ class GetDebtSummaryUseCase @Inject constructor(
             repaymentCategories.contains(tx.category.metaData)
         }.sortedBy { it.transactionDate }
         
-        // Parse person information
+        // Parse person information; fallback để không loại bỏ khoản nợ thiếu contact
         val personInfo = parseDebtPersonFromJson(originalTransaction.withPerson)?.firstOrNull()
-            ?: return null
+            ?: DebtPerson(
+                id = "unknown_${originalTransaction.id}",
+                name = originalTransaction.description ?: "Không rõ đối tác",
+                initial = (originalTransaction.description?.firstOrNull() ?: '?').toString()
+            )
         
         val totalAmount = originalTransaction.amount
         val paidAmount = repaymentTransactions.sumOf { it.amount }

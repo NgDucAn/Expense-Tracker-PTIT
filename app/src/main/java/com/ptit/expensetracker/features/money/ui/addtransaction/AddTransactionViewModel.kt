@@ -275,9 +275,11 @@ class AddTransactionViewModel @Inject constructor(
                     CategoryType.EXPENSE -> TransactionType.OUTFLOW
                     CategoryType.DEBT_LOAN -> {
                         // For debt/loan categories, we need more specific logic
+                        // IS_DEBT, IS_DEBT_COLLECTION: Người khác nợ tôi (thu nợ) = INFLOW (tiền vào)
+                        // IS_LOAN, IS_REPAYMENT: Tôi nợ người khác (cho vay/trả nợ) = OUTFLOW (tiền ra)
                         when (currentState.category.metaData) {
-                            "IS_DEBT", "IS_LOAN" -> TransactionType.OUTFLOW
-                            "IS_DEBT_COLLECTION", "IS_REPAYMENT" -> TransactionType.INFLOW
+                            "IS_DEBT", "IS_DEBT_COLLECTION" -> TransactionType.INFLOW
+                            "IS_LOAN", "IS_REPAYMENT" -> TransactionType.OUTFLOW
                             else -> currentState.transactionType // Keep current if unknown
                         }
                     }
