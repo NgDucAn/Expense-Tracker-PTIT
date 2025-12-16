@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -34,16 +36,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Wallet
+import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.ui.theme.greenIndicator
 import com.ptit.expensetracker.ui.theme.onDarkSurface
-import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.utils.getDrawableResId
 import java.text.NumberFormat
 import java.util.Locale
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.TextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +146,7 @@ fun MyWalletsScreen(
         ModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
             sheetState = bottomSheetState,
-            containerColor = AppColor.Light.PrimaryColor.cardColor
+            containerColor = Color.White
         ) {
             AddWalletBottomSheetContent(onWalletTypeClick = onWalletTypeSelected)
         }
@@ -218,26 +218,36 @@ fun MyWalletsScreenContent(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("My Wallets", color = onDarkSurface) },
+                title = {
+                    Text(
+                        text = "My Wallets",
+                        color = TextMain,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = onDarkSurface
+                            tint = TextMain
                         )
                     }
                 },
                 actions = {
                     IconButton(onClick = onInfoClick) {
-                        Icon(Icons.Filled.Info, contentDescription = "Info", tint = onDarkSurface)
+                        Icon(
+                            Icons.Filled.Info,
+                            contentDescription = "Info",
+                            tint = TextMain
+                        )
                     }
-//                    TextButton(onClick = onEditClick) {
-//                        Text("EDIT", color = onDarkSurface, fontWeight = FontWeight.Bold)
-//                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = AppColor.Light.PrimaryColor.containerColor
+                    containerColor = AppColor.Light.PrimaryColor.containerColor,
+                    titleContentColor = AppColor.Light.PrimaryColor.contentColor,
+                    navigationIconContentColor = AppColor.Light.PrimaryColor.contentColor,
+                    actionIconContentColor = AppColor.Light.PrimaryColor.contentColor
                 )
             )
         },
@@ -247,19 +257,20 @@ fun MyWalletsScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .navigationBarsPadding()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .padding(horizontal = 32.dp, vertical = 16.dp),
+                shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
                     contentColor = AppColor.Light.PrimaryColor.contentColor
                 )
             ) {
-                Icon(Icons.Filled.Add, contentDescription = null)
+                Icon(Icons.Filled.Add, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("ADD WALLET", fontWeight = FontWeight.Bold)
+                Text("ADD WALLET", fontWeight = FontWeight.Bold, color = Color.White)
             }
         },
-        containerColor = Color.Black // Main background
+        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        contentColor = AppColor.Light.PrimaryColor.contentColor
     ) { paddingValues ->
         if (state.isLoading) {
             Box(
@@ -273,7 +284,7 @@ fun MyWalletsScreenContent(
             Card(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
                     .fillMaxSize(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
@@ -303,14 +314,14 @@ fun MyWalletsScreenContent(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = AppColor.Light.PrimaryColor.containerColorSecondary
+                                containerColor = Color.White
                             ),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
                             Text(
                                 text = "You will soon be able to view transactions for each wallet here.",
                                 fontSize = 14.sp,
-                                color = AppColor.Light.PrimaryColor.contentColor,
+                                color = TextSecondary,
                                 modifier = Modifier.padding(12.dp)
                             )
                         }
@@ -326,7 +337,7 @@ fun MyWalletsScreenContent(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = AppColor.Light.PrimaryColor.containerColorSecondary
+                                containerColor = Color.White
                             ),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
@@ -355,7 +366,9 @@ fun TotalBalanceCard(icon: Painter, totalBalance: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppColor.Light.PrimaryColor.containerColorSecondary),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -371,8 +384,18 @@ fun TotalBalanceCard(icon: Painter, totalBalance: String) {
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text("Total", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = onDarkSurface)
-                Text(totalBalance, fontSize = 16.sp, color = onDarkSurface)
+                Text(
+                    "Total",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextSecondary
+                )
+                Text(
+                    totalBalance,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = TextMain
+                )
             }
         }
     }
@@ -384,7 +407,7 @@ fun IncludedInTotalHeader() {
         text = "Included in Total",
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
-        color = onDarkSurface,
+        color = TextSecondary,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
     )
 }
@@ -445,7 +468,7 @@ fun WalletItem(
                     wallet.walletName,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = onDarkSurface
+                    color = TextMain
                 )
                 if (wallet.isMainWallet) {
                     Spacer(modifier = Modifier.width(4.dp))
@@ -466,11 +489,15 @@ fun WalletItem(
             Text(
                 text = balanceText,
                 fontSize = 14.sp,
-                color = if (wallet.currentBalance < 0) Color.Red else onDarkSurface
+                color = if (wallet.currentBalance < 0) Color.Red else TextSecondary
             )
         }
         IconButton(onClick = onMoreClick) {
-            Icon(Icons.Filled.MoreVert, contentDescription = "More options", tint = Color.White)
+            Icon(
+                Icons.Filled.MoreVert,
+                contentDescription = "More options",
+                tint = TextSecondary
+            )
         }
     }
 }
@@ -617,13 +644,14 @@ fun AddWalletBottomSheetContent(onWalletTypeClick: (WalletType) -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ) {
         Text(
             text = "Add wallet",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = TextMain,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
@@ -740,7 +768,7 @@ private fun OptionsBottomSheetContent(
             text = "Options",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            color = onDarkSurface,
+            color = TextMain,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         // Set as main wallet
@@ -761,7 +789,7 @@ private fun OptionsBottomSheetContent(
                     text = "Set as main wallet",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = onDarkSurface
+                    color = Color.White
                 )
             }
         }
@@ -783,7 +811,7 @@ private fun OptionsBottomSheetContent(
                     text = "Edit wallet",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = onDarkSurface
+                    color = Color.White
                 )
             }
         }
@@ -805,7 +833,7 @@ private fun OptionsBottomSheetContent(
                     text = "Delete wallet",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = onDarkSurface
+                    color = Color.White
                 )
             }
         }
@@ -827,7 +855,7 @@ private fun OptionsBottomSheetContent(
                     text = "Transfer money",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = onDarkSurface
+                    color = Color.White
                 )
             }
         }

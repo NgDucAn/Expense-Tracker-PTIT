@@ -263,19 +263,18 @@ class HomeScreenViewModel @Inject constructor(
     private fun loadCategoriesFromJson() {
         viewModelScope.launch {
             try {
-                // Load categories from JSON file in assets
-                val categoryGroups = categoryDataSource.loadCategories(context)
+                // Seed categories into DB using normalized CategoryEntity models.
+                //
+                // This path ensures that:
+                // - Each parent category is stored as a top‑level row (parentName = null)
+                //   with its own title/icon from JSON.
+                // - Each subcategory is linked via parentName = parent title key.
+                // Later, the repository groups them so that parent headers
+                // always use the correct parent title & icon instead of
+                // falling back to the first child.
+                val entities = categoryDataSource.loadCategoryEntities(context)
+                val allCategories = entities.map { it.toCategory() }
 
-                // Convert to flat list of categories
-                val allCategories =
-                    mutableListOf<com.ptit.expensetracker.features.money.domain.model.Category>()
-                categoryGroups.forEach { (_, groups) ->
-                    groups.forEach { group ->
-                        allCategories.addAll(group.subCategories)
-                    }
-                }
-
-                // Save categories to database
                 insertCategoriesUseCase(InsertCategoriesUseCase.Params(allCategories)) { result ->
                     result.fold(
                         { failure ->
