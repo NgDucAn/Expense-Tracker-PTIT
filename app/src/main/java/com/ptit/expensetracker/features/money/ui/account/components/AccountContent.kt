@@ -38,6 +38,7 @@ fun AccountContent(
     onNavigateToWallet: () -> Unit,
     onNavigateToCategories: () -> Unit,
     onNavigateToDebts: () -> Unit,
+    onNavigateToAiChat: () -> Unit = {},
     version: String = BuildConfig.APP_VERSION_NAME,
     modifier: Modifier = Modifier
 ) {
@@ -64,7 +65,7 @@ fun AccountContent(
                 fontSize = 18.sp
             )
             ProfileCard(state, onIntent)
-            FeatureMenu(onNavigateToWallet, onNavigateToCategories, onNavigateToDebts)
+            FeatureMenu(onNavigateToWallet, onNavigateToCategories, onNavigateToDebts, onNavigateToAiChat)
             AccountActionsCard(state, onIntent)
         }
         VersionInfo(version)
@@ -196,7 +197,8 @@ private fun AccountActionsCard(
 private fun FeatureMenu(
     onWallet: () -> Unit,
     onCategories: () -> Unit,
-    onDebts: () -> Unit
+    onDebts: () -> Unit,
+    onAiChat: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -220,6 +222,12 @@ private fun FeatureMenu(
                 iconRes = R.drawable.ic_category_credit,
                 title = "Debts",
                 onClick = onDebts
+            )
+            HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
+            FeatureItem(
+                iconRes = R.drawable.ic_category_placeholder,
+                title = "AI Assistant",
+                onClick = onAiChat
             )
         }
     }

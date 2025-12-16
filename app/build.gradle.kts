@@ -24,6 +24,7 @@ android {
         versionCode = 5
         versionName = "2.5.28062025"
         buildConfigField("String", "APP_VERSION_NAME", "\"${versionName}\"")
+        buildConfigField("String", "BACKEND_BASE_URL", "\"http://10.0.2.2:8081\"")
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -71,6 +72,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
+    implementation("androidx.compose.material:material-icons-extended")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -132,4 +134,9 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.0.0")
     // When using Kotlin.
     ksp("androidx.hilt:hilt-compiler:1.0.0")
+
+    // Networking - Retrofit/OkHttp
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }

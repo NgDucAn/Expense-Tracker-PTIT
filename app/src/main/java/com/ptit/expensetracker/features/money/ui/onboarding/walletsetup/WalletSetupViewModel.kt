@@ -8,6 +8,10 @@ import com.ptit.expensetracker.features.money.data.data_source.local.model.Curre
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletWithCurrencyEntity
 import com.ptit.expensetracker.features.money.domain.usecases.CreateWalletUseCase
 import com.ptit.expensetracker.features.money.domain.repository.OnboardingRepository
+import com.ptit.expensetracker.features.money.domain.usecases.InsertCategoriesUseCase
+import com.ptit.expensetracker.features.money.data.data_source.local.CategoryDataSource
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.catch
@@ -21,8 +25,10 @@ import com.ptit.expensetracker.utils.CalculatorUtil.CalculatorCallback
 
 @HiltViewModel
 class WalletSetupViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val createWalletUseCase: CreateWalletUseCase,
-    private val onboardingRepository: OnboardingRepository
+    private val onboardingRepository: OnboardingRepository,
+    private val insertCategoriesUseCase: InsertCategoriesUseCase
 ) : BaseViewModel<WalletSetupState, WalletSetupIntent, WalletSetupEvent>(), CalculatorCallback {
 
     override val _viewState = MutableStateFlow(WalletSetupState())
@@ -86,23 +92,33 @@ class WalletSetupViewModel @Inject constructor(
                 val params = CreateWalletUseCase.Params(
                     WalletWithCurrencyEntity(walletEntity, currencyEntity)
                 )
-                // Invoke use case
-                createWalletUseCase(params, viewModelScope) { result ->
-                    result.fold(
-                        { failure ->
-                            _viewState.value = state.copy(
-                                isCreating = false,
-                                error = failure.javaClass.simpleName
+                // First populate categories, then create wallet
+                populateCategories { categoriesSuccess ->
+                    if (categoriesSuccess) {
+                        // Invoke use case
+                        createWalletUseCase(params, viewModelScope) { result ->
+                            result.fold(
+                                { failure ->
+                                    _viewState.value = state.copy(
+                                        isCreating = false,
+                                        error = failure.javaClass.simpleName
+                                    )
+                                },
+                                {
+                                    // On success, save onboarding flag and navigate
+                                    viewModelScope.launch {
+                                        onboardingRepository.setOnboardingCompleted(true)
+                                        emitEvent(WalletSetupEvent.NavigateToHome)
+                                    }
+                                }
                             )
-                        },
-                        {
-                            // On success, save onboarding flag and navigate
-                            viewModelScope.launch {
-                                onboardingRepository.setOnboardingCompleted(true)
-                                emitEvent(WalletSetupEvent.NavigateToHome)
-                            }
                         }
-                    )
+                    } else {
+                        _viewState.value = state.copy(
+                            isCreating = false,
+                            error = "Failed to initialize categories"
+                        )
+                    }
                 }
             }
         }
@@ -132,6 +148,34 @@ class WalletSetupViewModel @Inject constructor(
         // Update error state
         viewModelScope.launch {
             _viewState.value = _viewState.value.copy(error = message)
+        }
+    }
+    
+    private fun populateCategories(onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                // Load categories from JSON
+                val categoryDataSource = CategoryDataSource()
+                val categoryEntities = categoryDataSource.loadCategoryEntities(context)
+                val categories = categoryEntities.map { it.toCategory() }
+                
+                // Insert categories into database
+                insertCategoriesUseCase(
+                    params = InsertCategoriesUseCase.Params(categories),
+                    scope = viewModelScope
+                ) { result ->
+                    result.fold(
+                        { failure ->
+                            onComplete(false)
+                        },
+                        {
+                            onComplete(true)
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                onComplete(false)
+            }
         }
     }
 } 

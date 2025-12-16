@@ -17,9 +17,20 @@ services:
     ports:
       - "8081:8081"
     environment:
+      # Default to dev profile for local docker-compose
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      PORT: ${PORT:-8081}
+
       DB_USERNAME: postgres
       DB_PASSWORD: password
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/expensetracker
+
+      # AI (set GEMINI_API_KEY in your local environment or a .env file)
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_HTTP_WIRETAP: ${GEMINI_HTTP_WIRETAP:-false}
+
+      # Firebase (optional locally; if set, it will be used by Firebase Admin SDK)
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-}
     depends_on:
       - postgres
 

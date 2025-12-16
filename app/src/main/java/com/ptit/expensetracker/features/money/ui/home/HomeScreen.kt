@@ -63,6 +63,12 @@ fun HomeScreen(
         onSeeAllWalletsClick = {
             navController.navigate(Screen.MyWallets.route)
         },
+        onAiChatClick = {
+            navController.navigate(Screen.AiChat.route)
+        },
+        onSearchClick = {
+            navController.navigate(Screen.SearchTransaction.route)
+        },
         onSelectMainTab = { viewModel.processIntent(HomeScreenIntent.SelectMainTab(it)) },
         onSelectTrendingTab = { viewModel.processIntent(HomeScreenIntent.SelectTrendingTab(it)) },
         onSelectSpendingTab = { viewModel.processIntent(HomeScreenIntent.SelectSpendingTab(it)) }
@@ -75,6 +81,8 @@ fun HomeScreenContent(
     state: HomeScreenState,
     onToggleBalanceVisibility: () -> Unit,
     onSeeAllWalletsClick: () -> Unit = {},
+    onAiChatClick: () -> Unit = {},
+    onSearchClick: () -> Unit = {},
     onSelectMainTab: (MainTab) -> Unit,
     onSelectTrendingTab: (TrendingSubTab) -> Unit,
     onSelectSpendingTab: (SpendingSubTab) -> Unit
@@ -91,7 +99,9 @@ fun HomeScreenContent(
             TopBalanceBar(
                 balance = state.totalBalance,
                 isVisible = state.isBalanceVisible,
-                onToggleVisibility = onToggleBalanceVisibility
+                onToggleVisibility = onToggleBalanceVisibility,
+                onAiChatClick = onAiChatClick,
+                onSearchClick = onSearchClick
             )
             MyWalletsSection(
                 wallets = state.wallets,
@@ -138,7 +148,9 @@ fun HomeScreenContent(
 fun TopBalanceBar(
     balance: String,
     isVisible: Boolean,
-    onToggleVisibility: () -> Unit
+    onToggleVisibility: () -> Unit,
+    onAiChatClick: () -> Unit = {},
+    onSearchClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -175,14 +187,14 @@ fun TopBalanceBar(
 
         Row() {
             // Icon chatbot
-            IconButton(onClick = { /* TODO: Handle search click */ }) {
+            IconButton(onClick = onAiChatClick) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_ai_chatbot),
                     contentDescription = "Chat Bot"
                 )
             }
             // Icon tìm kiếm
-            IconButton(onClick = { /* TODO: Handle search click */ }) {
+            IconButton(onClick = onSearchClick) {
                 Icon(
                     imageVector = Icons.Filled.Search,
                     contentDescription = "Search",
@@ -328,6 +340,8 @@ fun HomeScreenContentPreview() {
             state = previewState,
             onToggleBalanceVisibility = {},
             onSeeAllWalletsClick = {},
+            onAiChatClick = {},
+            onSearchClick = {},
             onSelectMainTab = {},
             onSelectTrendingTab = {},
             onSelectSpendingTab = {}

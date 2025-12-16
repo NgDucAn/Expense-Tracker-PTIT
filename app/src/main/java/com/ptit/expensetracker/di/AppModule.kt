@@ -1,6 +1,7 @@
 package com.ptit.expensetracker.di
 
 import com.ptit.expensetracker.core.di.CoreModule
+import com.ptit.expensetracker.features.ai.di.AiModule
 import com.ptit.expensetracker.features.money.di.MoneyModule
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,7 +16,8 @@ import dagger.hilt.components.SingletonComponent
 @Module(
     includes = [
         CoreModule::class,
-        MoneyModule::class
+        MoneyModule::class,
+        AiModule::class
     ]
 )
 @InstallIn(SingletonComponent::class)

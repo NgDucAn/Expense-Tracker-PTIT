@@ -1,0 +1,40 @@
+package com.ptit.expensetracker.features.ai.ui.chat
+
+import com.ptit.expensetracker.core.platform.MviEventBase
+import com.ptit.expensetracker.core.platform.MviIntentBase
+import com.ptit.expensetracker.core.platform.MviStateBase
+import com.ptit.expensetracker.features.ai.data.remote.dto.ParsedTransactionDto
+
+enum class ChatAiMode {
+    CHAT,
+    TRANSACTION
+}
+
+data class ChatMessage(
+    val text: String,
+    val isUser: Boolean
+)
+
+data class ChatAiState(
+    val messages: List<ChatMessage> = emptyList(),
+    val input: String = "",
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val mode: ChatAiMode = ChatAiMode.CHAT
+) : MviStateBase
+
+sealed interface ChatAiIntent : MviIntentBase {
+    data class UpdateInput(val text: String) : ChatAiIntent
+    data object Send : ChatAiIntent
+    data object ClearHistory : ChatAiIntent
+    data class SelectMode(val mode: ChatAiMode) : ChatAiIntent
+    data class ApplySuggestion(val text: String, val sendImmediately: Boolean = true) : ChatAiIntent
+}
+
+sealed interface ChatAiEvent : MviEventBase {
+    data class ShowError(val message: String) : ChatAiEvent
+    data class PrefillTransaction(val parsed: ParsedTransactionDto) : ChatAiEvent
+    data object HistoryCleared : ChatAiEvent
+}
+
+

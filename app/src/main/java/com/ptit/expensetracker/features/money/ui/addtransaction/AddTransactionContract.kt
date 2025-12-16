@@ -107,6 +107,7 @@ sealed interface AddTransactionIntent : MviIntentBase {
     // New intents for handling Google Assistant data
     data class InitializeCategory(val categoryName: String) : AddTransactionIntent
     data class InitializeDate(val dateString: String) : AddTransactionIntent
+    data class InitializeDescription(val description: String) : AddTransactionIntent
     
     // New intents for numpad visibility control
     data object ShowNumpad : AddTransactionIntent

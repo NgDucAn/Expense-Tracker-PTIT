@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
         MoneyRepositoryModule::class,
         MoneyDataModule::class,
         RecurringBudgetWorkerModule::class,
+        // AI use cases are provided separately via AiUseCaseModule (ViewModel scope)
     ]
 )
 @InstallIn(SingletonComponent::class)

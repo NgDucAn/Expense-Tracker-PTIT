@@ -24,7 +24,10 @@ public class SecurityConfig {
                         .disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/**", "/h2-console/**").permitAll()
+                        // Only allow the minimal health endpoint unauthenticated (if actuator is enabled).
+                        .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                        // Dev-only console; should be disabled in production.
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(firebaseAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

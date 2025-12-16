@@ -58,17 +58,19 @@ class CategoryDataSource {
                     val subCategories = mutableListOf<Category>()
                     val subArray = categoryJson.optJSONArray("subcategories")
 
-                    if (subArray == null) {
-                        val parentCategory = Category(
-                            id = 0,
-                            metaData = parentMetadata,
-                            title = parentTitleKey,
-                            icon = parentIconName,
-                            type = categoryType,
-                            parentName = null
-                        )
-                        subCategories.add(parentCategory)
-                    } else {
+                    // Always add the parent category itself to the list of selectable categories
+                    // This ensures categories like "Entertainment" are selectable even if they have subcategories
+                    val parentCategory = Category(
+                        id = 0,
+                        metaData = parentMetadata,
+                        title = parentTitleKey,
+                        icon = parentIconName,
+                        type = categoryType,
+                        parentName = null // Parent category itself
+                    )
+                    subCategories.add(parentCategory)
+
+                    if (subArray != null) {
                         for (j in 0 until subArray.length()) {
                             val subCategoryJson = subArray.getJSONObject(j)
                             val subName = subCategoryJson.optString("name", "")
@@ -148,21 +150,21 @@ class CategoryDataSource {
                         continue
                     }
 
+                    // FIX: Always add the parent category entity
+                    entities.add(
+                        CategoryEntity(
+                            id = 0, // Auto-generated
+                            metaData = parentMetadata,
+                            title = parentTitleKey,
+                            icon = parentIconName,
+                            type = typeInt,
+                            parentName = null
+                        )
+                    )
+
                     val subArray = categoryJson.optJSONArray("subcategories")
 
-                    if (subArray == null) {
-                        // Add parent as a direct category
-                        entities.add(
-                            CategoryEntity(
-                                id = 0, // Auto-generated
-                                metaData = parentMetadata,
-                                title = parentTitleKey,
-                                icon = parentIconName,
-                                type = typeInt,
-                                parentName = null
-                            )
-                        )
-                    } else {
+                    if (subArray != null) {
                         // Process subcategories
                         for (j in 0 until subArray.length()) {
                             val subCategoryJson = subArray.getJSONObject(j)

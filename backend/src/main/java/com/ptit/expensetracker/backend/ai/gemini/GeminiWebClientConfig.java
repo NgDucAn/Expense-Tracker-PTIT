@@ -14,11 +14,19 @@ public class GeminiWebClientConfig {
 
     @Bean
     public WebClient geminiWebClient(GeminiProperties properties) {
+        // Wiretap can leak prompts/responses in logs; keep it OFF by default.
+        boolean wiretapEnabled = Boolean.parseBoolean(System.getenv().getOrDefault("GEMINI_HTTP_WIRETAP", "false"));
+
         HttpClient httpClient = HttpClient.create()
-                .responseTimeout(Duration.ofSeconds(20))
-                .wiretap("reactor.netty.http.client.HttpClient",
-                        io.netty.handler.logging.LogLevel.INFO,
-                        AdvancedByteBufFormat.TEXTUAL);
+                .responseTimeout(Duration.ofSeconds(20));
+
+        if (wiretapEnabled) {
+            httpClient = httpClient.wiretap(
+                    "reactor.netty.http.client.HttpClient",
+                    io.netty.handler.logging.LogLevel.INFO,
+                    AdvancedByteBufFormat.TEXTUAL
+            );
+        }
 
         return WebClient.builder()
                 .baseUrl(properties.getBaseUrl())

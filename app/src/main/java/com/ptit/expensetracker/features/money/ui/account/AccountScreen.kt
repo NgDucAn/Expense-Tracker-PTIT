@@ -33,7 +33,8 @@ fun AccountScreen(
     modifier: Modifier = Modifier,
     onNavigateToDebts: () -> Unit = {},
     onNavigateToWallets: () -> Unit = {},
-    onNavigateToCategories: () -> Unit = {}
+    onNavigateToCategories: () -> Unit = {},
+    onNavigateToAiChat: () -> Unit = {}
 ) {
     val state by viewModel.viewState.collectAsState()
     val context = LocalContext.current
@@ -120,6 +121,7 @@ fun AccountScreen(
         onNavigateToCategories = onNavigateToCategories,
         onNavigateToDebts = onNavigateToDebts,
         onNavigateToWallet = onNavigateToWallets,
+        onNavigateToAiChat = onNavigateToAiChat,
         modifier = modifier
     )
 }

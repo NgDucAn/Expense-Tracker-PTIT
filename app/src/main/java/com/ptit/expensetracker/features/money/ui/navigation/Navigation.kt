@@ -56,7 +56,9 @@ import com.ptit.expensetracker.ui.theme.AppColor
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.graphics.Color
+import android.net.Uri
 import androidx.compose.ui.text.style.TextOverflow
+import com.ptit.expensetracker.features.ai.ui.chat.ChatAiScreen
 import com.ptit.expensetracker.features.money.ui.addwallet.AddWalletViewModel
 import com.ptit.expensetracker.ui.theme.AppColor.Light.SecondaryColor.color1
 import com.ptit.expensetracker.features.money.ui.onboarding.splash.SplashScreen
@@ -307,8 +309,28 @@ fun AppNavigation(
                     modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
                     onNavigateToDebts = { navController.navigate(Screen.DebtManagement.route) },
                     onNavigateToWallets = { navController.navigate(Screen.MyWallets.route) },
-                    onNavigateToCategories = { navController.navigate(Screen.Category.route) }
+                    onNavigateToCategories = { navController.navigate(Screen.Category.route) },
+                    onNavigateToAiChat = { navController.navigate(Screen.AiChat.route) }
                 ) 
+            }
+            composable(Screen.AiChat.route) {
+                ChatAiScreen(
+                    onPrefillTransaction = { parsed ->
+                        val amount = parsed.amount?.toString() ?: ""
+                        val category = parsed.categoryName ?: ""
+                        val date = parsed.date ?: ""
+                        val desc = parsed.description ?: ""
+                        // Store parsed values in back stack before navigation
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set("ai_amount", amount)
+                            set("ai_category", category)
+                            set("ai_date", date)
+                            set("ai_description", desc)
+                        }
+                        navController.navigate(Screen.AddTransaction.createRoute())
+                    },
+                    modifier = contentModifier
+                )
             }
             composable(
                 route = Screen.AddTransaction.route,
@@ -328,10 +350,21 @@ fun AppNavigation(
                     },
                 )
             ) { backStackEntry ->
-                val amount = backStackEntry.arguments?.getString("amount")
-                val category = backStackEntry.arguments?.getString("category")
-                val date = backStackEntry.arguments?.getString("date")
+                val amountFromArgs = backStackEntry.arguments?.getString("amount")
+                val categoryFromArgs = backStackEntry.arguments?.getString("category")
+                val dateFromArgs = backStackEntry.arguments?.getString("date")
                 val transactionId = backStackEntry.arguments?.getInt("transactionId")?.takeIf { it != -1 }
+
+                // Values passed from AI chat via SavedStateHandle (if any)
+                val previousHandle = navController.previousBackStackEntry?.savedStateHandle
+                val aiAmount = previousHandle?.get<String>("ai_amount")
+                val aiCategory = previousHandle?.get<String>("ai_category")
+                val aiDate = previousHandle?.get<String>("ai_date")
+                val aiDescription = previousHandle?.get<String>("ai_description")
+
+                val amount = aiAmount?.takeIf { it.isNotBlank() } ?: amountFromArgs
+                val category = aiCategory?.takeIf { it.isNotBlank() } ?: categoryFromArgs
+                val date = aiDate?.takeIf { it.isNotBlank() } ?: dateFromArgs
 
                 AddTransactionScreen(
                     onCloseClick = { navController.popBackStack() },
@@ -339,7 +372,8 @@ fun AppNavigation(
                     transactionId = transactionId,
                     initialAmount = amount,
                     initialCategory = category,
-                    initialDate = date
+                    initialDate = date,
+                    initialDescription = aiDescription
                 )
             }
             composable(Screen.Category.route) {

@@ -29,6 +29,9 @@ import com.ptit.expensetracker.features.money.domain.usecases.GetCategoryByNameU
 import com.ptit.expensetracker.features.money.domain.usecases.GetTransactionByIdUseCase
 import com.ptit.expensetracker.features.money.domain.model.Transaction
 import com.ptit.expensetracker.utils.formatAmountWithCurrency
+import java.text.Normalizer
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
@@ -49,15 +52,20 @@ class AddTransactionViewModel @Inject constructor(
             .map { it.toCategory() }
     }
 
-    // Normalize input string (lowercase and trim)
-    private fun normalize(input: String): String = input.trim().lowercase()
+    // Normalize input string (lowercase, trim, remove accents)
+    private fun normalize(input: String): String {
+        val lower = input.trim().lowercase()
+        val normalized = Normalizer.normalize(lower, Normalizer.Form.NFD)
+        // Remove diacritical marks
+        return normalized.replace(Regex("\\p{Mn}+"), "")
+    }
 
     // Attempt to find a matching category offline (exact metadata match or via synonyms)
     private fun findCategoryOffline(name: String): Category? {
         val norm = normalize(name)
-        // 1. Exact match on metadata (digits removed)
+        // 1. Exact match on metadata (digits removed, accent-insensitive)
         offlineCategories.firstOrNull { cat ->
-            cat.metaData.filter { ch -> !ch.isDigit() }.lowercase() == norm
+            normalize(cat.metaData.filter { ch -> !ch.isDigit() }) == norm
         }?.let { return it }
         // 2. Match via synonyms arrays (resource arrays named like "<category>_category_synonyms")
         offlineCategories.forEach { cat ->
@@ -119,6 +127,7 @@ class AddTransactionViewModel @Inject constructor(
             is AddTransactionIntent.SelectWallet -> selectWallet(intent.wallet)
             is AddTransactionIntent.SelectCategory -> selectCategory(intent.category)
             is AddTransactionIntent.UpdateDescription -> updateDescription(intent.description)
+            is AddTransactionIntent.InitializeDescription -> initializeDescription(intent.description)
             is AddTransactionIntent.SelectTransactionType -> selectTransactionType(intent.type)
             is AddTransactionIntent.SelectDate -> selectDate(intent.date)
             is AddTransactionIntent.NumpadPressed -> handleNumpadPress(intent.button)
@@ -379,34 +388,25 @@ class AddTransactionViewModel @Inject constructor(
         _viewState.value = _viewState.value.copy(photoUri = uri)
     }
 
-    // Handle initializing a category from a category name received from Google Assistant
+    // Handle initializing a category from a category name/metadata received from AI
     private fun initializeCategory(categoryName: String) {
         viewModelScope.launch {
-            // Offline classification first
-            findCategoryOffline(categoryName)?.let { matched ->
-                // Use the matched category's title to find the actual category in database
-                getCategoryByNameUseCase(
-                    params = GetCategoryByNameUseCase.Params(matched.title),
-                    scope = viewModelScope
-                ) { result ->
-                    result.fold(
-                        { failure ->
-                            // Database category not found, use the offline matched category
-                            selectCategory(matched)
-                            Log.d("AddTransactionVM", "Using offline category: ${matched.metaData}")
-                        },
-                        { dbCategory ->
-                            // Found in database, use that instead
-                            selectCategory(dbCategory)
-                            Log.d("AddTransactionVM", "Found database category: ${dbCategory.metaData}")
-                        }
-                    )
-                }
+            // 1) Try match by metadata/name directly (case-insensitive, accent-insensitive)
+            findCategoryByMetadataOrName(categoryName)?.let { cat ->
+                val resolved = resolveCategoryFromDbOrFallback(cat.metaData)
+                selectCategory(resolved ?: cat)
+                Log.d("AddTransactionVM", "Matched category by metadata/name: ${cat.metaData}")
                 return@launch
             }
-            // Fallback: no offline match, use default placeholder
-            try {
-                val defaultCategory = Category(
+            // 2) Offline classification via synonyms/metadata
+            findCategoryOffline(categoryName)?.let { matched ->
+                val resolved = resolveCategoryFromDbOrFallback(matched.metaData)
+                selectCategory(resolved ?: matched)
+                return@launch
+            }
+            // 3) Fallback placeholder
+            selectCategory(
+                Category(
                     id = 0,
                     metaData = "default",
                     title = categoryName,
@@ -414,11 +414,34 @@ class AddTransactionViewModel @Inject constructor(
                     type = CategoryType.EXPENSE,
                     parentName = "other"
                 )
-                selectCategory(defaultCategory)
-                Log.d("AddTransactionVM", "Defaulted to placeholder category: $categoryName")
-            } catch (e: Exception) {
-                Log.e("AddTransactionVM", "Error initializing category: ${e.message}")
-            }
+            )
+            Log.d("AddTransactionVM", "Defaulted to placeholder category: $categoryName")
+        }
+    }
+
+    private suspend fun resolveCategoryFromDbOrFallback(metaOrName: String): Category? {
+        return resolveCategory(metaOrName)
+            ?: resolveCategory("IS_OTHER_EXPENSE")
+    }
+
+    private suspend fun resolveCategory(metaOrName: String): Category? = suspendCoroutine { cont ->
+        getCategoryByNameUseCase(
+            params = GetCategoryByNameUseCase.Params(metaOrName),
+            scope = viewModelScope
+        ) { result ->
+            result.fold(
+                { _ -> cont.resume(null) },
+                { cat -> cont.resume(cat) }
+            )
+        }
+    }
+
+    private fun findCategoryByMetadataOrName(input: String): Category? {
+        val normInput = normalize(input)
+        return offlineCategories.firstOrNull { cat ->
+            normalize(cat.metaData) == normInput ||
+            normalize(cat.title) == normInput ||
+            (cat.parentName != null && normalize(cat.parentName) == normInput)
         }
     }
     
@@ -453,6 +476,10 @@ class AddTransactionViewModel @Inject constructor(
 
     private fun showNumpad() {
         _viewState.value = _viewState.value.copy(showNumpad = true)
+    }
+
+    private fun initializeDescription(description: String) {
+        _viewState.value = _viewState.value.copy(description = description)
     }
 
     private fun hideNumpad() {

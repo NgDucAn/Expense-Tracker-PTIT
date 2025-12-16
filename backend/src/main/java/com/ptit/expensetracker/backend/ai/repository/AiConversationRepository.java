@@ -12,3 +12,6 @@ public interface AiConversationRepository extends JpaRepository<AiConversation, 
 }
 
 
+
+
+

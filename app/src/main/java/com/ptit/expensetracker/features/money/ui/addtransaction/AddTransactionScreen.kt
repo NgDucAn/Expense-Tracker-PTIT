@@ -45,7 +45,8 @@ fun AddTransactionScreen(
     transactionId: Int? = null, // For edit mode
     initialAmount: String? = null,
     initialCategory: String? = null,
-    initialDate: String? = null
+    initialDate: String? = null,
+    initialDescription: String? = null
 ) {
     val state by viewModel.viewState.collectAsState()
     val context = LocalContext.current
@@ -125,6 +126,10 @@ fun AddTransactionScreen(
             initialDate?.let { dateString ->
                 // Process the date - convert string to Date in ViewModel
                 viewModel.processIntent(AddTransactionIntent.InitializeDate(dateString))
+            }
+
+            initialDescription?.let { desc ->
+                viewModel.processIntent(AddTransactionIntent.InitializeDescription(desc))
             }
         }
     }
