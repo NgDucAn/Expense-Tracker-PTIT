@@ -302,9 +302,10 @@ object MoneyUseCaseModule {
     @Provides
     @ViewModelScoped
     fun provideCreatePartialPaymentUseCase(
-        transactionRepository: TransactionRepository
+        transactionRepository: TransactionRepository,
+        walletRepository: WalletRepository
     ): CreatePartialPaymentUseCase {
-        return CreatePartialPaymentUseCase(transactionRepository)
+        return CreatePartialPaymentUseCase(transactionRepository, walletRepository)
     }
 
     @Provides

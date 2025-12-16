@@ -239,14 +239,14 @@
     "name": "loan",
     "title": "cate_loan",
     "icon": "ic_category_loan",
-    "type": 2,
+    "type": 3,
     "metadata": "IS_LOAN"
   },
   {
     "name": "repayment ",
     "title": "cate_repayment",
     "icon": "icon_141",
-    "type": 2,
+    "type": 3,
     "metadata": "IS_REPAYMENT"
   },
   {
@@ -268,14 +268,14 @@
     "name": "debt",
     "title": "cate_debt",
     "icon": "ic_category_debt",
-    "type": 1,
+    "type": 3,
     "metadata": "IS_DEBT"
   },
   {
     "name": "debt collection",
     "title": "cate_debt_collection",
     "icon": "icon_140",
-    "type": 1,
+    "type": 3,
     "metadata": "IS_DEBT_COLLECTION"
   },
   {
