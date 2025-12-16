@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
@@ -69,4 +70,5 @@ sealed class Screen(val route: String, val label: String, val icon: ImageVector)
     
     // Debt Management Screen
     data object DebtManagement : Screen("debt_management", "Quản lý nợ", Icons.Default.Search)
+    data object AiChat : Screen("ai_chat", "AI Chat", Icons.Default.Chat)
 }
