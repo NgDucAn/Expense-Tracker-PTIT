@@ -60,6 +60,9 @@ fun HomeScreen(
                 HomeScreenIntent.ToggleBalanceVisibility
             )
         },
+        onSeeReportsClick = {
+            navController.navigate(Screen.MonthlyReport.route)
+        },
         onSeeAllWalletsClick = {
             navController.navigate(Screen.MyWallets.route)
         },
@@ -74,6 +77,7 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeScreenState,
     onToggleBalanceVisibility: () -> Unit,
+    onSeeReportsClick: () -> Unit,
     onSeeAllWalletsClick: () -> Unit = {},
     onSelectMainTab: (MainTab) -> Unit,
     onSelectTrendingTab: (TrendingSubTab) -> Unit,
@@ -103,7 +107,7 @@ fun HomeScreenContent(
                     .padding(16.dp)
             )
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                ReportSectionHeader()
+                ReportSectionHeader(onSeeReportsClick = onSeeReportsClick)
                 StatisticsPlaceholder(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -327,6 +331,7 @@ fun HomeScreenContentPreview() {
         HomeScreenContent(
             state = previewState,
             onToggleBalanceVisibility = {},
+            onSeeReportsClick = {},
             onSeeAllWalletsClick = {},
             onSelectMainTab = {},
             onSelectTrendingTab = {},
@@ -336,7 +341,9 @@ fun HomeScreenContentPreview() {
 }
 
 @Composable
-fun ReportSectionHeader() {
+fun ReportSectionHeader(
+    onSeeReportsClick: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -352,7 +359,8 @@ fun ReportSectionHeader() {
             text = "See reports",
             color = Color(0xFFFCA419),
             fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.clickable { onSeeReportsClick() }
         )
     }
 }

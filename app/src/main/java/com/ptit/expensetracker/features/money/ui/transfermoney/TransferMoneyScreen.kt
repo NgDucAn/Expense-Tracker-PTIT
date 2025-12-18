@@ -37,6 +37,7 @@ import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
 import com.ptit.expensetracker.features.money.ui.transfermoney.components.*
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 import java.util.*
 
 @Composable
@@ -171,7 +172,7 @@ fun TransferMoneyContent(
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
         },
-        containerColor = AppColor.Light.PrimaryColor.containerColor,
+        containerColor = Color(0xFFF6F6F6),
         modifier = Modifier.padding(top = insetTop)
     ) {
         Column(
@@ -197,7 +198,7 @@ fun TransferMoneyContent(
                     // Group all "From" items in a single Surface
                     Surface(
                         modifier = sectionModifier,
-                        color = AppColor.Light.PrimaryColor.containerColorSecondary,
+                        color = Color.White,
                         shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
                     ) {
                         Column(modifier = Modifier) {
@@ -210,7 +211,7 @@ fun TransferMoneyContent(
                                 onClick = onAmountClick
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // 2. From wallet selector
                             WalletSelector(
@@ -219,7 +220,7 @@ fun TransferMoneyContent(
                                 onWalletSelected = onFromWalletSelect
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // 3. Category - Outgoing transfer item
                             TransferItem(
@@ -228,7 +229,7 @@ fun TransferMoneyContent(
                                 title = "Outgoing transfer"
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // 4. Note field
                             TransferItem(
@@ -236,6 +237,7 @@ fun TransferMoneyContent(
                                 painter = painterResource(id = R.drawable.ic_description),
                                 title = "Note",
                                 value = if (state.note.isNotEmpty()) state.note else null,
+                                iconTint = Color.Black,
                                 onClick = {
                                     // In a real app, show a dialog to enter note
                                     onNoteChange("Transfer money")
@@ -250,7 +252,7 @@ fun TransferMoneyContent(
                     // Group all "To" items in a single Surface
                     Surface(
                         modifier = sectionModifier,
-                        color = AppColor.Light.PrimaryColor.containerColorSecondary,
+                        color = Color.White,
                         shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
                     ) {
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
@@ -270,7 +272,7 @@ fun TransferMoneyContent(
                                     textAlign = TextAlign.Center
                                 )
                                 
-                                HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                                HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
                             }
 
                             // 1. Converted amount field (only if wallet is selected and currencies differ)
@@ -283,7 +285,7 @@ fun TransferMoneyContent(
                                     currency = state.toWallet?.currency
                                 )
 
-                                HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                                HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
                             }
 
                             // 2. To wallet selector
@@ -293,7 +295,7 @@ fun TransferMoneyContent(
                                 onWalletSelected = onToWalletSelect
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // 3. Category - Incoming transfer item
                             TransferItem(
@@ -302,7 +304,7 @@ fun TransferMoneyContent(
                                 title = "Incoming transfer"
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // 4. Note field (could be the same or different from "From" note)
                             TransferItem(
@@ -310,6 +312,7 @@ fun TransferMoneyContent(
                                 painter = painterResource(id = R.drawable.ic_description),
                                 title = "Note",
                                 value = if (state.note.isNotEmpty()) state.note else null,
+                                iconTint = Color.Black,
                                 onClick = {
                                     // In a real app, show a dialog to enter note
                                     onNoteChange("Transfer money")
@@ -324,7 +327,7 @@ fun TransferMoneyContent(
                     // Group all "Options" items in a single Surface
                     Surface(
                         modifier = sectionModifier,
-                        color = AppColor.Light.PrimaryColor.containerColorSecondary,
+                        color = Color.White,
                         shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
                     ) {
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
@@ -332,10 +335,11 @@ fun TransferMoneyContent(
                             DateSelector(
                                 date = state.date,
                                 icon = painterResource(id = R.drawable.ic_calendar),
+                                iconTint = Color.Black,
                                 onDateChange = onDateChange
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // Exclude from report toggle
                             ToggleOption(
@@ -345,7 +349,7 @@ fun TransferMoneyContent(
                                 onCheckedChange = onExcludeFromReportChange
                             )
 
-                            HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                             // Add transfer fee toggle
                             ToggleOption(
@@ -356,7 +360,7 @@ fun TransferMoneyContent(
 
                             // Transfer fee field (if enabled)
                             if (state.addTransferFee) {
-                                HorizontalDivider(thickness = 0.5.dp, color = Color(0xFF3A3A3C))
+                                HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
 
                                 AmountTextField(
                                     amount = state.transferFee,
@@ -418,7 +422,7 @@ fun AmountSelector(
             
             Text(
                 text = "Amount",
-                color = Color.White,
+                color = TextMain,
                 fontSize = 16.sp
             )
         }
@@ -429,7 +433,7 @@ fun AmountSelector(
         ) {
             Text(
                 text = if (amount.isNotEmpty()) "${currency?.symbol ?: "$"} $amount" else "Enter amount",
-                color = if (amount.isNotEmpty()) Color.White else Color.Gray,
+                color = if (amount.isNotEmpty()) TextMain else Color.Gray,
                 fontSize = 16.sp,
                 fontWeight = if (amount.isNotEmpty()) FontWeight.Bold else FontWeight.Normal
             )
@@ -487,7 +491,7 @@ fun ToAmountDisplay(
             
             Text(
                 text = "Converted Amount",
-                color = Color.White,
+                color = TextMain,
                 fontSize = 16.sp
             )
         }
@@ -508,7 +512,7 @@ fun ToAmountDisplay(
                     }
                 }
             } else "-",
-            color = Color.White,
+            color = TextMain,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )

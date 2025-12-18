@@ -163,7 +163,24 @@ class CategoryDataSource {
                             )
                         )
                     } else {
-                        // Process subcategories
+                        // First, insert the parent category itself so we always have a proper group header.
+                        // This ensures we have a Category with:
+                        // - title = parentTitleKey (e.g. "cate_utilities")
+                        // - icon  = parentIconName (e.g. "icon_135")
+                        // - parentName = null (top-level)
+                        entities.add(
+                            CategoryEntity(
+                                id = 0, // Auto-generated
+                                metaData = parentMetadata,
+                                title = parentTitleKey,
+                                icon = parentIconName,
+                                type = typeInt,
+                                parentName = null
+                            )
+                        )
+
+                        // Process subcategories and explicitly link them to the parent title key.
+                        // This allows grouping logic to reliably find the correct header.
                         for (j in 0 until subArray.length()) {
                             val subCategoryJson = subArray.getJSONObject(j)
                             val subName = subCategoryJson.optString("name", "")
@@ -184,7 +201,10 @@ class CategoryDataSource {
                                     title = subTitleKey,
                                     icon = subIconName,
                                     type = subTypeInt,
-                                    parentName = parentName
+                                    // IMPORTANT:
+                                    // Use parentTitleKey (e.g. "cate_utilities") so that
+                                    // grouping can match on the parent's title instead of raw JSON "name".
+                                    parentName = parentTitleKey
                                 )
                             )
                         }
