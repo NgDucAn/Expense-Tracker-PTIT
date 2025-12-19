@@ -1,5 +1,9 @@
 package com.ptit.expensetracker.features.money.ui.home
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.core.content.ContextCompat
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletWithCurrencyEntity
@@ -48,6 +53,26 @@ fun HomeScreen(
     showWeeklyExpenseSheet: Boolean = false,
     onDismissWeeklyExpenseSheet: () -> Unit = {}
 ) {
+    // Xin quyền thông báo cho Android 13+ ngay khi user vào Home lần đầu
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { /* Kết quả có thể được xử lý sau nếu cần */ }
+    )
+
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val hasPermission = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+            if (!hasPermission) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
     val uiState by viewModel.viewState.collectAsState()
     val insetsTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     HomeScreenContent(
@@ -186,13 +211,13 @@ fun TopBalanceBar(
                 )
             }
             // Icon tìm kiếm
-            IconButton(onClick = { /* TODO: Handle search click */ }) {
+            /*IconButton(onClick = { *//* TODO: Handle search click *//* }) {
                 Icon(
                     imageVector = Icons.Filled.Search,
                     contentDescription = "Search",
                     tint = Color(0xFF1E2A36)
                 )
-            }
+            }*/
         }
     }
 }

@@ -178,6 +178,11 @@
     <string name="ail_notification_cancel_message">You can show this notification again in Settings</string>
     <string name="ail_notification_text">so you can add transaction later</string>
     <string name="ail_notification_title">Tap to take photo</string>
+    <!-- Daily transaction reminder -->
+    <string name="daily_reminder_title">Nhắc ghi chép giao dịch hôm nay</string>
+    <string name="daily_reminder_message">Hôm nay bạn có giao dịch nào không? Ghi lại để quản lý chi tiêu tốt hơn.</string>
+    <string name="daily_reminder_channel_name">Nhắc giao dịch hàng ngày</string>
+    <string name="daily_reminder_channel_description">Nhắc bạn ghi lại các giao dịch chi tiêu / thu nhập mỗi ngày vào buổi tối.</string>
     <string name="alert">Alert</string>
     <string name="alert_category_will_be_deleted_when_merge">%1$s will be deleted</string>
     <string name="alert_children_category_will_be_transferred_to_category_merged_to">All children categories of the %1$s will be transferred to %2$s</string>
