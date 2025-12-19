@@ -29,7 +29,7 @@ class SplashViewModel @Inject constructor(
             delay(2000) // Simulate loading delay
             emitEvent(
                 if (completed) SplashEvent.GoToHome
-                else SplashEvent.GoToWalletSetup
+                else SplashEvent.GoToOnboarding
             )
         }
     }

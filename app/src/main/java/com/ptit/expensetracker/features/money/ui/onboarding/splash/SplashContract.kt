@@ -17,5 +17,5 @@ data class SplashState(
 
 sealed interface SplashEvent : MviEventBase {
     object GoToHome : SplashEvent
-    object GoToWalletSetup : SplashEvent
+    object GoToOnboarding : SplashEvent
 } 

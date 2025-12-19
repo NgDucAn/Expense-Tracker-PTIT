@@ -96,25 +96,26 @@ fun AppNavigation(
 
     // Check if we're on a full-screen page that should hide bottom nav
     val isFullScreenPage =
-            currentRoute == Screen.AddTransaction.route ||
-            currentRoute == Screen.DetailTransaction.route ||
-            currentRoute == Screen.EnterAmount.route ||
-            currentRoute == Screen.TransferMoney.route ||
-            currentRoute == Screen.MyWallets.route ||
-            currentRoute == Screen.AddWallet.route ||
-            currentRoute == Screen.Currency.route ||
-            currentRoute == Screen.Category.route ||
-            currentRoute == Screen.AddBudget.route ||
-            currentRoute == Screen.Contacts.route ||
-            currentRoute == Screen.ChooseWallet.route ||
-            currentRoute == Screen.Splash.route ||
-            currentRoute == Screen.WalletSetup.route ||
-            currentRoute == Screen.IconPicker.route ||
-            currentRoute == Screen.BudgetDetails.route ||
-            currentRoute == Screen.BudgetTransactions.route ||
-            currentRoute == Screen.SearchTransaction.route ||
-            currentRoute == Screen.DebtManagement.route ||
-            currentRoute == Screen.MonthlyReport.route
+        currentRoute == Screen.AddTransaction.route ||
+        currentRoute == Screen.DetailTransaction.route ||
+        currentRoute == Screen.EnterAmount.route ||
+        currentRoute == Screen.TransferMoney.route ||
+        currentRoute == Screen.MyWallets.route ||
+        currentRoute == Screen.AddWallet.route ||
+        currentRoute == Screen.Currency.route ||
+        currentRoute == Screen.Category.route ||
+        currentRoute == Screen.AddBudget.route ||
+        currentRoute == Screen.Contacts.route ||
+        currentRoute == Screen.ChooseWallet.route ||
+        currentRoute == Screen.Splash.route ||
+        currentRoute == Screen.WalletSetup.route ||
+        currentRoute == Screen.IconPicker.route ||
+        currentRoute == Screen.BudgetDetails.route ||
+        currentRoute == Screen.BudgetTransactions.route ||
+        currentRoute == Screen.SearchTransaction.route ||
+        currentRoute == Screen.DebtManagement.route ||
+        currentRoute == Screen.MonthlyReport.route ||
+        currentRoute == Screen.Onboarding.route
 
     LaunchedEffect(shouldNavigateToAddTransaction.value) {
         if (shouldNavigateToAddTransaction.value) {
@@ -245,6 +246,11 @@ fun AppNavigation(
         ) {
             composable(Screen.Splash.route) {
                 SplashScreen(navController = navController)
+            }
+            composable(Screen.Onboarding.route) {
+                com.ptit.expensetracker.features.money.ui.onboarding.onboard.OnboardingScreen(
+                    navController = navController
+                )
             }
             composable(Screen.WalletSetup.route) {
                 WalletSetupScreen(navController = navController)

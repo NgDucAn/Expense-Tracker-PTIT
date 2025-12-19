@@ -39,6 +39,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.TransactionNumpad
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.NumpadButton
+import com.ptit.expensetracker.ui.theme.TextMain
 
 @Composable
 fun WalletSetupScreen(
@@ -132,12 +133,17 @@ fun WalletSetupScreenContent(
                     .padding(16.dp)
                     .height(52.dp),
                 shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                    contentColor = Color.White,
+                    disabledContainerColor = AppColor.Light.PrimaryColor.TextButtonColor,
+                    disabledContentColor = AppColor.Light.PrimaryColor.TextButtonColor
+                )
             ) {
                 if (state.isCreating) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text(text = "CREATE WALLET", fontSize = 16.sp, color = Color.Black)
+                    Text(text = "CREATE WALLET", fontSize = 16.sp, color = Color.White)
                 }
             }
         }
@@ -176,7 +182,6 @@ fun WalletSetupScreenContent(
             Card(
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -211,7 +216,7 @@ fun WalletSetupScreenContent(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "CHANGE ICON",
-                            color = AppColor.Light.PrimaryColor.TextButtonColor,
+                            color = TextMain,
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
