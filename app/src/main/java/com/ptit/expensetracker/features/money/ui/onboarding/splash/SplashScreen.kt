@@ -50,9 +50,8 @@ fun SplashScreen(
                         popUpTo(0)
                     }
                 }
-                is SplashEvent.GoToWalletSetup -> {
-                    // Navigate to wallet setup screen (to be implemented)
-                    navController.navigate(Screen.WalletSetup.route) {
+                is SplashEvent.GoToOnboarding -> {
+                    navController.navigate(Screen.Onboarding.route) {
                         popUpTo(0)
                     }
                 }
@@ -69,12 +68,14 @@ fun SplashScreenContent() {
     val title = stringResource(id = R.string.app_name)
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black),
     ) {
         Image(
             painter = painterResource(id = R.drawable.img_bg_splash),
             contentDescription = null,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
         )
 

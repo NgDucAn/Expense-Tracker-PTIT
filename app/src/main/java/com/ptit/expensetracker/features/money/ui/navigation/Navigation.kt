@@ -110,7 +110,8 @@ fun AppNavigation(
             currentRoute == Screen.BudgetDetails.route ||
             currentRoute == Screen.BudgetTransactions.route ||
             currentRoute == Screen.SearchTransaction.route ||
-            currentRoute == Screen.DebtManagement.route
+            currentRoute == Screen.DebtManagement.route ||
+            currentRoute == Screen.Onboarding.route
 
     LaunchedEffect(shouldNavigateToAddTransaction.value) {
         if (shouldNavigateToAddTransaction.value) {
@@ -241,6 +242,11 @@ fun AppNavigation(
         ) {
             composable(Screen.Splash.route) {
                 SplashScreen(navController = navController)
+            }
+            composable(Screen.Onboarding.route) {
+                com.ptit.expensetracker.features.money.ui.onboarding.onboard.OnboardingScreen(
+                    navController = navController
+                )
             }
             composable(Screen.WalletSetup.route) {
                 WalletSetupScreen(navController = navController)
