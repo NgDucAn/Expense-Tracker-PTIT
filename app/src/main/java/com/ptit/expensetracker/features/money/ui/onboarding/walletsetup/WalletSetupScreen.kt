@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -143,7 +144,7 @@ fun WalletSetupScreenContent(
                 if (state.isCreating) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text(text = "CREATE WALLET", fontSize = 16.sp, color = Color.White)
+                    Text(text = stringResource(R.string.wallet_setup_create_button), fontSize = 16.sp, color = Color.White)
                 }
             }
         }
@@ -158,7 +159,7 @@ fun WalletSetupScreenContent(
             // Header: title and description
             Column {
                 Text(
-                    text = "First, create a wallet",
+                    text = stringResource(R.string.wallet_setup_title),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppColor.Light.PrimaryColor.contentColor,
@@ -168,7 +169,7 @@ fun WalletSetupScreenContent(
                         .padding(bottom = 16.dp)
                 )
                 Text(
-                    text = "Expense Tracker helps you to keep track of spending money from wallets. Each wallet represents a source of money such as Cash or a Bank Account.",
+                    text = stringResource(R.string.wallet_setup_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
@@ -215,7 +216,7 @@ fun WalletSetupScreenContent(
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "CHANGE ICON",
+                            text = stringResource(R.string.wallet_setup_change_icon),
                             color = TextMain,
                             style = MaterialTheme.typography.bodySmall
                         )
@@ -230,7 +231,7 @@ fun WalletSetupScreenContent(
                     ) {
                         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
-                                text = "Wallet name",
+                                text = stringResource(R.string.wallet_setup_wallet_name_label),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )
@@ -251,7 +252,7 @@ fun WalletSetupScreenContent(
                                     decorationBox = { inner ->
                                         if (state.walletName.isEmpty()) {
                                             Text(
-                                                text = "Name",
+                                                text = stringResource(R.string.wallet_setup_wallet_name_placeholder),
                                                 style = TextStyle(
                                                     fontSize = 20.sp,
                                                     color = AppColor.Light.PrimaryColor.disabledContentColor
@@ -275,7 +276,7 @@ fun WalletSetupScreenContent(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                text = "Currency",
+                                text = stringResource(R.string.wallet_setup_currency_label),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )
@@ -288,7 +289,7 @@ fun WalletSetupScreenContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = state.selectedCurrency?.currencyName ?: "Choose currency",
+                                    text = state.selectedCurrency?.currencyName ?: stringResource(R.string.wallet_setup_choose_currency),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = AppColor.Light.PrimaryColor.contentColor
                                 )
@@ -314,7 +315,7 @@ fun WalletSetupScreenContent(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = "Initial Balance",
+                                text = stringResource(R.string.wallet_setup_initial_balance_label),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )

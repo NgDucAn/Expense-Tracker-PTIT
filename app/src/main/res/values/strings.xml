@@ -179,10 +179,120 @@
     <string name="ail_notification_text">so you can add transaction later</string>
     <string name="ail_notification_title">Tap to take photo</string>
     <!-- Daily transaction reminder -->
-    <string name="daily_reminder_title">Nhắc ghi chép giao dịch hôm nay</string>
-    <string name="daily_reminder_message">Hôm nay bạn có giao dịch nào không? Ghi lại để quản lý chi tiêu tốt hơn.</string>
-    <string name="daily_reminder_channel_name">Nhắc giao dịch hàng ngày</string>
-    <string name="daily_reminder_channel_description">Nhắc bạn ghi lại các giao dịch chi tiêu / thu nhập mỗi ngày vào buổi tối.</string>
+    <string name="daily_reminder_title">Daily Transaction Reminder</string>
+    <string name="daily_reminder_message">Do you have any transactions today? Record them to better manage your expenses.</string>
+    <string name="daily_reminder_channel_name">Daily Transaction Reminder</string>
+    <string name="daily_reminder_channel_description">Reminds you to record your expense and income transactions every evening.</string>
+
+    <!-- Navigation screen labels -->
+    <string name="nav_splash">Splash</string>
+    <string name="nav_onboarding">Onboarding</string>
+    <string name="nav_setup_wallet">Setup Wallet</string>
+    <string name="nav_select_icon">Select Icon</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_transactions">Transactions</string>
+    <string name="nav_budget">Budget</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_add">Add</string>
+    <string name="nav_category">Category</string>
+    <string name="nav_my_wallets">My Wallets</string>
+    <string name="nav_add_wallet">Add Wallet</string>
+    <string name="nav_currency">Currency</string>
+    <string name="nav_add_budget">Add Budget</string>
+    <string name="nav_contacts">Contacts</string>
+    <string name="nav_choose_wallet">Choose Wallet</string>
+    <string name="nav_enter_amount">Enter Amount</string>
+    <string name="nav_transaction_detail">Transaction Detail</string>
+    <string name="nav_transfer_money">Transfer Money</string>
+    <string name="nav_budget_details">Budget Details</string>
+    <string name="nav_budget_transactions">Budget Transactions</string>
+    <string name="nav_search_transaction">Search Transaction</string>
+    <string name="nav_debt_management">Debt Management</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_add_expense_cd">Add Expense</string>
+
+    <!-- Onboarding screens -->
+    <string name="onboarding_welcome_title">Welcome to Expense Tracker</string>
+    <string name="onboarding_welcome_description">Take control of your finances with smart budgeting, expense tracking, and personalized insights.</string>
+    <string name="onboarding_track_expense_title">Track Every Expense</string>
+    <string name="onboarding_track_expense_description">Automatically categorize your spending and see where your money goes in real-time.</string>
+    <string name="onboarding_smart_budgeting_title">Smart Budgeting</string>
+    <string name="onboarding_smart_budgeting_description">Set personalized budgets and get alerts when you\'re close to your limits.</string>
+    <string name="onboarding_all_set_title">You\'re All Set!</string>
+    <string name="onboarding_all_set_description">Start your journey to financial freedom. Create your main wallet and begin tracking today.</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_skip_for_now">Skip for now</string>
+    <string name="onboarding_login_or_create">Log in or create account</string>
+    <string name="onboarding_illustration_cd">Onboarding illustration</string>
+
+    <!-- Wallet Setup screen -->
+    <string name="wallet_setup_title">First, create a wallet</string>
+    <string name="wallet_setup_description">Expense Tracker helps you to keep track of spending money from wallets. Each wallet represents a source of money such as Cash or a Bank Account.</string>
+    <string name="wallet_setup_create_button">CREATE WALLET</string>
+    <string name="wallet_setup_change_icon">CHANGE ICON</string>
+    <string name="wallet_setup_wallet_name_label">Wallet name</string>
+    <string name="wallet_setup_wallet_name_placeholder">Name</string>
+    <string name="wallet_setup_currency_label">Currency</string>
+    <string name="wallet_setup_choose_currency">Choose currency</string>
+    <string name="wallet_setup_initial_balance_label">Initial Balance</string>
+    <string name="wallet_setup_state_title">Setup Main Wallet</string>
+    <string name="wallet_setup_state_description">Please create your main wallet to get started</string>
+
+    <!-- Home screen -->
+    <string name="home_total_balance">Total balance</string>
+    <string name="home_hide_balance">Hide balance</string>
+    <string name="home_show_balance">Show balance</string>
+    <string name="home_chatbot_cd">Chat Bot</string>
+    <string name="home_my_wallets_title">My Wallets</string>
+    <string name="home_see_all">See all</string>
+    <string name="home_report_this_month">Report this month</string>
+    <string name="home_see_reports">See reports</string>
+
+    <!-- Home report tabs -->
+    <string name="home_tab_trending">Trending</string>
+    <string name="home_tab_spending">Spending</string>
+    <string name="home_tab_total_spent">Total Spent</string>
+    <string name="home_tab_total_income">Total Income</string>
+    <string name="home_tab_week">Week</string>
+    <string name="home_tab_month">Month</string>
+    <string name="home_total_spent_period">Total spent this %1$s</string>
+    <string name="home_no_transactions">No transactions to display. Please add some.</string>
+    <string name="home_nav_previous">Previous</string>
+    <string name="home_nav_next">Next</string>
+
+    <!-- Home ViewModel error messages -->
+    <string name="home_error_check_currencies">Failed to check currencies</string>
+    <string name="home_error_generic">An error occurred: %1$s</string>
+    <string name="home_error_save_currencies">Failed to save currencies</string>
+    <string name="home_error_load_currencies">Failed to load currencies: %1$s</string>
+    <string name="home_error_check_categories">Failed to check categories</string>
+    <string name="home_error_save_categories">Failed to save categories</string>
+    <string name="home_error_load_categories">Failed to load categories: %1$s</string>
+    <string name="home_error_load_wallets">Failed to load wallets</string>
+    <string name="home_error_vnd_not_found">VND currency not found</string>
+    <string name="home_error_get_currency">Failed to get currency</string>
+    <string name="home_error_create_default_wallet">Failed to create default wallet</string>
+    <string name="home_error_reload_wallets">Failed to reload wallets</string>
+    <string name="home_error_calculate_balance">Failed to calculate total balance: %1$s</string>
+    <string name="home_default_wallet_name">Cash</string>
+
+    <!-- Monthly Report screen -->
+    <string name="monthly_report_title">Reports</string>
+    <string name="monthly_report_back_cd">Back</string>
+    <string name="monthly_report_error_generic">An error occurred</string>
+    <string name="monthly_report_opening_balance">Opening Balance</string>
+    <string name="monthly_report_closing_balance">Closing Balance</string>
+    <string name="monthly_report_net_income">Net Income</string>
+    <string name="monthly_report_view_details">View Details</string>
+    <string name="monthly_report_income">Income</string>
+    <string name="monthly_report_expense">Expense</string>
+    <string name="monthly_report_by_group">Group Report</string>
+    <string name="monthly_report_no_data">No data available</string>
+
+    <!-- Spending Bar Chart -->
+    <string name="spending_chart_last_week">Last week</string>
+    <string name="spending_chart_this_week">This week</string>
     <string name="alert">Alert</string>
     <string name="alert_category_will_be_deleted_when_merge">%1$s will be deleted</string>
     <string name="alert_children_category_will_be_transferred_to_category_merged_to">All children categories of the %1$s will be transferred to %2$s</string>

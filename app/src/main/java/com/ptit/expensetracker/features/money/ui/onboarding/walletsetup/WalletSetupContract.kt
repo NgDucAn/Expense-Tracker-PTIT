@@ -27,8 +27,8 @@ sealed interface WalletSetupIntent : MviIntentBase {
  * UI state for WalletSetupScreen
  */
 data class WalletSetupState(
-    val title: String = "Thiết lập ví chính",
-    val description: String = "Hãy tạo ví chính để bắt đầu",
+    val title: String = "",
+    val description: String = "",
     @DrawableRes val selectedIcon: Int = R.drawable.img_wallet_default_widget,
     val walletName: String = "",
     val selectedCurrency: Currency? = null,
