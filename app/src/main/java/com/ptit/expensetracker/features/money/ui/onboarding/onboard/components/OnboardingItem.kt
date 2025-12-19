@@ -14,13 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ptit.expensetracker.R
-import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
 import com.ptit.expensetracker.ui.theme.TextMain
 
@@ -41,18 +37,14 @@ fun OnboardingItem(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    @DrawableRes topIllustrationRes: Int? = null,
-    continueButtonText: String = "Continue",
-    skipButtonText: String = "Skip",
-    onContinueClick: () -> Unit,
-    onSkipClick: () -> Unit
+    @DrawableRes topIllustrationRes: Int? = null
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.Center
     ) {
 
         Column(
@@ -87,26 +79,6 @@ fun OnboardingItem(
             )
 
             Spacer(modifier = Modifier.height(32.dp))
-
-            Button(
-                onClick = onContinueClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(26.dp)
-            ) {
-                Text(text = continueButtonText, fontSize = 16.sp)
-            }
-
-            TextButton(onClick = onSkipClick) {
-                Text(text = skipButtonText, color = Color(0xFF6B7280))
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -153,9 +125,7 @@ private fun OnboardingItemPreview() {
         OnboardingItem(
             title = "Welcome to Expense Tracker",
             description = "Take control of your finances with smart budgeting, expense tracking, and personalized insights.",
-            topIllustrationRes = android.R.drawable.ic_dialog_info,
-            onContinueClick = {},
-            onSkipClick = {}
+            topIllustrationRes = R.drawable.img_bg_ob1
         )
     }
 }

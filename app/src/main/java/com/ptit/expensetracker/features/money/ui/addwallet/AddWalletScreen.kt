@@ -375,7 +375,7 @@ fun AddWalletScreenContent(
                     Modifier
                         .fillMaxWidth()
                         .background(
-                            AppColor.Light.NumpadColors.ButtonBackgroundColor,
+                            Color.White,
                             shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                         )
                         .padding(8.dp)

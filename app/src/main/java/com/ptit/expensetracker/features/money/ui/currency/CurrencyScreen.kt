@@ -27,6 +27,8 @@ import com.ptit.expensetracker.features.money.domain.model.Currency
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import android.widget.Toast
+import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,10 +107,10 @@ fun CurrencyAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-            actionIconContentColor = MaterialTheme.colorScheme.onSurface
+            containerColor = AppColor.Light.PrimaryColor.containerColor,
+            titleContentColor = TextMain,
+            navigationIconContentColor = TextMain,
+            actionIconContentColor = TextMain
         )
     )
 }

@@ -125,7 +125,7 @@ fun AddTransactionContent(
                 colors = ButtonDefaults.buttonColors(
                     contentColor = AppColor.Light.PrimaryColor.contentColor,
                     containerColor = AppColor.Light.PrimaryColor.TextButtonColor,
-                    disabledContainerColor = AppColor.Light.PrimaryColor.disabledContainerColor,
+                    disabledContainerColor = AppColor.Light.PrimaryColor.TextButtonColor,
                     disabledContentColor = AppColor.Light.PrimaryColor.disabledContentColor
                 ),
                 enabled = !state.amount.equals(0) && state.category != null && state.wallet != null
