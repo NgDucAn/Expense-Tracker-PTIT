@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.utils.formatAmount
 import com.ptit.expensetracker.utils.getDrawableResId
 import java.text.SimpleDateFormat
@@ -47,14 +49,14 @@ fun TransferTopBar(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Close",
-                    tint = Color.White,
+                    tint = Color(0xFF1E2A36),
                     modifier = Modifier.size(24.dp)
                 )
             }
             
             Text(
                 text = "Transfer money",
-                color = Color.White,
+                color = Color(0xFF1E2A36),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.Center)
             )
@@ -63,7 +65,7 @@ fun TransferTopBar(
                 onClick = onSaveClick,
                 modifier = Modifier.align(Alignment.CenterEnd),
                 colors = ButtonDefaults.textButtonColors(
-                    contentColor = Color.White
+                    contentColor = Color(0xFFFCA419)
                 )
             ) {
                 Text("SAVE")
@@ -120,7 +122,7 @@ fun SectionHeader(
 ) {
     Text(
         text = title,
-        color = Color.Gray,
+        color = Color(0xFF505D6D),
         style = MaterialTheme.typography.bodyMedium,
         modifier = modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
     )
@@ -133,13 +135,14 @@ fun TransferItem(
     title: String,
     value: String? = null,
     modifier: Modifier = Modifier,
+    iconTint: Color? = null,
     onClick: () -> Unit = {}
 ) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        color = Color(0xFF2C2C2E)
+        color = Color.Transparent
     ) {
         Row(
             modifier = Modifier
@@ -150,14 +153,16 @@ fun TransferItem(
                 Image(
                     painter = it,
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
+                    colorFilter = iconTint?.let { ColorFilter.tint(it) }
                 )
             } ?: run {
                 // Fallback to vector icon if painter is not provided
-                Image(
+                Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
+                    tint = iconTint ?: Color.Unspecified
                 )
             }
 
@@ -166,7 +171,7 @@ fun TransferItem(
             
             Text(
                 text = title,
-                color = Color.White,
+                color = TextMain,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f)
             )
@@ -212,7 +217,8 @@ fun DateSelector(
     date: Date,
     icon: Painter? = null,
     onDateChange: (Date) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    iconTint: Color? = null
 ) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     val displayValue = if (isToday(date)) "Today" else dateFormat.format(date)
@@ -222,6 +228,7 @@ fun DateSelector(
         painter = icon,
         title = "Today",
         value = displayValue,
+        iconTint = iconTint,
         onClick = {
             // In a real app, show a date picker dialog here
             // For now, we'll just use the current date
@@ -247,7 +254,7 @@ fun ToggleOption(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                color = Color.White,
+                color = TextMain,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(end = 8.dp, bottom = 4.dp)
             )

@@ -127,6 +127,11 @@ dependencies {
 //    implementation("com.patrykandpatrick.vico:core:2.1.3")
 //    implementation("com.patrykandpatrick.vico:compose:2.1.3")
 
+//    ComposeCharts - Animated & Flexible Practical Charts For Jetpack Compose
+//    Tạm thời không sử dụng do xung đột version Kotlin (lib build với 2.2.x, project dùng 2.0.0).
+//    Khi nâng Kotlin/AGP trong tương lai có thể mở lại và tích hợp thẳng PieChart.
+//    implementation("io.github.ehsannarmani:compose-charts:0.1.11")
+
     // worker
     implementation("androidx.work:work-runtime-ktx:2.10.2")
     implementation("androidx.hilt:hilt-work:1.0.0")

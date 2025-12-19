@@ -230,6 +230,16 @@ fun NewCategoryItem(onClick: () -> Unit) {
 fun CategoryGroupHeader(group: CategoryGroup) {
     val context = LocalContext.current
 
+    // Resolve parent title: if it's a known string key (e.g. "cate_..."), load from resources;
+    // otherwise treat it as plain text (e.g. user-defined category name).
+    val parentTitleText = remember(group.parentTitleResName) {
+        if (group.parentTitleResName.startsWith("cate_")) {
+            context.getString(getStringResId(context, group.parentTitleResName))
+        } else {
+            group.parentTitleResName
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -238,13 +248,13 @@ fun CategoryGroupHeader(group: CategoryGroup) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = getDrawableResId(context, group.parentIconResName) ),
-            contentDescription = stringResource(getStringResId(context, group.parentTitleResName) ) + " icon",
+            painter = painterResource(id = getDrawableResId(context, group.parentIconResName)),
+            contentDescription = parentTitleText + " icon",
             modifier = Modifier.size(32.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = stringResource(getStringResId(context, group.parentTitleResName)),
+            text = parentTitleText,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurfaceVariant

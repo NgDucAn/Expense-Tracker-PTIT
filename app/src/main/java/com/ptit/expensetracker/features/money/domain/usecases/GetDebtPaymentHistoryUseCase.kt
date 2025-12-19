@@ -7,53 +7,51 @@ import com.ptit.expensetracker.core.interactor.UseCase
 import com.ptit.expensetracker.features.money.domain.model.DebtCategoryMetadata
 import com.ptit.expensetracker.features.money.domain.model.PaymentRecord
 import com.ptit.expensetracker.features.money.domain.repository.TransactionRepository
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
- * Use case for getting payment history for a specific debt
+ * Use case for getting payment history for a specific debt (as Flow for live updates)
  */
 class GetDebtPaymentHistoryUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository
-) : UseCase<List<PaymentRecord>, GetDebtPaymentHistoryUseCase.Params>() {
+) : UseCase<Flow<List<PaymentRecord>>, GetDebtPaymentHistoryUseCase.Params>() {
 
     companion object {
         private const val TAG = "GetDebtPaymentHistoryUseCase"
     }
 
-    override suspend fun run(params: Params): Either<Failure, List<PaymentRecord>> {
+    override suspend fun run(params: Params): Either<Failure, Flow<List<PaymentRecord>>> {
         return try {
             Log.d(TAG, "Getting payment history for debt: ${params.debtReference}")
-            
-            // Get transactions by debt reference
-            val relatedTransactions = if (params.debtReference.isNotBlank()) {
-                transactionRepository.getTransactionsByDebtReference(params.debtReference).first()
+
+            // Chọn source Flow theo debtReference; fallback parentDebtId
+            val sourceFlow = if (params.debtReference.isNotBlank()) {
+                transactionRepository.getTransactionsByDebtReference(params.debtReference)
             } else {
-                // Fallback: get by parent debt ID
-                transactionRepository.getTransactionsByParentDebtId(params.originalDebtId).first()
+                transactionRepository.getTransactionsByParentDebtId(params.originalDebtId)
             }
-            
-            // Filter to only include payment/repayment transactions
-            val paymentCategories = DebtCategoryMetadata.PAYABLE_REPAYMENT + 
-                                  DebtCategoryMetadata.RECEIVABLE_REPAYMENT
-            
-            val paymentTransactions = relatedTransactions.filter { transaction ->
-                paymentCategories.contains(transaction.category.metaData)
+
+            val paymentCategories = DebtCategoryMetadata.PAYABLE_REPAYMENT +
+                    DebtCategoryMetadata.RECEIVABLE_REPAYMENT
+
+            val mappedFlow = sourceFlow.map { relatedTransactions ->
+                relatedTransactions
+                    .filter { paymentCategories.contains(it.category.metaData) }
+                    .map { transaction ->
+                        PaymentRecord(
+                            date = transaction.transactionDate,
+                            amount = transaction.amount,
+                            description = transaction.description,
+                            transactionId = transaction.id
+                        )
+                    }
+                    // Hiển thị mới nhất trước
+                    .sortedByDescending { it.date }
             }
-            
-            // Convert to PaymentRecord objects
-            val paymentRecords = paymentTransactions.map { transaction ->
-                PaymentRecord(
-                    date = transaction.transactionDate,
-                    amount = transaction.amount,
-                    description = transaction.description,
-                    transactionId = transaction.id
-                )
-            }.sortedByDescending { it.date } // Latest payments first
-            
-            Log.d(TAG, "Found ${paymentRecords.size} payment records")
-            Either.Right(paymentRecords)
-            
+
+            Either.Right(mappedFlow)
         } catch (e: Exception) {
             Log.e(TAG, "Error getting payment history", e)
             Either.Left(Failure.ServerError)

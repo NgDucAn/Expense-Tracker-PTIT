@@ -18,6 +18,10 @@ data class DebtManagementState(
     val availableWallets: List<Wallet> = emptyList(),
     val selectedWallet: Wallet? = null,
     
+    // Raw debt data (chưa filter) để áp dụng filter nhiều lần không mất dữ liệu gốc
+    val allPayableDebts: List<DebtSummary> = emptyList(),
+    val allReceivableDebts: List<DebtSummary> = emptyList(),
+    
     // Tab management
     val selectedTab: DebtTab = DebtTab.PAYABLE,
     
@@ -28,6 +32,13 @@ data class DebtManagementState(
     val paidPayableDebts: List<DebtSummary> = emptyList(),
     val unpaidReceivableDebts: List<DebtSummary> = emptyList(),
     val paidReceivableDebts: List<DebtSummary> = emptyList(),
+    
+    // Payment sheet state
+    val showPaymentSheet: Boolean = false,
+    val paymentTarget: DebtSummary? = null,
+    val paymentAmountInput: String = "",
+    val paymentNoteInput: String = "",
+    val paymentSubmitting: Boolean = false,
     
     // Summary statistics
     val totalPayableAmount: Double = 0.0,
@@ -44,7 +55,15 @@ data class DebtManagementState(
     val isRefreshing: Boolean = false,
     val error: String? = null,
     val showWalletSelector: Boolean = false,
-    val showFilterDialog: Boolean = false
+    val showFilterDialog: Boolean = false,
+
+    // Payment history bottom sheet
+    val showHistorySheet: Boolean = false,
+    val historyItems: List<com.ptit.expensetracker.features.money.domain.model.PaymentRecord> = emptyList(),
+    val historyLoading: Boolean = false,
+    val historyError: String? = null,
+    val historyTitle: String? = null,
+    val historyDebtType: DebtType? = null
 ) : MviStateBase
 
 /**
@@ -68,6 +87,11 @@ sealed interface DebtManagementIntent : MviIntentBase {
     data class ViewDebtDetails(val debtSummary: DebtSummary) : DebtManagementIntent
     data class AddPartialPayment(val debtSummary: DebtSummary) : DebtManagementIntent
     data class ViewPaymentHistory(val debtSummary: DebtSummary) : DebtManagementIntent
+    data object ClosePaymentHistory : DebtManagementIntent
+    data class UpdatePaymentAmount(val amountText: String) : DebtManagementIntent
+    data class UpdatePaymentNote(val note: String) : DebtManagementIntent
+    data object ConfirmPayment : DebtManagementIntent
+    data object DismissPaymentSheet : DebtManagementIntent
     
     // Filter management
     data object ShowFilterDialog : DebtManagementIntent

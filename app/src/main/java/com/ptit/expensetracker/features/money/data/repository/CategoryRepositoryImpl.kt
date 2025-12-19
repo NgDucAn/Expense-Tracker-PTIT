@@ -107,51 +107,85 @@ class CategoryRepositoryImpl @Inject constructor(
         )
     }
 
-    // Helper function to group categories to category groups
+    // Helper function to group categories into CategoryGroup for UI.
+    //
+    // Expected invariants after seeding from CategoryDataSource:
+    // - Parent categories (group headers) have parentName == null and title == JSON "title" (e.g. "cate_utilities").
+    // - Subcategories have parentName == parent title key (e.g. "cate_utilities").
+    //
+    // This function:
+    // 1. Treats each parent (parentName == null) as a group header.
+    // 2. Attaches all children whose parentName == parent.title as subCategories.
+    // 3. If a category has no children and is not referenced as a parent, it becomes a single-item group.
     private fun groupCategoriesToCategoryGroups(categories: List<Category>): List<CategoryGroup> {
-        // Group categories by their parent name
-        val groupedByParent = categories.groupBy { it.parentName }
+        if (categories.isEmpty()) return emptyList()
 
-        // Create a list to store category groups
         val result = mutableListOf<CategoryGroup>()
 
-        // For each top-level category or distinct parent name, create a CategoryGroup
-        val processedParentNames = mutableSetOf<String>()
+        // Split into parents (potential headers) and children.
+        val parents = categories.filter { it.parentName == null }
+        val children = categories.filter { it.parentName != null }
 
-        // Process all categories to find unique parent names
-        categories.forEach { category ->
-            val parentName = category.parentName ?: category.title
+        // Index children by their parentName (which should be the parent's title key).
+        val childrenByParentTitle: Map<String, List<Category>> = children
+            .filter { !it.parentName.isNullOrEmpty() }
+            .groupBy { it.parentName!! }
 
-            if (!processedParentNames.contains(parentName)) {
-                processedParentNames.add(parentName)
+        // 1. Handle explicit parents: build groups with header + children.
+        val processedTitles = mutableSetOf<String>()
+        parents.forEach { parent ->
+            val titleKey = parent.title
+            if (processedTitles.add(titleKey)) {
+                val subcategories = childrenByParentTitle[titleKey].orEmpty()
 
-                // Find the parent category to get its title and icon
-                val parentCategory = if (category.parentName == null) {
-                    category // This is a top-level category
-                } else {
-                    // Find a category with this parent name
-                    categories.find { it.title == category.parentName } ?: category
-                }
-
-                // Get all subcategories for this parent
-                val subcategories = if (category.parentName == null) {
-                    // For top-level categories without subcategories, they are their own group
-                    listOf(category)
-                } else {
-                    // Get all categories with this parent name
-                    categories.filter { it.parentName == parentName }
-                }
-
-                // Create a CategoryGroup
-                val categoryGroup = CategoryGroup(
-                    parentName = parentName,
-                    parentTitleResName = parentCategory.title,
-                    parentIconResName = parentCategory.icon,
-                    type = parentCategory.type,
-                    subCategories = subcategories
+                val group = CategoryGroup(
+                    parentName = titleKey,                // use title key as stable identifier
+                    parentTitleResName = parent.title,    // e.g. "cate_utilities"
+                    parentIconResName = parent.icon,      // e.g. "icon_135"
+                    type = parent.type,
+                    // If there are no children, treat the parent itself as a single subcategory.
+                    subCategories = if (subcategories.isEmpty()) {
+                        listOf(parent)
+                    } else {
+                        subcategories
+                    }
                 )
+                result.add(group)
+            }
+        }
 
-                result.add(categoryGroup)
+        // 2. Fallback: handle any "orphan" children (with parentName but no parent entry).
+        // This covers legacy data where parent wasn't seeded; we group them by parentName
+        // and use the first child as the header.
+        childrenByParentTitle.forEach { (parentTitleKey, subcategories) ->
+            if (processedTitles.contains(parentTitleKey)) return@forEach
+
+            val first = subcategories.firstOrNull() ?: return@forEach
+            val group = CategoryGroup(
+                parentName = parentTitleKey,
+                parentTitleResName = first.parentName ?: first.title,
+                parentIconResName = first.icon,
+                type = first.type,
+                subCategories = subcategories
+            )
+            result.add(group)
+        }
+
+        // 3. Fallback: any parentless categories that haven't been grouped yet.
+        // This ensures standalone categories (without children and not referenced as parentName)
+        // still appear in the UI.
+        parents.forEach { parent ->
+            val titleKey = parent.title
+            if (!processedTitles.contains(titleKey) && !childrenByParentTitle.containsKey(titleKey)) {
+                val group = CategoryGroup(
+                    parentName = titleKey,
+                    parentTitleResName = parent.title,
+                    parentIconResName = parent.icon,
+                    type = parent.type,
+                    subCategories = listOf(parent)
+                )
+                result.add(group)
+                processedTitles.add(titleKey)
             }
         }
 

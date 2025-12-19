@@ -41,6 +41,7 @@ import com.ptit.expensetracker.features.money.domain.usecases.GetDebtSummaryUseC
 import com.ptit.expensetracker.features.money.domain.usecases.GetDebtTransactionsUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.CreatePartialPaymentUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.GetDebtPaymentHistoryUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.GetMonthlyReportUseCase
 import com.ptit.expensetracker.utils.CurrencyConverter
 import dagger.Module
 import dagger.Provides
@@ -302,9 +303,10 @@ object MoneyUseCaseModule {
     @Provides
     @ViewModelScoped
     fun provideCreatePartialPaymentUseCase(
-        transactionRepository: TransactionRepository
+        transactionRepository: TransactionRepository,
+        walletRepository: WalletRepository
     ): CreatePartialPaymentUseCase {
-        return CreatePartialPaymentUseCase(transactionRepository)
+        return CreatePartialPaymentUseCase(transactionRepository, walletRepository)
     }
 
     @Provides
@@ -313,5 +315,16 @@ object MoneyUseCaseModule {
         transactionRepository: TransactionRepository
     ): GetDebtPaymentHistoryUseCase {
         return GetDebtPaymentHistoryUseCase(transactionRepository)
+    }
+
+    // ==================== MONTHLY REPORT USE CASE ====================
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetMonthlyReportUseCase(
+        transactionRepository: TransactionRepository,
+        walletRepository: WalletRepository
+    ): GetMonthlyReportUseCase {
+        return GetMonthlyReportUseCase(transactionRepository, walletRepository)
     }
 }
