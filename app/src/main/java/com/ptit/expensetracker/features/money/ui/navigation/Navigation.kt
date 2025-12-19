@@ -68,6 +68,7 @@ import com.ptit.expensetracker.features.money.ui.budgetdetails.BudgetDetailsScre
 import com.ptit.expensetracker.features.money.ui.budgets.transactions.BudgetTransactionsScreen
 import com.ptit.expensetracker.features.money.ui.search.SearchTransactionsScreen
 import com.ptit.expensetracker.features.money.ui.debtmanagement.DebtManagementScreen
+import com.ptit.expensetracker.features.money.ui.monthlyreport.MonthlyReportScreen
 
 // 1. Define Navigation Destinations
 
@@ -112,7 +113,8 @@ fun AppNavigation(
             currentRoute == Screen.BudgetDetails.route ||
             currentRoute == Screen.BudgetTransactions.route ||
             currentRoute == Screen.SearchTransaction.route ||
-            currentRoute == Screen.DebtManagement.route
+            currentRoute == Screen.DebtManagement.route ||
+            currentRoute == Screen.MonthlyReport.route
 
     LaunchedEffect(shouldNavigateToAddTransaction.value) {
         if (shouldNavigateToAddTransaction.value) {
@@ -658,6 +660,12 @@ fun AppNavigation(
                 DebtManagementScreen(
                     navController = navController,
                     onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.MonthlyReport.route) {
+                MonthlyReportScreen(
+                    navController = navController,
+                    modifier = contentModifier
                 )
             }
         }

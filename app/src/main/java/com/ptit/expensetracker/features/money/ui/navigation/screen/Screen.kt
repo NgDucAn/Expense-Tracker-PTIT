@@ -70,5 +70,8 @@ sealed class Screen(val route: String, val label: String, val icon: ImageVector)
     
     // Debt Management Screen
     data object DebtManagement : Screen("debt_management", "Quản lý nợ", Icons.Default.Search)
+
+    // Monthly Report Screen
+    data object MonthlyReport : Screen("monthly_report", "Reports", Icons.Default.ShoppingCart)
     data object AiChat : Screen("ai_chat", "AI Chat", Icons.Default.Chat)
 }

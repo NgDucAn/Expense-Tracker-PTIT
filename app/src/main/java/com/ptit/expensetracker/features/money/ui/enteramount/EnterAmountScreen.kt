@@ -36,6 +36,8 @@ import com.ptit.expensetracker.features.money.domain.model.Currency
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.NumpadButton
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.TransactionNumpad
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.ui.theme.TextMain
+import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
 fun EnterAmountScreen(
@@ -108,13 +110,13 @@ fun EnterAmountScreenContent(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Enter amount", color = Color.White) },
+                title = { Text("Enter amount", color = TextMain) },
                 navigationIcon = {
                     IconButton(onClick = onSave) {
                         Icon(
                             imageVector = Icons.Filled.Check,
                             contentDescription = "Save",
-                            tint = Color.White
+                            tint = AppColor.Light.PrimaryColor.TextButtonColor
                         )
                     }
                 },
@@ -123,13 +125,13 @@ fun EnterAmountScreenContent(
                 )
             )
         },
-        containerColor = AppColor.Light.NumpadColors.ButtonBackgroundColor
+        containerColor = AppColor.Light.PrimaryColor.containerColor
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFF1E1E1E)),
+                .background(AppColor.Light.PrimaryColor.containerColor),
             horizontalAlignment = Alignment.End
         ) {
             // Amount display area
@@ -145,7 +147,7 @@ fun EnterAmountScreenContent(
                 Text(
                     text = state.currency.currencyCode,
                     fontSize = 16.sp,
-                    color = Color.Gray,
+                    color = TextSecondary,
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -162,13 +164,13 @@ fun EnterAmountScreenContent(
                     Text(
                         text = state.currency.symbol,
                         fontSize = 32.sp,
-                        color = Color.Gray,
+                        color = TextSecondary,
                         modifier = Modifier.padding(end = 8.dp)
                     )
                     Text(
                         text = state.formattedAmount,
                         fontSize = 48.sp,
-                        color = Color.White
+                        color = TextMain
                     )
                 }
             }
@@ -182,12 +184,12 @@ fun EnterAmountScreenContent(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Preview(showBackground = true, backgroundColor = 0xFFF6F6F6)
 @Composable
 fun EnterAmountScreenPreview() {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color.Black
+        color = AppColor.Light.PrimaryColor.containerColor
     ) {
         EnterAmountScreenContent(
             state = EnterAmountState(
