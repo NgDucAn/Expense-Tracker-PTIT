@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="common_back">Quay lại</string>
+    <string name="common_skip">Bỏ qua</string>
+    <string name="common_skip_for_now">Bỏ qua tạm thời</string>
+    <string name="common_error_format">Lỗi: %1$s</string>
+    <string name="common_navigate">Điều hướng</string>
+    <string name="common_version_format">Phiên bản %1$s</string>
+    <string name="common_user_fallback">Người dùng</string>
+
+    <!-- Account -->
+    <string name="account_title">Tài khoản</string>
+    <string name="account_feature_wallets">Ví</string>
+    <string name="account_feature_category">Danh mục</string>
+    <string name="account_feature_debts">Khoản nợ</string>
+    <string name="account_feature_ai_assistant">Trợ lý AI</string>
+    <string name="account_sign_in_with_google">Đăng nhập với Google</string>
+    <string name="account_signing_in">Đang đăng nhập...</string>
+    <string name="account_backup_data">Sao lưu dữ liệu</string>
+    <string name="account_restore_data">Khôi phục dữ liệu</string>
+    <string name="account_backup_success">Sao lưu thành công</string>
+    <string name="account_restore_success">Khôi phục thành công</string>
+
+    <string name="account_sign_out">Đăng xuất</string>
+    <string name="account_sign_out_title">Đăng xuất</string>
+    <string name="account_sign_out_body">Bạn có muốn sao lưu dữ liệu trước khi đăng xuất không?</string>
+    <string name="account_signing_out">Đang đăng xuất…</string>
+    <string name="account_signing_out_dots">Đang đăng xuất...</string>
+    <string name="account_sign_out_and_backup">Đăng xuất &amp; sao lưu</string>
+    <string name="account_sign_out_without_backup">Đăng xuất (không sao lưu)</string>
+
+    <string name="account_restore_prompt_title">Khôi phục dữ liệu?</string>
+    <string name="account_restore_prompt_body">Bạn có muốn khôi phục dữ liệu từ bản sao lưu trên cloud không?</string>
+    <string name="account_restore_prompt_restoring">Đang khôi phục dữ liệu…</string>
+    <string name="account_restore_action">Khôi phục dữ liệu</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_continue">Tiếp tục</string>
+    <string name="onboarding_login_or_create_account">Đăng nhập hoặc tạo tài khoản</string>
+    <string name="onboarding_illustration_desc">Hình minh hoạ onboarding</string>
+    <string name="onboarding_slide_1_title">Chào mừng đến với Expense Tracker</string>
+    <string name="onboarding_slide_1_desc">Kiểm soát tài chính của bạn với lập ngân sách thông minh, theo dõi chi tiêu và các gợi ý cá nhân hóa.</string>
+    <string name="onboarding_slide_2_title">Theo dõi mọi khoản chi</string>
+    <string name="onboarding_slide_2_desc">Tự động phân loại chi tiêu và xem tiền của bạn đã đi đâu theo thời gian thực.</string>
+    <string name="onboarding_slide_3_title">Lập ngân sách thông minh</string>
+    <string name="onboarding_slide_3_desc">Thiết lập ngân sách phù hợp và nhận cảnh báo khi bạn sắp vượt hạn mức.</string>
+    <string name="onboarding_slide_4_title">Sẵn sàng bắt đầu!</string>
+    <string name="onboarding_slide_4_desc">Bắt đầu hành trình tự do tài chính. Tạo ví chính và theo dõi ngay hôm nay.</string>
+
+    <!-- Google Login -->
+    <string name="google_login_title">Đăng nhập bằng Google</string>
+    <string name="google_login_desc">Đăng nhập để đồng bộ và sao lưu dữ liệu. Bạn vẫn có thể tạo ví sau hoặc bỏ qua để vào app ngay.</string>
+    <string name="google_login_button">Tiếp tục với Google</string>
+    <string name="google_login_sign_in_canceled">Đã hủy đăng nhập</string>
+    <string name="google_login_sign_in_error">Lỗi đăng nhập</string>
+    <string name="google_login_error_no_token">Không nhận được token</string>
+    <string name="google_login_error_auth_failed_format">Xác thực thất bại: %1$s</string>
+
+    <!-- Account (extra a11y) -->
+    <string name="account_profile_photo_desc">Ảnh đại diện</string>
+
+    <!-- Wallet Setup -->
+    <string name="wallet_setup_skip">Bỏ qua</string>
+    <string name="wallet_setup_create_wallet">TẠO VÍ</string>
+    <string name="wallet_setup_header_title">Trước tiên, hãy tạo một ví</string>
+    <string name="wallet_setup_header_desc">Expense Tracker giúp bạn theo dõi chi tiêu từ các ví. Mỗi ví đại diện cho một nguồn tiền như Tiền mặt hoặc Tài khoản ngân hàng.</string>
+    <string name="wallet_setup_change_icon">ĐỔI ICON</string>
+    <string name="wallet_setup_wallet_name_label">Tên ví</string>
+    <string name="wallet_setup_wallet_name_placeholder">Nhập tên</string>
+    <string name="wallet_setup_currency_label">Tiền tệ</string>
+    <string name="wallet_setup_choose_currency">Chọn tiền tệ</string>
+    <string name="wallet_setup_initial_balance">Số dư ban đầu</string>
+
+    <!-- Errors (shared) -->
+    <string name="error_please_sign_in_first">Vui lòng đăng nhập trước</string>
+    <string name="error_restore_db_failed">Khôi phục dữ liệu thất bại (db)</string>
+    <string name="error_restore_wal_failed">Khôi phục dữ liệu thất bại (wal)</string>
+    <string name="error_restore_shm_failed">Khôi phục dữ liệu thất bại (shm)</string>
+    <string name="error_restore_generic">Lỗi khôi phục dữ liệu</string>
+    <string name="error_init_categories_failed">Khởi tạo danh mục thất bại</string>
+</resources>
+
+
