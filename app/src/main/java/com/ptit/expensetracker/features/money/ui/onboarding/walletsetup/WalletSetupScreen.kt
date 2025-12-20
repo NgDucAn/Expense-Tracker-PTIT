@@ -362,7 +362,7 @@ fun WalletSetupScreenContent(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "Initial Balance",
+                            text = stringResource(R.string.wallet_setup_initial_balance_label),
                             style = MaterialTheme.typography.titleSmall,
                             color = AppColor.Light.PrimaryColor.contentColor
                         )

@@ -15,6 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.DebtSummary
 import com.ptit.expensetracker.features.money.domain.model.DebtCategoryMetadata
 import com.ptit.expensetracker.ui.theme.*
@@ -78,9 +81,9 @@ fun DebtSummaryCard(
                         // - RECEIVABLE_ORIGINAL (IS_LOAN): "Nợ bạn" (Tôi cho vay → Người khác nợ tôi)
                         Text(
                             text = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                                "Bạn nợ"  // Tab "Phải trả": IS_DEBT (Tôi đi vay)
+                                stringResource(R.string.debt_you_owe)
                             } else {
-                                "Nợ bạn"  // Tab "Được nhận": IS_LOAN (Tôi cho vay)
+                                stringResource(R.string.debt_owes_you)
                             },
                             color = TextSecondary,
                             fontSize = 12.sp
@@ -105,7 +108,7 @@ fun DebtSummaryCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     AmountInfo(
-                        label = "Gốc",
+                        label = stringResource(R.string.debt_principal_label),
                         amount = debtSummary.totalAmount,
                         currencySymbol = getCurrencySymbol(debtSummary),
                         textColor = MaterialTheme.colorScheme.onSurface
@@ -115,11 +118,7 @@ fun DebtSummaryCard(
                     // - Tab "Phải trả" (IS_DEBT): "Còn nợ" (màu đỏ - tôi còn phải trả)
                     // - Tab "Được nhận" (IS_LOAN): "Còn thu" (màu xanh - người khác còn nợ tôi)
                     AmountInfo(
-                        label = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                            "Còn nợ"  // Tab "Phải trả": Tôi còn phải trả lại
-                        } else {
-                            "Còn thu"  // Tab "Được nhận": Người khác còn nợ tôi
-                        },
+                        label = stringResource(R.string.debt_remaining_label),
                         amount = debtSummary.remainingAmount,
                         currencySymbol = getCurrencySymbol(debtSummary),
                         textColor = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
@@ -146,9 +145,9 @@ fun DebtSummaryCard(
                             // - Tab "Được nhận": "Đã thu" (Tôi đã thu bao nhiêu)
                             Text(
                                 text = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                                    "Đã trả"  // Tab "Phải trả": Số tiền tôi đã trả
+                                    stringResource(R.string.debt_card_paid_label)
                                 } else {
-                                    "Đã thu"  // Tab "Được nhận": Số tiền tôi đã thu
+                                    stringResource(R.string.debt_card_collected_label)
                                 },
                                 color = TextSecondary,
                                 fontSize = 11.sp
@@ -185,14 +184,14 @@ fun DebtSummaryCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Thanh toán cuối: ${formatDate(lastPaymentDate)}",
+                        text = stringResource(R.string.debt_card_last_payment, formatDate(lastPaymentDate)),
                         color = TextSecondary,
                         fontSize = 11.sp
                     )
                     
                     if (debtSummary.paymentHistory.isNotEmpty()) {
                         Text(
-                            text = "${debtSummary.paymentHistory.size} lần",
+                            text = stringResource(R.string.debt_card_payment_count, debtSummary.paymentHistory.size),
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Medium
@@ -230,9 +229,9 @@ fun DebtSummaryCard(
                         // - Tab "Được nhận": "Thu nợ" (Tôi thu nợ từ người khác)
                         Text(
                             text = if (DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)) {
-                                "Trả nợ"  // Tab "Phải trả": Trả nợ lại cho người khác
+                                stringResource(R.string.debt_card_pay_debt_button)
                             } else {
-                                "Thu nợ"  // Tab "Được nhận": Thu nợ từ người khác
+                                stringResource(R.string.debt_card_collect_debt_button)
                             },
                             fontSize = 12.sp
                         )
@@ -254,7 +253,7 @@ fun DebtSummaryCard(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Lịch sử",
+                        text = stringResource(R.string.debt_card_history_button),
                         fontSize = 12.sp
                     )
                 }
@@ -303,7 +302,7 @@ private fun StatusBadge(
         }
     ) {
         Text(
-            text = if (isFullyPaid) "Hoàn thành" else "Chưa hoàn thành",
+            text = if (isFullyPaid) stringResource(R.string.debt_card_status_completed) else stringResource(R.string.debt_card_status_incomplete),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             color = if (isFullyPaid) {
                 MaterialTheme.colorScheme.onPrimaryContainer
@@ -349,7 +348,7 @@ private fun getCurrencySymbol(debtSummary: DebtSummary): String {
     return if (debtSummary.paymentHistory.isNotEmpty()) {
         debtSummary.repaymentTransactions.first().wallet.currency.symbol
     } else {
-        "đ"
+        debtSummary.originalTransaction.wallet.currency.symbol
     }
 }
 

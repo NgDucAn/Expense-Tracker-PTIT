@@ -23,6 +23,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.TransactionType
 import com.ptit.expensetracker.ui.theme.*
 import java.text.SimpleDateFormat
@@ -90,7 +92,7 @@ fun SearchFiltersPanel(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Search Filters",
+                    text = stringResource(R.string.search_transactions_filters_title),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
                     color = TextSecondary
@@ -102,7 +104,7 @@ fun SearchFiltersPanel(
                         contentColor = Color(0xFFFF383C)
                     )
                 ) {
-                    Text("Clear All")
+                    Text(stringResource(R.string.search_transactions_clear_all))
                 }
             }
             
@@ -110,7 +112,7 @@ fun SearchFiltersPanel(
             
             // Amount Range Section
             FilterSection(
-                title = "Money Range",
+                title = stringResource(R.string.search_transactions_money_range),
                 icon = Icons.Default.Create
             ) {
                 Row(
@@ -125,7 +127,7 @@ fun SearchFiltersPanel(
                             onMinAmountChange(it.toDoubleOrNull())
                         },
                         modifier = Modifier.weight(1f),
-                        placeholder = { Text("From", color = TextSecondary) },
+                        placeholder = { Text(stringResource(R.string.search_transactions_from_placeholder), color = TextSecondary) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -149,7 +151,7 @@ fun SearchFiltersPanel(
                             onMaxAmountChange(it.toDoubleOrNull())
                         },
                         modifier = Modifier.weight(1f),
-                        placeholder = { Text("To", color = TextSecondary) },
+                        placeholder = { Text(stringResource(R.string.search_transactions_to_placeholder), color = TextSecondary) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -166,7 +168,7 @@ fun SearchFiltersPanel(
             
             // Transaction Type Section
             FilterSection(
-                title = "Loại giao dịch",
+                title = stringResource(R.string.search_transactions_transaction_type),
                 icon = Icons.Default.Create
             ) {
                 LazyRow(
@@ -175,7 +177,7 @@ fun SearchFiltersPanel(
                     item {
                         TransactionTypeChip(
                             type = null,
-                            label = "All",
+                            label = stringResource(R.string.search_transactions_type_all),
                             isSelected = selectedTransactionType == null,
                             onClick = { onTransactionTypeChange(null) }
                         )
@@ -183,7 +185,7 @@ fun SearchFiltersPanel(
                     item {
                         TransactionTypeChip(
                             type = TransactionType.INFLOW,
-                            label = "Income",
+                            label = stringResource(R.string.search_transactions_type_income),
                             isSelected = selectedTransactionType == TransactionType.INFLOW,
                             onClick = { onTransactionTypeChange(TransactionType.INFLOW) }
                         )
@@ -191,7 +193,7 @@ fun SearchFiltersPanel(
                     item {
                         TransactionTypeChip(
                             type = TransactionType.OUTFLOW,
-                            label = "Expense",
+                            label = stringResource(R.string.search_transactions_type_expense),
                             isSelected = selectedTransactionType == TransactionType.OUTFLOW,
                             onClick = { onTransactionTypeChange(TransactionType.OUTFLOW) }
                         )
@@ -204,7 +206,7 @@ fun SearchFiltersPanel(
             // Categories Section
             if (availableCategoryIds.isNotEmpty()) {
                 FilterSection(
-                    title = "Danh mục",
+                    title = stringResource(R.string.search_transactions_category),
                     icon = Icons.Default.Create
                 ) {
                     LazyRow(
@@ -225,7 +227,7 @@ fun SearchFiltersPanel(
             
             // Date Range Section
             FilterSection(
-                title = "Khoảng thời gian",
+                title = stringResource(R.string.search_transactions_time_range),
                 icon = Icons.Default.DateRange
             ) {
                 DateRangeSelector(
@@ -249,7 +251,7 @@ fun SearchFiltersPanel(
                         contentColor = Color(0xFF2B3B48)
                     )
                 ) {
-                    Text("Clear Filters")
+                    Text(stringResource(R.string.search_transactions_clear_filters))
                 }
                 
                 Button(
@@ -260,7 +262,7 @@ fun SearchFiltersPanel(
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Apply")
+                    Text(stringResource(R.string.search_transactions_apply))
                 }
             }
         }
@@ -376,12 +378,12 @@ private fun DateRangeSelector(
                 value = startDate?.let { dateFormat.format(Date(it)) } ?: "",
                 onValueChange = { },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text("From date", color = TextSecondary) },
+                placeholder = { Text(stringResource(R.string.search_transactions_from_date_placeholder), color = TextSecondary) },
                 readOnly = true,
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select start date",
+                        contentDescription = stringResource(R.string.search_transactions_select_start_date_cd),
                         tint = TextSecondary,
                         modifier = Modifier.size(20.dp)
                     )
@@ -399,12 +401,12 @@ private fun DateRangeSelector(
                 value = endDate?.let { dateFormat.format(Date(it)) } ?: "",
                 onValueChange = { },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text("To date", color = TextSecondary) },
+                placeholder = { Text(stringResource(R.string.search_transactions_to_date_placeholder), color = TextSecondary) },
                 readOnly = true,
                 trailingIcon = {
                     Icon(
                         imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select end date",
+                        contentDescription = stringResource(R.string.search_transactions_select_end_date_cd),
                         tint = TextSecondary,
                         modifier = Modifier.size(20.dp)
                     )

@@ -21,6 +21,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.features.money.ui.budgetdetails.components.BudgetSummaryCard
@@ -64,14 +66,14 @@ fun BudgetDetailsScreen(
             onDismissRequest = { showDeleteDialog = false },
             title = { 
                 Text(
-                    "Delete Budget", 
+                    stringResource(R.string.budget_details_delete_title), 
                     color = TextMain,
                     fontWeight = FontWeight.Bold
                 ) 
             },
             text = { 
                 Text(
-                    "Are you sure you want to delete this budget?",
+                    stringResource(R.string.budget_details_delete_message),
                     color = TextMain
                 ) 
             },
@@ -81,12 +83,12 @@ fun BudgetDetailsScreen(
                     showDeleteDialog = false
                     viewModel.confirmDelete()
                 }) {
-                    Text("Delete", color = Color.Red)
+                    Text(stringResource(R.string.budget_details_delete_button), color = Color.Red)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel", color = TextMain)
+                    Text(stringResource(R.string.budget_details_cancel_button), color = TextMain)
                 }
             }
         )

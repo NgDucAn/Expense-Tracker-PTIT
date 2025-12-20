@@ -144,7 +144,7 @@ fun TransactionInputFields(
                             wallet.icon
                         )
                     ),
-                    text = if (wallet.walletName.isEmpty()) "Select wallet" else wallet.walletName,
+                    text = if (wallet.walletName.isEmpty()) stringResource(R.string.add_transaction_select_wallet) else wallet.walletName,
                     onClick = onWalletClick
                 )
                 HorizontalDivider(
@@ -218,7 +218,7 @@ fun TransactionInputFields(
                         .align(Alignment.CenterHorizontally)
                         .height(50.dp)
                 ) {
-                    Text("Add more details", color = Color.White, fontSize = 16.sp)
+                    Text(stringResource(R.string.add_transaction_add_more_details), color = Color.White, fontSize = 16.sp)
                 }
             }
         }
@@ -242,7 +242,7 @@ fun TransactionInputFields(
                         InputRow(
                             icon = MyIcons.Group,
                             iconPainter = painterResource(R.drawable.ic_with),
-                            text = "With",
+                            text = stringResource(R.string.add_transaction_with_label),
                             onClick = onWithPersonClick,
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
@@ -324,7 +324,7 @@ fun TransactionInputFields(
                 }
 
                 Text(
-                    text = "Don't include this transaction in reports such as Overview",
+                    text = stringResource(R.string.add_transaction_exclude_from_reports),
                     color = Color.Gray,
                     fontSize = 13.sp,
                     modifier = Modifier.padding(start = 8.dp, end = 28.dp)
@@ -377,7 +377,7 @@ private fun InputRow(
         )
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
-            contentDescription = "More",
+            contentDescription = stringResource(R.string.add_transaction_more_cd),
             tint = Color(0xFF505D6D),
             modifier = Modifier.size(20.dp)
         )
@@ -428,7 +428,7 @@ private fun DateRow(
         )
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
-            contentDescription = "More",
+            contentDescription = stringResource(R.string.add_transaction_more_cd),
             tint = Color(0xFF505D6D),
             modifier = Modifier.size(20.dp)
         )
@@ -541,7 +541,7 @@ private fun CategoryRow(
         )
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
-            contentDescription = "More",
+            contentDescription = stringResource(R.string.add_transaction_more_cd),
             tint = Color(0xFF505D6D),
             modifier = Modifier.size(20.dp)
         )
@@ -851,7 +851,7 @@ private fun ContactsInputRow(
 
                 Icon(
                     imageVector = Icons.Filled.KeyboardArrowRight,
-                    contentDescription = "More",
+                    contentDescription = stringResource(R.string.add_transaction_more_cd),
                     tint = Color(0xFF505D6D),
                     modifier = Modifier.size(20.dp)
                 )

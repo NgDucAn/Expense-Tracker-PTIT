@@ -6,6 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.TextSecondary
 
 @Composable
@@ -17,7 +19,7 @@ fun EmptyBudgetTransactionsContent(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "No transactions available for this budget",
+            text = stringResource(R.string.budgets_no_transactions),
             color = TextSecondary
         )
     }

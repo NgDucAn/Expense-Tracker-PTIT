@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.utils.getDrawableResId
 
@@ -46,7 +48,7 @@ fun WalletSelector(
 
         Image(
             painter = painterResource(iconRes),
-            contentDescription = "Wallet Icon",
+            contentDescription = stringResource(R.string.transactions_wallet_icon_cd),
             modifier = Modifier.size(24.dp)
         )
         
@@ -61,7 +63,7 @@ fun WalletSelector(
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
             imageVector = Icons.Filled.ArrowDropDown,
-            contentDescription = "Select Wallet",
+            contentDescription = stringResource(R.string.transactions_select_wallet_cd),
             tint = TextMain,
             modifier = Modifier.size(24.dp)
         )

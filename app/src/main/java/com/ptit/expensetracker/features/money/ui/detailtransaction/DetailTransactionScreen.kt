@@ -84,11 +84,11 @@ fun DetailTransactionScreen(
                 }
 
                 DetailTransactionEvent.TransactionDeleted -> {
-                    Toast.makeText(context, "Transaction deleted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.detail_transaction_deleted), Toast.LENGTH_SHORT).show()
                 }
 
                 DetailTransactionEvent.TransactionCopied -> {
-                    Toast.makeText(context, "Transaction copied successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.detail_transaction_copied), Toast.LENGTH_SHORT).show()
                 }
 
                 is DetailTransactionEvent.NavigateToEditTransaction -> {
@@ -108,7 +108,7 @@ fun DetailTransactionScreen(
                         }
                         context.startActivity(intent)
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Could not open image", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.detail_transaction_error_open_image), Toast.LENGTH_SHORT).show()
                     }
                 }
                 
@@ -124,9 +124,9 @@ fun DetailTransactionScreen(
                             putExtra(Intent.EXTRA_STREAM, uri)
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
-                        context.startActivity(Intent.createChooser(intent, "Share Transaction"))
+                        context.startActivity(Intent.createChooser(intent, context.getString(R.string.detail_transaction_share_transaction)))
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Could not share image", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.detail_transaction_error_share_image), Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -204,7 +204,7 @@ fun ShareTransactionDialog(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Transaction Preview",
+                    text = stringResource(R.string.detail_transaction_preview),
                     color = TextMain,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -214,7 +214,7 @@ fun ShareTransactionDialog(
                 if (bitmap != null) {
                     androidx.compose.foundation.Image(
                         bitmap = bitmap!!.asImageBitmap(),
-                        contentDescription = "Transaction image",
+                        contentDescription = stringResource(R.string.detail_transaction_image_cd),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
@@ -242,7 +242,7 @@ fun ShareTransactionDialog(
                                         }
                                         onOpen()
                                     } catch (e: Exception) {
-                                        Toast.makeText(context, "Failed to prepare image", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.detail_transaction_error_prepare_image), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
@@ -252,7 +252,7 @@ fun ShareTransactionDialog(
                             contentColor = Color(0xFF30D158)
                         )
                     ) {
-                        Text("OPEN")
+                        Text(stringResource(R.string.detail_transaction_open_button))
                     }
                     
                     Spacer(modifier = Modifier.width(16.dp))
@@ -268,7 +268,7 @@ fun ShareTransactionDialog(
                                         }
                                         onShare()
                                     } catch (e: Exception) {
-                                        Toast.makeText(context, "Failed to prepare image for sharing", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.detail_transaction_error_prepare_image_sharing), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
@@ -278,7 +278,7 @@ fun ShareTransactionDialog(
                             containerColor = Color(0xFF30D158)
                         )
                     ) {
-                        Text("SHARE")
+                        Text(stringResource(R.string.detail_transaction_share_button))
                     }
                 }
             }
@@ -350,35 +350,35 @@ private suspend fun renderTransactionToBitmap(transaction: Transaction?, context
             // Draw description if available
             var yPos = 400f
             if (!transaction.description.isNullOrEmpty()) {
-                canvas.drawText("Description: ${transaction.description}", 50f, yPos, paint)
+                canvas.drawText("${context.getString(R.string.detail_transaction_description_label)} ${transaction.description}", 50f, yPos, paint)
                 yPos += 100f
             }
             
             // Draw date
             val dateFormat = SimpleDateFormat("EEEE, dd/MM/yyyy", Locale.getDefault())
-            canvas.drawText("Date: ${dateFormat.format(transaction.transactionDate)}", 50f, yPos, paint)
+            canvas.drawText("${context.getString(R.string.detail_transaction_date_label)} ${dateFormat.format(transaction.transactionDate)}", 50f, yPos, paint)
             yPos += 100f
             
             // Draw wallet name
-            canvas.drawText("Wallet: ${transaction.wallet.walletName}", 50f, yPos, paint)
+            canvas.drawText("${context.getString(R.string.detail_transaction_wallet_label)} ${transaction.wallet.walletName}", 50f, yPos, paint)
             yPos += 100f
             
             // Draw people involved
             if (!transaction.withPerson.isNullOrEmpty()) {
-                canvas.drawText("With: ${transaction.withPerson}", 50f, yPos, paint)
+                canvas.drawText("${context.getString(R.string.detail_transaction_with_label_text)} ${transaction.withPerson}", 50f, yPos, paint)
                 yPos += 100f
             }
             
             // Draw event name if available
             if (!transaction.eventName.isNullOrEmpty()) {
-                canvas.drawText("Event: ${transaction.eventName}", 50f, yPos, paint)
+                canvas.drawText("${context.getString(R.string.detail_transaction_event_label)} ${transaction.eventName}", 50f, yPos, paint)
                 yPos += 100f
             }
             
             // App watermark
             paint.textSize = 40f
             paint.color = android.graphics.Color.GRAY
-            canvas.drawText("Created with Expense Tracker", 50f, yPos + 100f, paint)
+            canvas.drawText(context.getString(R.string.detail_transaction_created_with), 50f, yPos + 100f, paint)
             
             // Trim the bitmap to the actual content height
             val trimmedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, (yPos + 200).toInt())
@@ -531,7 +531,7 @@ fun DetailTransactionContent(
                                 modifier = Modifier.size(24.dp)
                             )
                             Text(
-                                text = "With",
+                                text = stringResource(R.string.detail_transaction_with_label),
                                 color = TextSecondary,
                                 style = MaterialTheme.typography.labelLarge,
                                 modifier = Modifier.padding(start = 8.dp)
@@ -557,7 +557,7 @@ fun DetailTransactionContent(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Error loading transaction details",
+                text = stringResource(R.string.detail_transaction_error_loading),
                 color = TextMain
             )
         }
@@ -569,14 +569,14 @@ fun DetailTransactionContent(
             onDismissRequest = onDismissDialog,
             title = { 
                 Text(
-                    "Delete Transaction",
+                    stringResource(R.string.detail_transaction_delete_title),
                     color = TextMain,
                     style = MaterialTheme.typography.titleLarge
                 ) 
             },
             text = { 
                 Text(
-                    "Are you sure you want to delete this transaction? This action cannot be undone.",
+                    stringResource(R.string.detail_transaction_delete_message),
                     color = TextMain
                 ) 
             },
@@ -585,7 +585,7 @@ fun DetailTransactionContent(
                     onClick = onConfirmDelete,
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF453A))
                 ) {
-                    Text("Delete", color = Color.White)
+                    Text(stringResource(R.string.detail_transaction_delete_button), color = Color.White)
                 }
             },
             dismissButton = {

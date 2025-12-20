@@ -322,7 +322,7 @@ class HomeScreenViewModel @Inject constructor(
                                 }
                                 .catch { e ->
                                     _viewState.update {
-                                        it.copy(isLoading = false, error = "Failed to load wallets: ${e.message}")
+                                        it.copy(isLoading = false, error = context.getString(R.string.home_error_load_wallets_with_message, e.message ?: ""))
                                     }
                                 }
                                 .launchIn(viewModelScope)
@@ -331,7 +331,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "Failed to check wallets: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_check_wallets_with_message, e.message ?: ""))
                 }
             }
         }

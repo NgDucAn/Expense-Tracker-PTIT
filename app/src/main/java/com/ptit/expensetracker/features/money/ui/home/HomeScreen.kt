@@ -184,9 +184,9 @@ fun TopBalanceBar(
             Spacer(modifier = Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = if (isVisible) balance else "••••••• đ", // Hiển thị hoặc ẩn số dư
+                    text = if (isVisible) balance else stringResource(R.string.home_hidden_balance),
                     color = Color.Black,
-                    fontSize = 28.sp, // Kích thướ c lớn hơn
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -215,7 +215,7 @@ fun TopBalanceBar(
             /*IconButton(onClick = { *//* TODO: Handle search click *//* }) {
                 Icon(
                     imageVector = Icons.Filled.Search,
-                    contentDescription = "Search",
+                    contentDescription = stringResource(R.string.home_search_cd),
                     tint = Color(0xFF1E2A36)
                 )
             }*/

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.ui.theme.TextMain
@@ -39,7 +40,7 @@ fun WalletPickerItem(
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_wallet),
-            contentDescription = "Wallet",
+            contentDescription = stringResource(R.string.add_budget_wallet_cd),
             modifier = Modifier.size(24.dp)
         )
         
@@ -47,14 +48,14 @@ fun WalletPickerItem(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp),
-            text = wallet?.walletName ?: "Select wallet",
+            text = wallet?.walletName ?: stringResource(R.string.add_budget_select_wallet),
             color = TextMain,
             fontSize = 16.sp
         )
         
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "Select",
+            contentDescription = stringResource(R.string.add_budget_select_cd),
             tint = TextSecondary
         )
     }

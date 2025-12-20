@@ -124,8 +124,8 @@ data class OnboardingStep(
 private fun OnboardingItemPreview() {
     ExpenseTrackerTheme {
         OnboardingItem(
-            title = "Welcome to Expense Tracker",
-            description = "Take control of your finances with smart budgeting, expense tracking, and personalized insights.",
+            title = stringResource(R.string.onboarding_welcome_title),
+            description = stringResource(R.string.onboarding_welcome_description),
             topIllustrationRes = R.drawable.img_bg_ob1
         )
     }

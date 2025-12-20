@@ -8,6 +8,9 @@ import com.ptit.expensetracker.features.money.domain.usecases.TransferMoneyParam
 import com.ptit.expensetracker.features.money.domain.usecases.TransferMoneyUseCase
 import com.ptit.expensetracker.utils.CurrencyConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.Context
+import com.ptit.expensetracker.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -20,7 +23,8 @@ import javax.inject.Inject
 class TransferMoneyViewModel @Inject constructor(
     private val getWalletsUseCase: GetWalletsUseCase,
     private val transferMoneyUseCase: TransferMoneyUseCase,
-    private val currencyConverter: CurrencyConverter
+    private val currencyConverter: CurrencyConverter,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<TransferMoneyState, TransferMoneyIntent, TransferMoneyEvent>() {
 
     override val _viewState = MutableStateFlow(TransferMoneyState())
@@ -62,7 +66,7 @@ class TransferMoneyViewModel @Inject constructor(
                         isLoading = false,
                         error = failure.toString()
                     )
-                    emitEvent(TransferMoneyEvent.ShowError("Error loading wallets"))
+                    emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_load_wallets)))
                 },
                 { walletsFlow ->
                     walletsFlow
@@ -90,7 +94,7 @@ class TransferMoneyViewModel @Inject constructor(
                                 isLoading = false,
                                 error = error.message ?: "Unknown error"
                             )
-                            emitEvent(TransferMoneyEvent.ShowError("Error loading wallets"))
+                            emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_load_wallets)))
                         }
                         .launchIn(viewModelScope)
                 }
@@ -220,15 +224,15 @@ class TransferMoneyViewModel @Inject constructor(
                     )
                 } else {
                     _viewState.value = _viewState.value.copy(
-                        exchangeRate = "Conversion failed"
+                        exchangeRate = context.getString(R.string.transfer_money_error_convert_failed)
                     )
-                    emitEvent(TransferMoneyEvent.ShowError("Failed to convert currencies"))
+                    emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_convert)))
                 }
             } catch (e: Exception) {
                 _viewState.value = _viewState.value.copy(
-                    exchangeRate = "Error"
+                    exchangeRate = context.getString(R.string.transfer_money_error_convert_failed)
                 )
-                emitEvent(TransferMoneyEvent.ShowError("Error converting currencies: ${e.message}"))
+                emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_convert_with_message, e.message ?: "")))
             }
         }
     }
@@ -240,24 +244,24 @@ class TransferMoneyViewModel @Inject constructor(
         
         // Validate input
         if (fromWallet == null || toWallet == null) {
-            emitEvent(TransferMoneyEvent.ShowError("Please select both source and destination wallets"))
+            emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_select_wallets)))
             return
         }
         
         if (state.amount <= 0) {
-            emitEvent(TransferMoneyEvent.ShowError("Please enter a valid amount"))
+            emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_valid_amount)))
             return
         }
         
         if (fromWallet.id == toWallet.id) {
-            emitEvent(TransferMoneyEvent.ShowError("Cannot transfer to the same wallet"))
+            emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_same_wallet)))
             return
         }
         
         // Check if source wallet has sufficient balance
         val totalAmount = state.amount + (if (state.addTransferFee) state.transferFee else 0.0)
         if (fromWallet.currentBalance < totalAmount) {
-            emitEvent(TransferMoneyEvent.ShowError("Insufficient balance in source wallet"))
+            emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_insufficient_balance)))
             return
         }
         
@@ -293,7 +297,7 @@ class TransferMoneyViewModel @Inject constructor(
                                 emitEvent(TransferMoneyEvent.TransferCompleted)
                                 emitEvent(TransferMoneyEvent.NavigateBack)
                             } else {
-                                emitEvent(TransferMoneyEvent.ShowError("Transfer failed"))
+                                emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_transfer_failed)))
                             }
                         }
                     )
@@ -301,7 +305,7 @@ class TransferMoneyViewModel @Inject constructor(
             } catch (e: Exception) {
                 android.util.Log.e("TransferMoneyViewModel", "Exception during transfer: ${e.message}", e)
                 _viewState.value = _viewState.value.copy(isLoading = false)
-                emitEvent(TransferMoneyEvent.ShowError("Exception during transfer: ${e.message}"))
+                emitEvent(TransferMoneyEvent.ShowError(context.getString(R.string.transfer_money_error_exception, e.message ?: "")))
             }
         }
     }

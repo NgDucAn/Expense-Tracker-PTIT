@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.*
 
@@ -50,7 +51,7 @@ fun SearchBar(
     searchText: String,
     suggestions: List<String> = emptyList(),
     isSearching: Boolean = false,
-    placeholder: String = "Search transactions...",
+    placeholder: String = "",
     onSearchTextChange: (String) -> Unit,
     onSuggestionClick: (String) -> Unit = {},
     onSearchSubmit: () -> Unit = {},
@@ -84,7 +85,7 @@ fun SearchBar(
                 // Search Icon
                 Icon(
                     imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
+                    contentDescription = stringResource(R.string.search_transactions_search_cd),
                     tint = if (isFocused) TextMain else TextSecondary,
                     modifier = Modifier.size(20.dp)
                 )
@@ -100,7 +101,7 @@ fun SearchBar(
                         .focusRequester(focusRequester),
                     placeholder = {
                         Text(
-                            text = placeholder,
+                            text = placeholder.ifEmpty { stringResource(R.string.search_transactions_placeholder) },
                             color = TextSecondary,
                             fontSize = 14.sp
                         )
@@ -149,7 +150,7 @@ fun SearchBar(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Clear,
-                                        contentDescription = "Clear search",
+                                        contentDescription = stringResource(R.string.search_transactions_clear_cd),
                                         tint = TextSecondary,
                                         modifier = Modifier.size(16.dp)
                                     )
@@ -169,7 +170,7 @@ fun SearchBar(
                     Box {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sort),
-                            contentDescription = "Filters",
+                            contentDescription = stringResource(R.string.search_transactions_filters_cd),
                             tint = if (hasActiveFilters) TextMain else TextSecondary,
                             modifier = Modifier.size(20.dp)
                         )
@@ -251,7 +252,7 @@ private fun SuggestionItem(
     ) {
         Icon(
             imageVector = Icons.Default.Create,
-            contentDescription = "Recent search",
+            contentDescription = stringResource(R.string.search_transactions_recent_search_cd),
             tint = TextSecondary,
             modifier = Modifier.size(16.dp)
         )
@@ -267,7 +268,7 @@ private fun SuggestionItem(
         
         Icon(
             imageVector = Icons.Default.Create,
-            contentDescription = "Use suggestion",
+            contentDescription = stringResource(R.string.search_transactions_use_suggestion_cd),
             tint = TextSecondary,
             modifier = Modifier.size(14.dp)
         )

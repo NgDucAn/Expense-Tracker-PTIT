@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextMain
@@ -54,7 +55,7 @@ fun EmptyBudgetContent(
         
         // Title
         Text(
-            text = "No Running Budgets",
+            text = stringResource(R.string.budgets_no_running_budgets),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = TextMain,
@@ -65,7 +66,7 @@ fun EmptyBudgetContent(
         
         // Description
         Text(
-            text = "Start planning and tracking your expenses by creating a budget.",
+            text = stringResource(R.string.budgets_empty_description),
             fontSize = 14.sp,
             color = TextSecondary,
             textAlign = TextAlign.Center,
@@ -86,7 +87,7 @@ fun EmptyBudgetContent(
             )
         ) {
             Text(
-                text = "Create Budget",
+                text = stringResource(R.string.budgets_create_budget_button),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
