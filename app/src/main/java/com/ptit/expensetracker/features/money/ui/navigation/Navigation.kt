@@ -62,8 +62,10 @@ import com.ptit.expensetracker.features.ai.ui.chat.ChatAiScreen
 import com.ptit.expensetracker.features.money.ui.addwallet.AddWalletViewModel
 import com.ptit.expensetracker.ui.theme.AppColor.Light.SecondaryColor.color1
 import com.ptit.expensetracker.features.money.ui.onboarding.splash.SplashScreen
+import com.ptit.expensetracker.features.money.ui.onboarding.onboard.OnboardingScreen
 import com.ptit.expensetracker.features.money.ui.onboarding.walletsetup.WalletSetupScreen
 import com.ptit.expensetracker.features.money.ui.onboarding.iconpicker.IconPickerScreen
+import com.ptit.expensetracker.features.money.ui.onboarding.googlelogin.GoogleLoginScreen
 import com.ptit.expensetracker.features.money.ui.budgetdetails.BudgetDetailsScreen
 import com.ptit.expensetracker.features.money.ui.budgets.transactions.BudgetTransactionsScreen
 import com.ptit.expensetracker.features.money.ui.search.SearchTransactionsScreen
@@ -108,6 +110,7 @@ fun AppNavigation(
         currentRoute == Screen.Contacts.route ||
         currentRoute == Screen.ChooseWallet.route ||
         currentRoute == Screen.Splash.route ||
+        currentRoute == Screen.GoogleLogin.route ||
         currentRoute == Screen.WalletSetup.route ||
         currentRoute == Screen.IconPicker.route ||
         currentRoute == Screen.BudgetDetails.route ||
@@ -248,12 +251,25 @@ fun AppNavigation(
                 SplashScreen(navController = navController)
             }
             composable(Screen.Onboarding.route) {
-                com.ptit.expensetracker.features.money.ui.onboarding.onboard.OnboardingScreen(
-                    navController = navController
-                )
+                OnboardingScreen(navController = navController)
             }
-            composable(Screen.WalletSetup.route) {
-                WalletSetupScreen(navController = navController)
+            composable(Screen.GoogleLogin.route) {
+                GoogleLoginScreen(navController = navController)
+            }
+            composable(
+                route = Screen.WalletSetup.route,
+                arguments = listOf(
+                    navArgument("allowSkip") {
+                        type = NavType.BoolType
+                        defaultValue = false
+                    }
+                )
+            ) { backStackEntry ->
+                val allowSkip = backStackEntry.arguments?.getBoolean("allowSkip") ?: false
+                WalletSetupScreen(
+                    navController = navController,
+                    allowSkip = allowSkip
+                )
             }
             composable(Screen.IconPicker.route) {
                 IconPickerScreen(navController = navController)

@@ -17,6 +17,7 @@ sealed interface WalletSetupIntent : MviIntentBase {
     object ChangeBalance : WalletSetupIntent
     data class BalanceEntered(val amount: String) : WalletSetupIntent
     object ConfirmSetup : WalletSetupIntent
+    object SkipSetup : WalletSetupIntent
 
     // Added for calculator numpad integration
     object ToggleNumpad : WalletSetupIntent
@@ -27,13 +28,15 @@ sealed interface WalletSetupIntent : MviIntentBase {
  * UI state for WalletSetupScreen
  */
 data class WalletSetupState(
-    val title: String = "Thiết lập ví chính",
-    val description: String = "Hãy tạo ví chính để bắt đầu",
+    // Keep UI copy in string resources for i18n (use stringResource in composables).
+    val title: String = "",
+    val description: String = "",
     @DrawableRes val selectedIcon: Int = R.drawable.img_wallet_default_widget,
     val walletName: String = "",
     val selectedCurrency: Currency? = null,
     val enteredAmount: String = "",
     val isCreating: Boolean = false,
+    val isRestoreLoading: Boolean = false,
     val error: String? = null,
 
     // Added for calculator numpad integration

@@ -3252,4 +3252,85 @@
         <item>save {amount} to eating</item>
         <item>save {amount} to food</item>
     </string-array>
+
+    <!-- ===== i18n: Account / Onboarding / Google Login / Wallet Setup (new) ===== -->
+    <!-- Common -->
+    <string name="common_back">Back</string>
+    <string name="common_skip">Skip</string>
+    <string name="common_skip_for_now">Skip for now</string>
+    <string name="common_error_format">Error: %1$s</string>
+    <string name="common_navigate">Navigate</string>
+    <string name="common_version_format">Version %1$s</string>
+    <string name="common_user_fallback">User</string>
+
+    <!-- Account -->
+    <string name="account_title">Account</string>
+    <string name="account_feature_wallets">Wallets</string>
+    <string name="account_feature_category">Category</string>
+    <string name="account_feature_debts">Debts</string>
+    <string name="account_feature_ai_assistant">AI Assistant</string>
+    <string name="account_sign_in_with_google">Sign in with Google</string>
+    <string name="account_signing_in">Signing in...</string>
+    <string name="account_backup_data">Backup Data</string>
+    <string name="account_restore_data">Restore Data</string>
+    <string name="account_backup_success">Backup Success</string>
+    <string name="account_restore_success">Restore Success</string>
+
+    <string name="account_sign_out">Sign Out</string>
+    <string name="account_sign_out_title">Sign out</string>
+    <string name="account_sign_out_body">Do you want to back up your data before signing out?</string>
+    <string name="account_signing_out">Signing out…</string>
+    <string name="account_signing_out_dots">Signing out...</string>
+    <string name="account_sign_out_and_backup">Sign out &amp; backup</string>
+    <string name="account_sign_out_without_backup">Sign out (no backup)</string>
+
+    <string name="account_restore_prompt_title">Restore data?</string>
+    <string name="account_restore_prompt_body">Do you want to restore your data from cloud backup?</string>
+    <string name="account_restore_prompt_restoring">Restoring your backup…</string>
+    <string name="account_restore_action">Restore data</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_continue">Continue</string>
+    <string name="onboarding_login_or_create_account">Log in or create account</string>
+    <string name="onboarding_illustration_desc">Onboarding illustration</string>
+    <string name="onboarding_slide_1_title">Welcome to Expense Tracker</string>
+    <string name="onboarding_slide_1_desc">Take control of your finances with smart budgeting, expense tracking, and personalized insights.</string>
+    <string name="onboarding_slide_2_title">Track Every Expense</string>
+    <string name="onboarding_slide_2_desc">Automatically categorize your spending and see where your money goes in real-time.</string>
+    <string name="onboarding_slide_3_title">Smart Budgeting</string>
+    <string name="onboarding_slide_3_desc">Set personalized budgets and get alerts when you’re close to your limits.</string>
+    <string name="onboarding_slide_4_title">You’re All Set!</string>
+    <string name="onboarding_slide_4_desc">Start your journey to financial freedom. Create your main wallet and begin tracking today.</string>
+
+    <!-- Google Login -->
+    <string name="google_login_title">Sign in with Google</string>
+    <string name="google_login_desc">Sign in to sync and back up your data. You can still create a wallet later or skip to enter the app now.</string>
+    <string name="google_login_button">Continue with Google</string>
+    <string name="google_login_sign_in_canceled">Sign-in canceled</string>
+    <string name="google_login_sign_in_error">Sign-in error</string>
+    <string name="google_login_error_no_token">No token received</string>
+    <string name="google_login_error_auth_failed_format">Auth failed: %1$s</string>
+
+    <!-- Account (extra a11y) -->
+    <string name="account_profile_photo_desc">Profile photo</string>
+
+    <!-- Wallet Setup -->
+    <string name="wallet_setup_skip">Skip</string>
+    <string name="wallet_setup_create_wallet">CREATE WALLET</string>
+    <string name="wallet_setup_header_title">First, create a wallet</string>
+    <string name="wallet_setup_header_desc">Expense Tracker helps you to keep track of spending money from wallets. Each wallet represents a source of money such as Cash or a Bank Account.</string>
+    <string name="wallet_setup_change_icon">CHANGE ICON</string>
+    <string name="wallet_setup_wallet_name_label">Wallet name</string>
+    <string name="wallet_setup_wallet_name_placeholder">Name</string>
+    <string name="wallet_setup_currency_label">Currency</string>
+    <string name="wallet_setup_choose_currency">Choose currency</string>
+    <string name="wallet_setup_initial_balance">Initial Balance</string>
+
+    <!-- Errors (shared) -->
+    <string name="error_please_sign_in_first">Please sign in first</string>
+    <string name="error_restore_db_failed">Restore db failed</string>
+    <string name="error_restore_wal_failed">Restore wal failed</string>
+    <string name="error_restore_shm_failed">Restore shm failed</string>
+    <string name="error_restore_generic">Restore error</string>
+    <string name="error_init_categories_failed">Failed to initialize categories</string>
 </resources>

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,6 +45,7 @@ import com.ptit.expensetracker.ui.theme.TextMain
 @Composable
 fun WalletSetupScreen(
     navController: NavController,
+    allowSkip: Boolean = false,
     viewModel: WalletSetupViewModel = hiltViewModel()
 ) {
     val state by viewModel.viewState.collectAsState()
@@ -78,18 +80,31 @@ fun WalletSetupScreen(
             when (event) {
                 is WalletSetupEvent.NavigateToIconPicker -> navController.navigate(Screen.IconPicker.route)
                 is WalletSetupEvent.NavigateToCurrencyPicker -> navController.navigate(Screen.Currency.route)
-                is WalletSetupEvent.NavigateToEnterAmount -> navController.navigate(Screen.EnterAmount.route)
-                is WalletSetupEvent.NavigateToHome -> navController.navigate(Screen.Home.route) {
-//                    popUpTo(0)
+                is WalletSetupEvent.NavigateToEnterAmount -> {
+                    val currency = state.selectedCurrency
+                    val route = Screen.EnterAmount.createRoute(
+                        currencyId = currency?.id ?: 0,
+                        currencyCode = currency?.currencyCode ?: "USD",
+                        currencySymbol = currency?.symbol ?: "$"
+                    )
+                    navController.navigate(route)
+                }
+                is WalletSetupEvent.NavigateToHome -> {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.WalletSetup.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
 
-                null -> TODO()
+                null -> Unit
             }
         }
     }
 
     WalletSetupScreenContent(
         state = state,
+        allowSkip = allowSkip,
+        onSkipSetup = { viewModel.processIntent(WalletSetupIntent.SkipSetup) },
         onChangeIcon = { viewModel.processIntent(WalletSetupIntent.ChangeIcon) },
         onUpdateName = { viewModel.processIntent(WalletSetupIntent.UpdateName(it)) },
         onChangeCurrency = { viewModel.processIntent(WalletSetupIntent.ChangeCurrency) },
@@ -111,6 +126,8 @@ fun WalletSetupScreen(
 @Composable
 fun WalletSetupScreenContent(
     state: WalletSetupState,
+    allowSkip: Boolean,
+    onSkipSetup: () -> Unit,
     onChangeIcon: () -> Unit,
     onUpdateName: (String) -> Unit,
     onChangeCurrency: () -> Unit,
@@ -122,11 +139,42 @@ fun WalletSetupScreenContent(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Scaffold(
         containerColor = AppColor.Light.PrimaryColor.containerColor,
+        topBar = {
+            if (allowSkip) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                ) {
+                    TextButton(
+                        onClick = onSkipSetup,
+                        enabled = !state.isRestoreLoading,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    ) {
+                        if (state.isRestoreLoading) {
+                            CircularProgressIndicator(
+                                color = AppColor.Light.PrimaryColor.contentColor,
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(R.string.common_skip),
+                                color = AppColor.Light.PrimaryColor.contentColor
+                            )
+                        }
+                    }
+                }
+            }
+        },
         bottomBar = {
             // Confirm button
             Button(
                 onClick = onConfirmSetup,
-                enabled = state.walletName.isNotBlank() && (state.formattedAmount.isNotBlank() && !state.formattedAmount.contentEquals(",.;+-x/")) && state.selectedCurrency != null,
+                enabled = !state.isRestoreLoading &&
+                    state.walletName.isNotBlank() &&
+                    (state.formattedAmount.isNotBlank() && !state.formattedAmount.contentEquals(",.;+-x/")) &&
+                    state.selectedCurrency != null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .navigationBarsPadding()
@@ -143,7 +191,7 @@ fun WalletSetupScreenContent(
                 if (state.isCreating) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text(text = "CREATE WALLET", fontSize = 16.sp, color = Color.White)
+                    Text(text = stringResource(R.string.wallet_setup_create_wallet), fontSize = 16.sp, color = Color.White)
                 }
             }
         }
@@ -158,7 +206,7 @@ fun WalletSetupScreenContent(
             // Header: title and description
             Column {
                 Text(
-                    text = "First, create a wallet",
+                    text = stringResource(R.string.wallet_setup_header_title),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppColor.Light.PrimaryColor.contentColor,
@@ -168,7 +216,7 @@ fun WalletSetupScreenContent(
                         .padding(bottom = 16.dp)
                 )
                 Text(
-                    text = "Expense Tracker helps you to keep track of spending money from wallets. Each wallet represents a source of money such as Cash or a Bank Account.",
+                    text = stringResource(R.string.wallet_setup_header_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
@@ -215,7 +263,7 @@ fun WalletSetupScreenContent(
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "CHANGE ICON",
+                            text = stringResource(R.string.wallet_setup_change_icon),
                             color = TextMain,
                             style = MaterialTheme.typography.bodySmall
                         )
@@ -230,7 +278,7 @@ fun WalletSetupScreenContent(
                     ) {
                         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
-                                text = "Wallet name",
+                                text = stringResource(R.string.wallet_setup_wallet_name_label),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )
@@ -251,7 +299,7 @@ fun WalletSetupScreenContent(
                                     decorationBox = { inner ->
                                         if (state.walletName.isEmpty()) {
                                             Text(
-                                                text = "Name",
+                                                text = stringResource(R.string.wallet_setup_wallet_name_placeholder),
                                                 style = TextStyle(
                                                     fontSize = 20.sp,
                                                     color = AppColor.Light.PrimaryColor.disabledContentColor
@@ -275,7 +323,7 @@ fun WalletSetupScreenContent(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                text = "Currency",
+                                text = stringResource(R.string.wallet_setup_currency_label),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )
@@ -288,7 +336,7 @@ fun WalletSetupScreenContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = state.selectedCurrency?.currencyName ?: "Choose currency",
+                                    text = state.selectedCurrency?.currencyName ?: stringResource(R.string.wallet_setup_choose_currency),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = AppColor.Light.PrimaryColor.contentColor
                                 )
@@ -314,7 +362,7 @@ fun WalletSetupScreenContent(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = "Initial Balance",
+                                text = stringResource(R.string.wallet_setup_initial_balance),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )
@@ -361,7 +409,7 @@ fun WalletSetupScreenContent(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "Initial Balance",
+                            text = stringResource(R.string.wallet_setup_initial_balance),
                             style = MaterialTheme.typography.titleSmall,
                             color = AppColor.Light.PrimaryColor.contentColor
                         )
@@ -425,6 +473,8 @@ fun WalletSetupScreenContentPreview() {
                 isCreating = false,
                 error = null
             ),
+            allowSkip = false,
+            onSkipSetup = {},
             onChangeIcon = {},
             onUpdateName = {},
             onChangeCurrency = {},

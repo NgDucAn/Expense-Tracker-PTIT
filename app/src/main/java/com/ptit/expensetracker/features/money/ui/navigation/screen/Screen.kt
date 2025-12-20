@@ -13,7 +13,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
     data object Splash       : Screen("splash",      "Splash",       Icons.Default.Home)
     data object Onboarding   : Screen("onboarding",  "Onboarding",   Icons.Default.Home)
-    data object WalletSetup  : Screen("wallet_setup","Setup Wallet",Icons.Default.AccountCircle)
+    data object GoogleLogin  : Screen("google_login","Google Login", Icons.Default.AccountCircle)
+    data object WalletSetup  : Screen("wallet_setup?allowSkip={allowSkip}","Setup Wallet",Icons.Default.AccountCircle) {
+        fun createRoute(allowSkip: Boolean = false) = "wallet_setup?allowSkip=$allowSkip"
+    }
     data object IconPicker    : Screen("icon_picker","Select Icon", Icons.Default.Add)
     data object Home        : Screen("home",        "Home",         Icons.Default.Home)
     data object Transactions:

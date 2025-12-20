@@ -14,6 +14,7 @@ data class AccountState(
     val displayName: String? = null,
     val photoUrl: String? = null,
     val isSigningIn: Boolean = false,
+    val isSigningOut: Boolean = false,
     val isBackupLoading: Boolean = false,
     val isRestoreLoading: Boolean = false,
     val error: String? = null
@@ -26,6 +27,7 @@ sealed interface AccountIntent : MviIntentBase {
     data class GoogleSignIn(val idToken: String?) : AccountIntent
     data class SignInError(val message: String) : AccountIntent
     object SignOut : AccountIntent
+    data class SignOutWithBackup(val context: Context) : AccountIntent
     data class BackupData(val context: Context) : AccountIntent
     data class RestoreData(val context: Context) : AccountIntent
 }
@@ -33,6 +35,7 @@ sealed interface AccountIntent : MviIntentBase {
 // One-time events emitted from the Account ViewModel
 sealed interface AccountEvent : MviEventBase {
     object LaunchSignInFlow : AccountEvent
+    object ShowPostLoginRestorePrompt : AccountEvent
     object SignOutSuccess : AccountEvent
     object BackupSuccess : AccountEvent
     object RestoreSuccess : AccountEvent

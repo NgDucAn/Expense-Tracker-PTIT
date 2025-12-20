@@ -11,6 +11,7 @@ import com.ptit.expensetracker.features.money.domain.repository.OnboardingReposi
 import com.ptit.expensetracker.features.money.domain.usecases.InsertCategoriesUseCase
 import com.ptit.expensetracker.features.money.data.data_source.local.CategoryDataSource
 import android.content.Context
+import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -22,18 +23,26 @@ import javax.inject.Inject
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.NumpadButton
 import com.ptit.expensetracker.utils.CalculatorUtil
 import com.ptit.expensetracker.utils.CalculatorUtil.CalculatorCallback
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.ptit.expensetracker.R
+import com.ptit.expensetracker.features.money.data.data_source.local.db.LocalDatabase
+import java.io.File
 
 @HiltViewModel
 class WalletSetupViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val createWalletUseCase: CreateWalletUseCase,
     private val onboardingRepository: OnboardingRepository,
-    private val insertCategoriesUseCase: InsertCategoriesUseCase
+    private val insertCategoriesUseCase: InsertCategoriesUseCase,
+    private val auth: FirebaseAuth,
+    private val storage: FirebaseStorage
 ) : BaseViewModel<WalletSetupState, WalletSetupIntent, WalletSetupEvent>(), CalculatorCallback {
 
     override val _viewState = MutableStateFlow(WalletSetupState())
     // Calculator utility for amount input
     private val calculator = CalculatorUtil(this)
+    private val databaseName = LocalDatabase.DATABASE_NAME
 
     override fun processIntent(intent: WalletSetupIntent) {
         when (intent) {
@@ -63,6 +72,92 @@ class WalletSetupViewModel @Inject constructor(
             )
             is WalletSetupIntent.NumpadButtonPressed -> calculator.handleNumpadButtonPressed(intent.button)
             WalletSetupIntent.ConfirmSetup -> handleConfirmSetup()
+            WalletSetupIntent.SkipSetup -> skipSetup()
+        }
+    }
+
+    private fun skipSetup() {
+        // When skipping after a successful Google login, restore the user's backup immediately,
+        // then proceed to Home.
+        if (_viewState.value.isRestoreLoading) return
+        _viewState.value = _viewState.value.copy(isRestoreLoading = true, error = null)
+
+        val user = auth.currentUser
+        if (user == null) {
+            _viewState.value = _viewState.value.copy(
+                isRestoreLoading = false,
+                error = context.getString(R.string.error_please_sign_in_first)
+            )
+            viewModelScope.launch {
+                onboardingRepository.setOnboardingCompleted(true)
+                emitEvent(WalletSetupEvent.NavigateToHome)
+            }
+            return
+        }
+
+        try {
+            val localFile = context.getDatabasePath(databaseName)
+            val dbDir = localFile.parentFile!!
+            val walFile = File(dbDir, "${databaseName}-wal")
+            val shmFile = File(dbDir, "${databaseName}-shm")
+
+            val refDb = storage.reference.child("backups/${user.uid}/$databaseName")
+            val refWal = storage.reference.child("backups/${user.uid}/${databaseName}-wal")
+            val refShm = storage.reference.child("backups/${user.uid}/${databaseName}-shm")
+
+            refDb.getFile(localFile)
+                .addOnSuccessListener {
+                    refWal.getFile(walFile)
+                        .addOnSuccessListener {
+                            refShm.getFile(shmFile)
+                                .addOnSuccessListener {
+                                    _viewState.value = _viewState.value.copy(isRestoreLoading = false)
+                                    viewModelScope.launch {
+                                        onboardingRepository.setOnboardingCompleted(true)
+                                        emitEvent(WalletSetupEvent.NavigateToHome)
+                                    }
+                                }
+                                .addOnFailureListener { error ->
+                                    _viewState.value = _viewState.value.copy(
+                                        isRestoreLoading = false,
+                                        error = error.message ?: context.getString(R.string.error_restore_shm_failed)
+                                    )
+                                    viewModelScope.launch {
+                                        onboardingRepository.setOnboardingCompleted(true)
+                                        emitEvent(WalletSetupEvent.NavigateToHome)
+                                    }
+                                }
+                        }
+                        .addOnFailureListener { error ->
+                            _viewState.value = _viewState.value.copy(
+                                isRestoreLoading = false,
+                                error = error.message ?: context.getString(R.string.error_restore_wal_failed)
+                            )
+                            viewModelScope.launch {
+                                onboardingRepository.setOnboardingCompleted(true)
+                                emitEvent(WalletSetupEvent.NavigateToHome)
+                            }
+                        }
+                }
+                .addOnFailureListener { error ->
+                    _viewState.value = _viewState.value.copy(
+                        isRestoreLoading = false,
+                        error = error.message ?: context.getString(R.string.error_restore_db_failed)
+                    )
+                    viewModelScope.launch {
+                        onboardingRepository.setOnboardingCompleted(true)
+                        emitEvent(WalletSetupEvent.NavigateToHome)
+                    }
+                }
+        } catch (e: Exception) {
+            _viewState.value = _viewState.value.copy(
+                isRestoreLoading = false,
+                error = e.localizedMessage ?: context.getString(R.string.error_restore_generic)
+            )
+            viewModelScope.launch {
+                onboardingRepository.setOnboardingCompleted(true)
+                emitEvent(WalletSetupEvent.NavigateToHome)
+            }
         }
     }
 
@@ -116,7 +211,7 @@ class WalletSetupViewModel @Inject constructor(
                     } else {
                         _viewState.value = state.copy(
                             isCreating = false,
-                            error = "Failed to initialize categories"
+                            error = context.getString(R.string.error_init_categories_failed)
                         )
                     }
                 }

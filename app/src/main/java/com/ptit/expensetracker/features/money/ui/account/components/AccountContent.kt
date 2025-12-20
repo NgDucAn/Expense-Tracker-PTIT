@@ -8,12 +8,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ptit.expensetracker.BuildConfig
@@ -59,7 +62,7 @@ fun AccountContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Account",
+                text = stringResource(R.string.account_title),
                 color = TextMain,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
@@ -103,13 +106,17 @@ private fun ProfileCard(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.logo_google),
-                            contentDescription = "Sign in",
+                            contentDescription = stringResource(R.string.account_sign_in_with_google),
                             modifier = Modifier.size(40.dp),
                             tint = Color.Unspecified
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (state.isSigningIn) "Signing in..." else "Sign in with Google",
+                            text = if (state.isSigningIn) {
+                                stringResource(R.string.account_signing_in)
+                            } else {
+                                stringResource(R.string.account_sign_in_with_google)
+                            },
                             color = TextMain,
                             style = MaterialTheme.typography.bodyLarge
                         )
@@ -118,15 +125,15 @@ private fun ProfileCard(
             } else {
                 AsyncImage(
                     model = state.photoUrl,
-                    contentDescription = "Profile photo",
+                    contentDescription = stringResource(R.string.account_profile_photo_desc),
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = state.displayName ?: "User",
-                    color = Color.White,
+                    text = state.displayName ?: stringResource(R.string.common_user_fallback),
+                    color = TextMain,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -140,6 +147,52 @@ private fun AccountActionsCard(
     onIntent: (AccountIntent) -> Unit
 ) {
     val context = LocalContext.current as Context
+    val showSignOutOptions = remember { mutableStateOf(false) }
+
+    if (showSignOutOptions.value && state.isSignedIn) {
+        AlertDialog(
+            onDismissRequest = {
+                if (!state.isSigningOut) showSignOutOptions.value = false
+            },
+            title = { Text(stringResource(R.string.account_sign_out_title)) },
+            text = {
+                if (state.isSigningOut) {
+                    Text(stringResource(R.string.account_signing_out))
+                } else {
+                    Text(stringResource(R.string.account_sign_out_body))
+                }
+            },
+            confirmButton = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    TextButton(
+                        enabled = !state.isSigningOut,
+                        onClick = {
+                            showSignOutOptions.value = false
+                            onIntent(AccountIntent.SignOutWithBackup(context))
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(stringResource(R.string.account_sign_out_and_backup))
+                    }
+                    TextButton(
+                        enabled = !state.isSigningOut,
+                        onClick = {
+                            showSignOutOptions.value = false
+                            onIntent(AccountIntent.SignOut)
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(stringResource(R.string.account_sign_out_without_backup))
+                    }
+                }
+            },
+            dismissButton = {}
+        )
+    }
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -148,7 +201,7 @@ private fun AccountActionsCard(
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = { onIntent(AccountIntent.BackupData(context)) },
-                enabled = !state.isBackupLoading,
+                enabled = !state.isBackupLoading && !state.isSigningOut,
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.textButtonColors(
@@ -160,11 +213,11 @@ private fun AccountActionsCard(
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = "Backup Data", color = TextMain)
+                Text(text = stringResource(R.string.account_backup_data), color = TextMain)
             }
             Button(
                 onClick = { onIntent(AccountIntent.RestoreData(context)) },
-                enabled = !state.isRestoreLoading,
+                enabled = !state.isRestoreLoading && !state.isSigningOut,
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.textButtonColors(
@@ -176,18 +229,27 @@ private fun AccountActionsCard(
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = "Restore Data", color = TextMain)
+                Text(text = stringResource(R.string.account_restore_data), color = TextMain)
             }
-            Button(
-                onClick = { onIntent(AccountIntent.SignOut) },
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor =  AppColor.Light.ReportButtonBackground,
-                    containerColor = Color.White,
-                )
-            ) {
-                Text(text = "Sign Out", color = Color(0xFFFF383C))
+            if (state.isSignedIn) {
+                Button(
+                    onClick = { showSignOutOptions.value = true },
+                    enabled = !state.isSigningOut,
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = AppColor.Light.ReportButtonBackground,
+                        containerColor = Color.White,
+                    )
+                ) {
+                    if (state.isSigningOut) {
+                        CircularProgressIndicator(color = Color(0xFFFF383C), modifier = Modifier.size(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = stringResource(R.string.account_signing_out_dots), color = Color(0xFFFF383C))
+                    } else {
+                        Text(text = stringResource(R.string.account_sign_out), color = Color(0xFFFF383C))
+                    }
+                }
             }
         }
     }
@@ -208,25 +270,25 @@ private fun FeatureMenu(
         Column {
             FeatureItem(
                 iconRes = R.drawable.ic_basic_wallet,
-                title = "Wallets",
+                title = stringResource(R.string.account_feature_wallets),
                 onClick = onWallet
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_placeholder,
-                title = "Category",
+                title = stringResource(R.string.account_feature_category),
                 onClick = onCategories
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_credit,
-                title = "Debts",
+                title = stringResource(R.string.account_feature_debts),
                 onClick = onDebts
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_placeholder,
-                title = "AI Assistant",
+                title = stringResource(R.string.account_feature_ai_assistant),
                 onClick = onAiChat
             )
         }
@@ -260,7 +322,7 @@ private fun FeatureItem(
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_down_24dp),
-            contentDescription = "Navigate",
+            contentDescription = stringResource(R.string.common_navigate),
             tint = TextSecondary,
             modifier = Modifier.rotate(-90f)
         )
@@ -270,7 +332,7 @@ private fun FeatureItem(
 @Composable
 private fun VersionInfo(version: String) {
     Text(
-        text = "Version $version",
+        text = stringResource(R.string.common_version_format, version),
         style = MaterialTheme.typography.bodySmall,
         color = Color.Gray,
         modifier = Modifier
