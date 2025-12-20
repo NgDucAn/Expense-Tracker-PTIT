@@ -11,9 +11,14 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 import javax.inject.Inject
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import com.ptit.expensetracker.R
 
 @HiltViewModel
-class EnterAmountViewModel @Inject constructor() : BaseViewModel<
+class EnterAmountViewModel @Inject constructor(
+    @ApplicationContext private val context: Context
+) : BaseViewModel<
         EnterAmountState,
         EnterAmountIntent,
         EnterAmountEvent>() {
@@ -118,7 +123,7 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
             } else {
                 emitEvent(
                     EnterAmountEvent.ShowError(
-                        "Decimal point already entered",
+                        context.getString(R.string.enter_amount_error_decimal_already),
                         EnterAmountEvent.ErrorLevel.INFO
                     )
                 )
@@ -132,7 +137,7 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
             // Don't add more digits if we've reached the maximum
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    "Maximum digits reached",
+                    context.getString(R.string.enter_amount_error_max_digits),
                     EnterAmountEvent.ErrorLevel.WARNING
                 )
             )
@@ -154,14 +159,14 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
                     updateAmount(currentAmount + zeros)
                     emitEvent(
                         EnterAmountEvent.ShowError(
-                            "Maximum digits reached, added $zerosToAdd zeros",
+                            context.getString(R.string.enter_amount_error_max_digits_with_zeros, zerosToAdd.toString()),
                             EnterAmountEvent.ErrorLevel.INFO
                         )
                     )
                 } else {
                     emitEvent(
                         EnterAmountEvent.ShowError(
-                            "Maximum digits reached",
+                            context.getString(R.string.enter_amount_error_max_digits),
                             EnterAmountEvent.ErrorLevel.WARNING
                         )
                     )
@@ -191,7 +196,7 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
             else -> {
                 emitEvent(
                     EnterAmountEvent.ShowError(
-                        "Function not supported in this screen",
+                        context.getString(R.string.enter_amount_error_function_not_supported),
                         EnterAmountEvent.ErrorLevel.INFO
                     )
                 )
@@ -231,14 +236,14 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
         } catch (e: NumberFormatException) {
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    "Invalid number for calculation",
+                    context.getString(R.string.enter_amount_error_invalid_number),
                     EnterAmountEvent.ErrorLevel.ERROR
                 )
             )
         } catch (e: ArithmeticException) {
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    e.message ?: "Calculation error",
+                    e.message ?: context.getString(R.string.enter_amount_error_calculation),
                     EnterAmountEvent.ErrorLevel.ERROR
                 )
             )
@@ -252,11 +257,11 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
             "×" -> operand1 * operand2
             "÷" -> {
                 if (operand2 == 0.0) {
-                    throw ArithmeticException("Cannot divide by zero")
+                    throw ArithmeticException(context.getString(R.string.enter_amount_error_divide_by_zero))
                 }
                 operand1 / operand2
             }
-            else -> throw IllegalArgumentException("Unknown operator: $operation")
+            else -> throw IllegalArgumentException(context.getString(R.string.enter_amount_error_unknown_operator, operation))
         }
     }
     
@@ -280,14 +285,14 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
         } catch (e: NumberFormatException) {
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    "Invalid number for calculation",
+                    context.getString(R.string.enter_amount_error_invalid_number),
                     EnterAmountEvent.ErrorLevel.ERROR
                 )
             )
         } catch (e: ArithmeticException) {
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    e.message ?: "Calculation error",
+                    e.message ?: context.getString(R.string.enter_amount_error_calculation),
                     EnterAmountEvent.ErrorLevel.ERROR
                 )
             )
@@ -328,7 +333,7 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
             if (amountValue <= 0) {
                 emitEvent(
                     EnterAmountEvent.ShowError(
-                        "Please enter an amount greater than zero",
+                        context.getString(R.string.enter_amount_error_amount_zero),
                         EnterAmountEvent.ErrorLevel.ERROR
                     )
                 )
@@ -355,7 +360,7 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
         } catch (e: NumberFormatException) {
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    "Invalid amount format",
+                    context.getString(R.string.enter_amount_error_invalid_format),
                     EnterAmountEvent.ErrorLevel.ERROR
                 )
             )
@@ -398,7 +403,7 @@ class EnterAmountViewModel @Inject constructor() : BaseViewModel<
             // If the input is not a valid number, revert to the previous state
             emitEvent(
                 EnterAmountEvent.ShowError(
-                    "Invalid number format",
+                    context.getString(R.string.enter_amount_error_invalid_number_format),
                     EnterAmountEvent.ErrorLevel.ERROR
                 )
             )

@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.ScreenBgMain
 import com.ptit.expensetracker.ui.theme.TextMain
@@ -143,10 +144,10 @@ fun ChooseWalletScreenContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Choose Wallet", color = TextMain) },
+                title = { Text(stringResource(R.string.choose_wallet_title), color = TextMain) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = TextMain)
+                        Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.choose_wallet_back_cd), tint = TextMain)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = AppColor.Light.PrimaryColor.containerColor)
@@ -186,7 +187,7 @@ fun ChooseWalletScreenContent(
                         )
                     }
                     Text(
-                        text = "Select a wallet",
+                        text = stringResource(R.string.choose_wallet_select_wallet),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = Color(0xFF2B3B48),
@@ -286,7 +287,7 @@ fun TotalWalletItem(
         // Wallet icon
         Image(
             painterResource(id = R.drawable.ic_category_all),
-            contentDescription = "All Wallets",
+            contentDescription = stringResource(R.string.choose_wallet_all_wallets_cd),
             modifier = Modifier.size(36.dp)
         )
         
@@ -306,7 +307,7 @@ fun TotalWalletItem(
         if (isSelected) {
             Icon(
                 imageVector = Icons.Default.Check,
-                contentDescription = "Selected",
+                contentDescription = stringResource(R.string.choose_wallet_selected_cd),
                 tint = Color.Green,
                 modifier = Modifier.size(24.dp)
             )
@@ -350,7 +351,7 @@ fun WalletItem(
         if (isSelected) {
             Image(
                 painter = painterResource(id = R.drawable.ic_check),
-                contentDescription = "Selected",
+                contentDescription = stringResource(R.string.choose_wallet_selected_cd),
                 modifier = Modifier.size(24.dp)
             )
         }

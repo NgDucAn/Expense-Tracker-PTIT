@@ -25,6 +25,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.AppColor.Light.PrimaryColor.cardColor
 import com.ptit.expensetracker.ui.theme.AppColor.Light.ReportButtonBackground
@@ -58,7 +59,7 @@ fun AccountContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Account",
+                text = stringResource(R.string.account_title),
                 color = TextMain,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
@@ -102,13 +103,13 @@ private fun ProfileCard(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.logo_google),
-                            contentDescription = "Sign in",
+                            contentDescription = stringResource(R.string.account_sign_in_cd),
                             modifier = Modifier.size(40.dp),
                             tint = Color.Unspecified
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (state.isSigningIn) "Signing in..." else "Sign in with Google",
+                            text = if (state.isSigningIn) stringResource(R.string.account_signing_in) else stringResource(R.string.account_sign_in_with_google),
                             color = TextMain,
                             style = MaterialTheme.typography.bodyLarge
                         )
@@ -117,14 +118,14 @@ private fun ProfileCard(
             } else {
                 AsyncImage(
                     model = state.photoUrl,
-                    contentDescription = "Profile photo",
+                    contentDescription = stringResource(R.string.account_profile_photo_cd),
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = state.displayName ?: "User",
+                    text = state.displayName ?: stringResource(R.string.account_user_default),
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -159,7 +160,7 @@ private fun AccountActionsCard(
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = "Backup Data", color = TextMain)
+                Text(text = stringResource(R.string.account_backup_data), color = TextMain)
             }
             Button(
                 onClick = { onIntent(AccountIntent.RestoreData(context)) },
@@ -175,7 +176,7 @@ private fun AccountActionsCard(
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                Text(text = "Restore Data", color = TextMain)
+                Text(text = stringResource(R.string.account_restore_data), color = TextMain)
             }
             Button(
                 onClick = { onIntent(AccountIntent.SignOut) },
@@ -186,7 +187,7 @@ private fun AccountActionsCard(
                     containerColor = Color.White,
                 )
             ) {
-                Text(text = "Sign Out", color = Color(0xFFFF383C))
+                Text(text = stringResource(R.string.account_sign_out), color = Color(0xFFFF383C))
             }
         }
     }
@@ -206,19 +207,19 @@ private fun FeatureMenu(
         Column {
             FeatureItem(
                 iconRes = R.drawable.ic_basic_wallet,
-                title = "Wallets",
+                title = stringResource(R.string.account_wallets_section),
                 onClick = onWallet
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_placeholder,
-                title = "Category",
+                title = stringResource(R.string.account_category_section),
                 onClick = onCategories
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_credit,
-                title = "Debts",
+                title = stringResource(R.string.account_debts_section),
                 onClick = onDebts
             )
         }
@@ -252,7 +253,7 @@ private fun FeatureItem(
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_down_24dp),
-            contentDescription = "Navigate",
+            contentDescription = stringResource(R.string.account_navigate_cd),
             tint = TextSecondary,
             modifier = Modifier.rotate(-90f)
         )
@@ -262,7 +263,7 @@ private fun FeatureItem(
 @Composable
 private fun VersionInfo(version: String) {
     Text(
-        text = "Version $version",
+        text = stringResource(R.string.account_version, version),
         style = MaterialTheme.typography.bodySmall,
         color = Color.Gray,
         modifier = Modifier

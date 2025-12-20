@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -41,7 +42,7 @@ import kotlinx.coroutines.launch
 fun OnboardingScreen(
     navController: NavController
 ) {
-    val slides = onboardingSlides
+    val slides = getOnboardingSlides()
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { slides.size })
     val scope = rememberCoroutineScope()
 
@@ -98,7 +99,7 @@ fun OnboardingScreen(
                     contentColor = Color.White
                 )
             ) {
-                Text(text = if (pagerState.currentPage == slides.lastIndex) "Log in or create account" else "Continue")
+                Text(text = if (pagerState.currentPage == slides.lastIndex) stringResource(R.string.onboarding_login_or_create) else stringResource(R.string.onboarding_continue))
             }
 
             TextButton(
@@ -107,7 +108,7 @@ fun OnboardingScreen(
                     .fillMaxWidth()
                     .padding(top = 4.dp)
             ) {
-                Text(text = if (pagerState.currentPage == slides.lastIndex) "Skip for now" else "Skip", color = Color(0xFF6B7280))
+                Text(text = if (pagerState.currentPage == slides.lastIndex) stringResource(R.string.onboarding_skip_for_now) else stringResource(R.string.onboarding_skip), color = Color(0xFF6B7280))
             }
 
             Spacer(modifier = Modifier.height(8.dp).navigationBarsPadding())
@@ -148,25 +149,26 @@ private data class OnboardingSlide(
     val illustrationRes: Int
 )
 
-private val onboardingSlides = listOf(
+@Composable
+private fun getOnboardingSlides(): List<OnboardingSlide> = listOf(
     OnboardingSlide(
-        title = "Welcome to Expense Tracker",
-        description = "Take control of your finances with smart budgeting, expense tracking, and personalized insights.",
+        title = stringResource(R.string.onboarding_welcome_title),
+        description = stringResource(R.string.onboarding_welcome_description),
         illustrationRes = R.drawable.img_bg_ob1
     ),
     OnboardingSlide(
-        title = "Track Every Expense",
-        description = "Automatically categorize your spending and see where your money goes in real-time.",
+        title = stringResource(R.string.onboarding_track_expense_title),
+        description = stringResource(R.string.onboarding_track_expense_description),
         illustrationRes = R.drawable.img_bg_ob2
     ),
     OnboardingSlide(
-        title = "Smart Budgeting",
-        description = "Set personalized budgets and get alerts when you’re close to your limits.",
+        title = stringResource(R.string.onboarding_smart_budgeting_title),
+        description = stringResource(R.string.onboarding_smart_budgeting_description),
         illustrationRes = R.drawable.img_bg_ob3
     ),
     OnboardingSlide(
-        title = "You’re All Set!",
-        description = "Start your journey to financial freedom. Create your main wallet and begin tracking today.",
+        title = stringResource(R.string.onboarding_all_set_title),
+        description = stringResource(R.string.onboarding_all_set_description),
         illustrationRes = R.drawable.img_bg_ob4
     )
 )
@@ -176,8 +178,8 @@ private val onboardingSlides = listOf(
 private fun OnboardingScreenPreview() {
     ExpenseTrackerTheme {
         OnboardingItem(
-            title = "Welcome to Expense Tracker",
-            description = "Take control of your finances with smart budgeting, expense tracking, and personalized insights.",
+            title = stringResource(R.string.onboarding_welcome_title),
+            description = stringResource(R.string.onboarding_welcome_description),
             topIllustrationRes = R.drawable.img_bg_ob1
         )
     }

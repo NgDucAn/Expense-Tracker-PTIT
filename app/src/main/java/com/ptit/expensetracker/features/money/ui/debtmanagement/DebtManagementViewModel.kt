@@ -22,6 +22,9 @@ import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtF
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtSortBy
 import com.ptit.expensetracker.features.money.ui.debtmanagement.components.DebtTab
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.Context
+import com.ptit.expensetracker.R
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +47,8 @@ class DebtManagementViewModel @Inject constructor(
     private val getWalletsUseCase: GetWalletsUseCase,
     private val getCategoryByNameUseCase: GetCategoryByNameUseCase,
     private val createPartialPaymentUseCase: CreatePartialPaymentUseCase,
-    private val getDebtPaymentHistoryUseCase: GetDebtPaymentHistoryUseCase
+    private val getDebtPaymentHistoryUseCase: GetDebtPaymentHistoryUseCase,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<DebtManagementState, DebtManagementIntent, DebtManagementEvent>() {
 
     override val _viewState = MutableStateFlow(DebtManagementState())
@@ -143,7 +147,7 @@ class DebtManagementViewModel @Inject constructor(
 
     private fun openPaymentSheet(debtSummary: DebtSummary) {
         if (debtSummary.isPaid) {
-            emitEvent(DebtManagementEvent.ShowToast("Nợ này đã được thanh toán đầy đủ"))
+            emitEvent(DebtManagementEvent.ShowToast(context.getString(R.string.debt_fully_paid)))
             return
         }
         _viewState.update {
@@ -162,7 +166,7 @@ class DebtManagementViewModel @Inject constructor(
         historyJob?.cancel()
 
         val isPayable = DebtCategoryMetadata.PAYABLE_ORIGINAL.contains(debtSummary.originalTransaction.category.metaData)
-        val historyTitle = if (isPayable) "Lịch sử trả nợ" else "Lịch sử thu nợ"
+        val historyTitle = if (isPayable) context.getString(R.string.debt_payment_history) else context.getString(R.string.debt_collection_history)
         val historyDebtType = if (isPayable) DebtType.PAYABLE else DebtType.RECEIVABLE
 
         // Mở sheet và set loading
@@ -188,10 +192,10 @@ class DebtManagementViewModel @Inject constructor(
                     _viewState.update {
                         it.copy(
                             historyLoading = false,
-                            historyError = "Không tải được lịch sử"
+                            historyError = context.getString(R.string.debt_error_load_history)
                         )
                     }
-                    emitEvent(DebtManagementEvent.ShowToast("Không tải được lịch sử"))
+                    emitEvent(DebtManagementEvent.ShowToast(context.getString(R.string.debt_error_load_history)))
                 }
                 is Either.Right -> {
                     // Collect Flow để cập nhật realtime
@@ -253,11 +257,11 @@ class DebtManagementViewModel @Inject constructor(
             .replace(" ", "")
             .toDoubleOrNull()
         if (amount == null || amount <= 0) {
-            emitEvent(DebtManagementEvent.ShowToast("Số tiền không hợp lệ"))
+            emitEvent(DebtManagementEvent.ShowToast(context.getString(R.string.debt_error_invalid_amount)))
             return
         }
         if (amount > target.remainingAmount) {
-            emitEvent(DebtManagementEvent.ShowToast("Số tiền vượt quá số còn lại"))
+            emitEvent(DebtManagementEvent.ShowToast(context.getString(R.string.debt_error_amount_exceeds_remaining)))
             return
         }
 
@@ -296,13 +300,13 @@ class DebtManagementViewModel @Inject constructor(
                 
                 val category = fetchCategoryByMeta(categoryMeta) ?: run {
                     _viewState.update { it.copy(paymentSubmitting = false) }
-                    emitEvent(DebtManagementEvent.ShowToast("Không tìm thấy danh mục ${if (isPayable) "trả nợ" else "thu nợ"}"))
+                    emitEvent(DebtManagementEvent.ShowToast(if (isPayable) context.getString(R.string.debt_error_category_not_found_payable) else context.getString(R.string.debt_error_category_not_found_receivable)))
                     return@launch
                 }
 
                 // Tạo transaction thanh toán/thu nợ
                 val paymentDescription = state.paymentNoteInput.ifBlank { 
-                    if (isPayable) "Trả nợ: ${target.personName}" else "Thu nợ: ${target.personName}"
+                    if (isPayable) context.getString(R.string.debt_payment_title, target.personName) else context.getString(R.string.debt_collection_title, target.personName)
                 }
 
                 // Tạo transaction thanh toán/thu nợ với đầy đủ thông tin debt
@@ -331,7 +335,7 @@ class DebtManagementViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update { it.copy(paymentSubmitting = false) }
-                            emitEvent(DebtManagementEvent.ShowToast("Lưu giao dịch thất bại: ${failure}"))
+                            emitEvent(DebtManagementEvent.ShowToast(context.getString(R.string.debt_error_save_transaction, failure.toString())))
                         },
                         { savedTransaction ->
                             // Sau khi lưu thành công, reload dữ liệu nợ để cập nhật UI
@@ -350,14 +354,14 @@ class DebtManagementViewModel @Inject constructor(
                                     _viewState.update { it.copy(paymentSubmitting = false) }
                                     
                                     emitEvent(DebtManagementEvent.ShowSuccessMessage(
-                                        if (isPayable) "Đã ghi nhận trả nợ ${formatAmount(amount)} ${target.originalTransaction.wallet.currency.symbol}" 
-                                        else "Đã ghi nhận thu nợ ${formatAmount(amount)} ${target.originalTransaction.wallet.currency.symbol}"
+                                        if (isPayable) context.getString(R.string.debt_payment_recorded, formatAmount(amount), target.originalTransaction.wallet.currency.symbol)
+                                        else context.getString(R.string.debt_collection_recorded, formatAmount(amount), target.originalTransaction.wallet.currency.symbol)
                                     ))
                                     dismissPaymentSheet()
                                 } catch (e: Exception) {
                                     android.util.Log.e("DebtManagementVM", "Error reloading debt data", e)
                                     _viewState.update { it.copy(paymentSubmitting = false) }
-                                    emitEvent(DebtManagementEvent.ShowToast("Lỗi cập nhật UI: ${e.message}"))
+                                    emitEvent(DebtManagementEvent.ShowToast(context.getString(R.string.debt_error_update_ui, e.message ?: "")))
                                 }
                             }
                         }
@@ -576,7 +580,7 @@ class DebtManagementViewModel @Inject constructor(
                             it.copy(
                                 isLoading = false,
                                 isRefreshing = false,
-                                error = "Không thể tải danh sách ví"
+                                error = context.getString(R.string.debt_error_load_wallets)
                             )
                         }
                         // Resume ngay cả khi lỗi để không block
@@ -596,7 +600,7 @@ class DebtManagementViewModel @Inject constructor(
                                                 it.copy(
                                                     isLoading = false,
                                                     isRefreshing = false,
-                                                    error = "Không thể tải dữ liệu nợ"
+                                                    error = context.getString(R.string.debt_error_load_data)
                                                 )
                                             }
                                             // Resume để tiếp tục
@@ -619,7 +623,7 @@ class DebtManagementViewModel @Inject constructor(
                                     it.copy(
                                         isLoading = false,
                                         isRefreshing = false,
-                                        error = "Lỗi khi tải dữ liệu: ${e.message}"
+                                        error = context.getString(R.string.debt_error_load_data_with_message, e.message ?: "")
                                     )
                                 }
                                 continuation.resume(Unit)

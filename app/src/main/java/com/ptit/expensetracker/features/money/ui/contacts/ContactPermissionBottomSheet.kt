@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,20 +53,20 @@ fun ContactPermissionBottomSheet(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_with),
-                contentDescription = "Contacts Icon",
+                contentDescription = stringResource(R.string.contacts_icon_cd),
                 tint = Color.LightGray, // Icon color
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Text(
-                text = "Get your contacts",
+                text = stringResource(R.string.contacts_get_your_contacts),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 color = Color.White,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
-                text = "You can pick people from your contact by allowing Money Lover to access your contact on this device.",
+                text = stringResource(R.string.contacts_permission_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.LightGray,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -92,7 +93,7 @@ fun ContactPermissionBottomSheet(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Do not ask again",
+                    text = stringResource(R.string.contacts_do_not_ask_again),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.LightGray
                 )
@@ -106,14 +107,14 @@ fun ContactPermissionBottomSheet(
                     onClick = onNoThanks,
                     colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFF4CAF50)) // Green accent
                 ) {
-                    Text("NO THANKS")
+                    Text(stringResource(R.string.contacts_no_thanks))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
                     onClick = onAllowAccess,
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)) // Green accent
                 ) {
-                    Text("ALLOW ACCESS", color = Color.White)
+                    Text(stringResource(R.string.contacts_allow_access), color = Color.White)
                 }
             }
         }

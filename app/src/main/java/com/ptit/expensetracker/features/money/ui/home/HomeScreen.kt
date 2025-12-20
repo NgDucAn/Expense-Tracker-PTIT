@@ -1,5 +1,9 @@
 package com.ptit.expensetracker.features.money.ui.home
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.core.content.ContextCompat
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletWithCurrencyEntity
@@ -48,6 +54,26 @@ fun HomeScreen(
     showWeeklyExpenseSheet: Boolean = false,
     onDismissWeeklyExpenseSheet: () -> Unit = {}
 ) {
+    // Xin quyền thông báo cho Android 13+ ngay khi user vào Home lần đầu
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { /* Kết quả có thể được xử lý sau nếu cần */ }
+    )
+
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val hasPermission = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+            if (!hasPermission) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
     val uiState by viewModel.viewState.collectAsState()
     val insetsTop = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
     HomeScreenContent(
@@ -151,16 +177,16 @@ fun TopBalanceBar(
         Column {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Total balance",
+                text = stringResource(R.string.home_total_balance),
                 color = Color(0xFF505D6D), // Màu chữ phụ
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = if (isVisible) balance else "••••••• đ", // Hiển thị hoặc ẩn số dư
+                    text = if (isVisible) balance else stringResource(R.string.home_hidden_balance),
                     color = Color.Black,
-                    fontSize = 28.sp, // Kích thướ c lớn hơn
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -170,7 +196,7 @@ fun TopBalanceBar(
                 ) { // Nút ẩn/hiện
                     Icon(
                         imageVector = if (isVisible) Icons.Filled.AccountBox else Icons.Filled.AccountBox,
-                        contentDescription = if (isVisible) "Hide balance" else "Show balance",
+                        contentDescription = if (isVisible) stringResource(R.string.home_hide_balance) else stringResource(R.string.home_show_balance),
                         tint = Color.Black
                     )
                 }
@@ -182,17 +208,17 @@ fun TopBalanceBar(
             IconButton(onClick = { /* TODO: Handle search click */ }) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_ai_chatbot),
-                    contentDescription = "Chat Bot"
+                    contentDescription = stringResource(R.string.home_chatbot_cd)
                 )
             }
             // Icon tìm kiếm
-            IconButton(onClick = { /* TODO: Handle search click */ }) {
+            /*IconButton(onClick = { *//* TODO: Handle search click *//* }) {
                 Icon(
                     imageVector = Icons.Filled.Search,
-                    contentDescription = "Search",
+                    contentDescription = stringResource(R.string.home_search_cd),
                     tint = Color(0xFF1E2A36)
                 )
-            }
+            }*/
         }
     }
 }
@@ -212,13 +238,13 @@ fun MyWalletsSection(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "My Wallets",
+                text = stringResource(R.string.home_my_wallets_title),
                 color = Color(0xFF1E2A36),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "See all",
+                text = stringResource(R.string.home_see_all),
                 color = Color(0xFFFCA419),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
@@ -350,13 +376,13 @@ fun ReportSectionHeader(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Report this month",
+            text = stringResource(R.string.home_report_this_month),
             color = Color(0xFF2B3B48),
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )
         Text(
-            text = "See reports",
+            text = stringResource(R.string.home_see_reports),
             color = Color(0xFFFCA419),
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,

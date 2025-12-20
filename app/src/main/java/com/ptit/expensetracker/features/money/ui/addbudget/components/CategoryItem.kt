@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Category
 import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.utils.getDrawableResId
@@ -65,14 +66,14 @@ fun CategoryItem(
                 .padding(start = 16.dp),
             text = category?.title?.let {
                  stringResource(id = getStringResId(LocalContext.current, it))
-            } ?: "Select category",
+            } ?: stringResource(R.string.add_budget_select_category),
             color = TextSecondary,
             fontSize = 16.sp
         )
         
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "Select",
+            contentDescription = stringResource(R.string.add_budget_select_cd),
             tint = TextSecondary
         )
     }

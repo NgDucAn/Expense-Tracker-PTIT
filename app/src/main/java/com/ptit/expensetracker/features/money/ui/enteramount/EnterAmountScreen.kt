@@ -31,7 +31,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Currency
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.NumpadButton
 import com.ptit.expensetracker.features.money.ui.addtransaction.components.TransactionNumpad
@@ -110,12 +113,12 @@ fun EnterAmountScreenContent(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Enter amount", color = TextMain) },
+                title = { Text(stringResource(R.string.enter_amount_title), color = TextMain) },
                 navigationIcon = {
                     IconButton(onClick = onSave) {
                         Icon(
                             imageVector = Icons.Filled.Check,
-                            contentDescription = "Save",
+                            contentDescription = stringResource(R.string.enter_amount_save_cd),
                             tint = AppColor.Light.PrimaryColor.TextButtonColor
                         )
                     }

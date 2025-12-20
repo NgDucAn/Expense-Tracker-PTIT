@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.features.money.ui.budgetdetails.BudgetDetailsState
 import java.time.ZoneId
 import java.time.LocalDate

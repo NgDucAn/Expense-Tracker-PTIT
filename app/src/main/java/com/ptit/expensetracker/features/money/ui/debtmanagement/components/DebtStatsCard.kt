@@ -10,6 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.DebtType
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.utils.formatAmount
@@ -46,8 +48,8 @@ fun DebtStatsCard(
             ) {
                 Text(
                     text = when (debtType) {
-                        DebtType.PAYABLE -> "Tổng nợ phải trả"
-                        DebtType.RECEIVABLE -> "Tổng nợ được nhận"
+                        DebtType.PAYABLE -> stringResource(R.string.debt_stats_total_payable)
+                        DebtType.RECEIVABLE -> stringResource(R.string.debt_stats_total_receivable)
                     },
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
@@ -63,7 +65,7 @@ fun DebtStatsCard(
                     }
                 ) {
                     Text(
-                        text = "$totalCount khoản",
+                        text = stringResource(R.string.debt_stats_item_count, totalCount),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         color = when (debtType) {
                             DebtType.PAYABLE -> MaterialTheme.colorScheme.onErrorContainer
@@ -82,7 +84,7 @@ fun DebtStatsCard(
             ) {
                 // Total amount
                 StatItem(
-                    title = "Tổng cộng",
+                    title = stringResource(R.string.debt_stats_total_label),
                     amount = totalAmount,
                     currencySymbol = currencySymbol,
                     textColor = when (debtType) {
@@ -95,8 +97,8 @@ fun DebtStatsCard(
                 // Unpaid amount
                 StatItem(
                     title = when (debtType) {
-                        DebtType.PAYABLE -> "Chưa trả"
-                        DebtType.RECEIVABLE -> "Chưa thu"
+                        DebtType.PAYABLE -> stringResource(R.string.debt_stats_unpaid_payable)
+                        DebtType.RECEIVABLE -> stringResource(R.string.debt_stats_unpaid_receivable)
                     },
                     amount = unpaidAmount,
                     currencySymbol = currencySymbol,
@@ -119,8 +121,8 @@ fun DebtStatsCard(
                     ) {
                         Text(
                             text = when (debtType) {
-                                DebtType.PAYABLE -> "Đã trả"
-                                DebtType.RECEIVABLE -> "Đã thu"
+                                DebtType.PAYABLE -> stringResource(R.string.debt_stats_paid_payable)
+                                DebtType.RECEIVABLE -> stringResource(R.string.debt_stats_paid_receivable)
                             },
                             color = TextSecondary,
                             fontSize = 12.sp
@@ -162,8 +164,8 @@ fun DebtStatsCard(
                 ) {
                     Text(
                         text = when (debtType) {
-                            DebtType.PAYABLE -> "Còn $unpaidCount khoản chưa trả"
-                            DebtType.RECEIVABLE -> "Còn $unpaidCount khoản chưa thu"
+                            DebtType.PAYABLE -> stringResource(R.string.debt_stats_remaining_unpaid_payable, unpaidCount)
+                            DebtType.RECEIVABLE -> stringResource(R.string.debt_stats_remaining_unpaid_receivable, unpaidCount)
                         },
                         color = TextSecondary,
                         fontSize = 12.sp
@@ -171,7 +173,7 @@ fun DebtStatsCard(
                     
                     if (totalCount > unpaidCount) {
                         Text(
-                            text = "Đã hoàn thành ${totalCount - unpaidCount}/${totalCount}",
+                            text = stringResource(R.string.debt_stats_completed_count, totalCount - unpaidCount, totalCount),
                             color = MaterialTheme.colorScheme.primary,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
@@ -224,7 +226,7 @@ fun DebtStatsCardPreview() {
                 unpaidAmount = 2000000.0,
                 totalCount = 5,
                 unpaidCount = 3,
-                currencySymbol = "đ"
+                currencySymbol = "₫"
             )
             
             DebtStatsCard(
@@ -233,7 +235,7 @@ fun DebtStatsCardPreview() {
                 unpaidAmount = 1500000.0,
                 totalCount = 4,
                 unpaidCount = 1,
-                currencySymbol = "đ"
+                currencySymbol = "₫"
             )
         }
     }

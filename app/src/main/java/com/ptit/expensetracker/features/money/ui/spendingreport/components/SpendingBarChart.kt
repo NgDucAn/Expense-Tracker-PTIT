@@ -6,7 +6,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.ptit.expensetracker.R
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
@@ -62,6 +64,8 @@ fun SpendingBarChart(
     thisAmount: Double,
     modifier: Modifier = Modifier
 ) {
+    val lastWeekLabel = stringResource(R.string.spending_chart_last_week)
+    val thisWeekLabel = stringResource(R.string.spending_chart_this_week)
 
     val fillColor = remember {
         Fill(AppColor.Light.OutflowAmountColor.toArgb())
@@ -117,7 +121,7 @@ fun SpendingBarChart(
         bottomAxis = HorizontalAxis.rememberBottom(
             // Show only Last week and This week
             valueFormatter = CartesianValueFormatter { _, value, _ ->
-                if (value.toInt() == 1) "Last week" else "This week"
+                if (value.toInt() == 1) lastWeekLabel else thisWeekLabel
             },
             itemPlacer = HorizontalAxis.ItemPlacer.aligned(
                 spacing = { _ -> 1 }, offset = { _ -> 0 }, shiftExtremeLines = false, addExtremeLabelPadding = true

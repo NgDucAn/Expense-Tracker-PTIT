@@ -29,6 +29,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,7 @@ fun MyWalletsScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     var showOptionsSheet by remember { mutableStateOf(false) }
     var selectedWalletForOptions by remember { mutableStateOf<Wallet?>(null) }
+    val context = LocalContext.current
     
     // Collect events from ViewModel
     LaunchedEffect(Unit) {
@@ -68,10 +70,10 @@ fun MyWalletsScreen(
             // Handle success events: reload list and show snackbar
             when (event) {
                 is MyWalletsEvent.WalletDeleted -> {
-                    snackbarHostState.showSnackbar("Delete wallet successfully!")
+                    snackbarHostState.showSnackbar(context.getString(R.string.my_wallets_delete_success))
                 }
                 is MyWalletsEvent.MainWalletSet -> {
-                    snackbarHostState.showSnackbar("Set main wallet successfully!")
+                    snackbarHostState.showSnackbar(context.getString(R.string.my_wallets_set_main_success))
                 }
                 else -> {}
             }
@@ -183,19 +185,19 @@ fun MyWalletsScreen(
     if (showConfirmDeleteDialog && selectedWalletForOptions != null) {
         AlertDialog(
             onDismissRequest = { showConfirmDeleteDialog = false },
-            title = { Text("Xác nhận xoá") },
-            text = { Text("Bạn có chắc chắn muốn xoá ví này?") },
+            title = { Text(stringResource(R.string.my_wallets_delete_confirm_title)) },
+            text = { Text(stringResource(R.string.my_wallets_delete_confirm_message)) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.processIntent(MyWalletsIntent.DeleteWallet(selectedWalletForOptions!!.id))
                     showConfirmDeleteDialog = false
                 }) {
-                    Text("Xoá")
+                    Text(stringResource(R.string.my_wallets_delete_button))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showConfirmDeleteDialog = false }) {
-                    Text("Hủy")
+                    Text(stringResource(R.string.my_wallets_cancel_button))
                 }
             }
         )
@@ -220,7 +222,7 @@ fun MyWalletsScreenContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "My Wallets",
+                        text = stringResource(R.string.my_wallets_title),
                         color = TextMain,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -229,7 +231,7 @@ fun MyWalletsScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.my_wallets_back_cd),
                             tint = TextMain
                         )
                     }
@@ -238,7 +240,7 @@ fun MyWalletsScreenContent(
                     IconButton(onClick = onInfoClick) {
                         Icon(
                             Icons.Filled.Info,
-                            contentDescription = "Info",
+                            contentDescription = stringResource(R.string.my_wallets_info_cd),
                             tint = TextMain
                         )
                     }
@@ -266,7 +268,7 @@ fun MyWalletsScreenContent(
             ) {
                 Icon(Icons.Filled.Add, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("ADD WALLET", fontWeight = FontWeight.Bold, color = Color.White)
+                Text(stringResource(R.string.my_wallets_add_wallet_button), fontWeight = FontWeight.Bold, color = Color.White)
             }
         },
         containerColor = AppColor.Light.PrimaryColor.containerColor,
@@ -319,7 +321,7 @@ fun MyWalletsScreenContent(
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
                             Text(
-                                text = "You will soon be able to view transactions for each wallet here.",
+                                text = stringResource(R.string.my_wallets_empty_message),
                                 fontSize = 14.sp,
                                 color = TextSecondary,
                                 modifier = Modifier.padding(12.dp)
@@ -379,13 +381,13 @@ fun TotalBalanceCard(icon: Painter, totalBalance: String) {
         ) {
             Image(
                 painter = icon,
-                contentDescription = "Total Balance Icon",
+                contentDescription = stringResource(R.string.my_wallets_total_balance_icon_cd),
                 modifier = Modifier.size(40.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    "Total",
+                    stringResource(R.string.my_wallets_total_label),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextSecondary
@@ -404,7 +406,7 @@ fun TotalBalanceCard(icon: Painter, totalBalance: String) {
 @Composable
 fun IncludedInTotalHeader() {
     Text(
-        text = "Included in Total",
+        text = stringResource(R.string.my_wallets_included_in_total),
         fontSize = 16.sp,
         fontWeight = FontWeight.Bold,
         color = TextSecondary,
@@ -478,7 +480,7 @@ fun WalletItem(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Main",
+                            text = stringResource(R.string.my_wallets_main_label),
                             fontSize = 10.sp,
                             color = greenIndicator,
                         )
@@ -495,7 +497,7 @@ fun WalletItem(
         IconButton(onClick = onMoreClick) {
             Icon(
                 Icons.Filled.MoreVert,
-                contentDescription = "More options",
+                contentDescription = stringResource(R.string.my_wallets_more_options_cd),
                 tint = TextSecondary
             )
         }
@@ -648,7 +650,7 @@ fun AddWalletBottomSheetContent(onWalletTypeClick: (WalletType) -> Unit) {
 
     ) {
         Text(
-            text = "Add wallet",
+            text = stringResource(R.string.add_wallet_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = TextMain,
@@ -712,7 +714,7 @@ fun WalletTypeCard(title: String, color: Color, onClick: () -> Unit, modifier: M
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painterResource(id = R.drawable.ic_basic_wallet_v2), // Placeholder for question mark
-                contentDescription = "Info",
+                contentDescription = stringResource(R.string.my_wallets_info_cd),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
@@ -765,7 +767,7 @@ private fun OptionsBottomSheetContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Options",
+            text = stringResource(R.string.my_wallets_options_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = TextMain,
@@ -786,7 +788,7 @@ private fun OptionsBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Set as main wallet",
+                    text = stringResource(R.string.my_wallets_set_as_main),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -808,7 +810,7 @@ private fun OptionsBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Edit wallet",
+                    text = stringResource(R.string.my_wallets_edit_wallet),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -830,7 +832,7 @@ private fun OptionsBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Delete wallet",
+                    text = stringResource(R.string.my_wallets_delete_wallet),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -852,7 +854,7 @@ private fun OptionsBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Transfer money",
+                    text = stringResource(R.string.my_wallets_transfer_money),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White

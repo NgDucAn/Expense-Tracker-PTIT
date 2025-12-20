@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextMain
 
@@ -26,15 +28,15 @@ fun BudgetDetailsTopAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        title = { Text("Budget details", color = TextMain, fontWeight = FontWeight.Bold) },
+        title = { Text(stringResource(R.string.budget_details_title), color = TextMain, fontWeight = FontWeight.Bold) },
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = TextMain)
+                Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.budget_details_back_cd), tint = TextMain)
             }
         },
         actions = {
             IconButton(onClick = onEditBudget) {
-                Icon(Icons.Filled.Edit, contentDescription = "Edit Budget", tint = TextMain)
+                Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.budget_details_edit_cd), tint = TextMain)
             }
             IconButton(onClick = onDeleteBudget) {
                 Icon(Icons.Filled.Delete, contentDescription = "Delete Budget", tint = TextMain)

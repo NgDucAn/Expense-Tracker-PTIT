@@ -168,13 +168,17 @@ fun BudgetScreenContent(
     onHowToUseClick: () -> Unit
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(1) }
-    val tabs = listOf("Last month", "This month" , "Future")
+    val tabs = listOf(
+        stringResource(R.string.budgets_last_month),
+        stringResource(R.string.budgets_this_month),
+        stringResource(R.string.budgets_future)
+    )
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Running Budgets", color = TextMain, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.budgets_running_budgets), color = TextMain, fontWeight = FontWeight.Bold)
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = AppColor.Light.PrimaryColor.containerColor,
@@ -187,7 +191,7 @@ fun BudgetScreenContent(
                         Row {
                             Image(
                                 painter = painterResource(id = getDrawableResId(LocalContext.current, state.currentWallet?.icon ?: "0")), // Placeholder, replace with actual icon
-                                contentDescription = "Select Wallet",
+                                contentDescription = stringResource(R.string.budgets_select_wallet_cd),
                                 modifier = Modifier.size(24.dp),
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -195,13 +199,13 @@ fun BudgetScreenContent(
                             Column {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_arrow_tooltip_home_up), // Placeholder, replace with actual icon
-                                    contentDescription = "Select Wallet",
+                                    contentDescription = stringResource(R.string.budgets_select_wallet_cd),
                                     modifier = Modifier.size(12.dp),
                                     tint = TextMain
                                 )
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_arrow_tooltip_home_down), // Placeholder, replace with actual icon
-                                    contentDescription = "Select Wallet",
+                                    contentDescription = stringResource(R.string.budgets_select_wallet_cd),
                                     modifier = Modifier.size(12.dp),
                                     tint = TextMain
                                 )
@@ -214,7 +218,7 @@ fun BudgetScreenContent(
                     IconButton(onClick = { showMenu = !showMenu }) {
                         Icon(
                             Icons.Filled.MoreVert,
-                            contentDescription = "More options",
+                            contentDescription = stringResource(R.string.budgets_more_options_cd),
                             tint = TextMain
                         )
                     }
@@ -224,7 +228,7 @@ fun BudgetScreenContent(
                         modifier = Modifier.background(Color.White)
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Refresh") },
+                            text = { Text(stringResource(R.string.budgets_refresh)) },
                             onClick = {
                                 onRefreshBudgets()
                                 showMenu = false

@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.ptit.expensetracker.R
 
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
@@ -88,7 +89,7 @@ class ContactsViewModel @Inject constructor(
                     isLoading = false,
                     error = e
                 )
-                emitEvent(ContactsEvent.ShowError("Failed to load contacts: ${e.message}"))
+                emitEvent(ContactsEvent.ShowError(context.getString(R.string.contacts_error_load_contacts, e.message ?: "")))
                 Log.e("ContactsViewModel", "Error loading contacts", e)
             }
         }
@@ -245,7 +246,7 @@ class ContactsViewModel @Inject constructor(
                 phoneNumberInput = ""
             )
 
-            emitEvent(ContactsEvent.ShowToast("Phone number added"))
+            emitEvent(ContactsEvent.ShowToast(context.getString(R.string.contacts_phone_number_added)))
         }
     }
 

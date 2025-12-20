@@ -16,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextSecondary
@@ -80,7 +82,7 @@ fun BudgetItem(
 
             // Left amount text
             Text(
-                text = "Left $leftAmount",
+                text = stringResource(R.string.budgets_left_label, leftAmount),
                 fontSize = 12.sp,
                 color = TextSecondary,
                 modifier = Modifier.align(Alignment.End)
@@ -103,7 +105,7 @@ fun BudgetItem(
 
             // Today text
             Text(
-                text = "Today",
+                text = stringResource(R.string.budgets_today),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 color = TextSecondary,

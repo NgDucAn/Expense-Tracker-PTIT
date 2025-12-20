@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextSecondary
@@ -49,13 +51,13 @@ fun RepeatBudgetItem(
             
             Column(modifier = Modifier.padding(start = 8.dp)) {
                 Text(
-                    text = "Repeat this budget",
+                    text = stringResource(R.string.add_budget_repeat_title),
                     color = TextMain,
                     fontSize = 16.sp
                 )
                 
                 Text(
-                    text = "Budget will renew automatically.",
+                    text = stringResource(R.string.add_budget_repeat_subtitle),
                     color = TextSecondary,
                     fontSize = 14.sp
                 )

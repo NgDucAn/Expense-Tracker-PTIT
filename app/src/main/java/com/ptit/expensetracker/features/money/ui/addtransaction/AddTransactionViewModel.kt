@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.data.data_source.local.CategoryDataSource
 import com.ptit.expensetracker.features.money.domain.usecases.GetCategoryByNameUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.GetTransactionByIdUseCase
@@ -89,7 +90,7 @@ class AddTransactionViewModel @Inject constructor(
             result.fold(
                 { failure ->
                     // Handle error
-                    emitEvent(AddTransactionEvent.ShowError("Failed to load wallets"))
+                    emitEvent(AddTransactionEvent.ShowError(context.getString(R.string.add_transaction_error_load_wallets)))
                 },
                 { walletsFlow ->
                     walletsFlow
@@ -105,7 +106,7 @@ class AddTransactionViewModel @Inject constructor(
                             }
                         }
                         .catch { e ->
-                            emitEvent(AddTransactionEvent.ShowError("Failed to load wallets: ${e.message}"))
+                            emitEvent(AddTransactionEvent.ShowError(context.getString(R.string.add_transaction_error_load_wallets_with_message, e.message ?: "")))
                         }
                         .launchIn(viewModelScope)
                 }
@@ -225,7 +226,7 @@ class AddTransactionViewModel @Inject constructor(
                 )
             } catch (e: Exception) {
                 Log.e("AddTransactionVM", "Error selecting date: ${e.message}")
-                emitEvent(AddTransactionEvent.ShowError("Failed to set transaction date"))
+                emitEvent(AddTransactionEvent.ShowError(context.getString(R.string.add_transaction_error_set_date)))
             }
         }
     }
@@ -263,9 +264,9 @@ class AddTransactionViewModel @Inject constructor(
                 if (!currentState.isValidAmount || !currentState.isValidCategory || !currentState.isValidWallet) {
                     _viewState.value = _viewState.value.copy(
                         isSaving = false,
-                        error = IllegalStateException("Please fill in all required fields")
+                        error = IllegalStateException(context.getString(R.string.add_transaction_error_fill_required_fields))
                     )
-                    emitEvent(AddTransactionEvent.ShowError("Please fill in all required fields"))
+                    emitEvent(AddTransactionEvent.ShowError(context.getString(R.string.add_transaction_error_fill_required_fields)))
                     return@launch
                 }
 
@@ -318,9 +319,9 @@ class AddTransactionViewModel @Inject constructor(
                                 error = Exception(failure.toString())
                             )
                             val errorMessage = if (currentState.isEditMode) {
-                                "Failed to update transaction"
+                                context.getString(R.string.add_transaction_error_update)
                             } else {
-                                "Failed to save transaction"
+                                context.getString(R.string.add_transaction_error_save)
                             }
                             emitEvent(AddTransactionEvent.ShowError(errorMessage))
                         },
@@ -346,7 +347,7 @@ class AddTransactionViewModel @Inject constructor(
                     isSaving = false,
                     error = e
                 )
-                emitEvent(AddTransactionEvent.ShowError(e.message ?: "An error occurred"))
+                emitEvent(AddTransactionEvent.ShowError(e.message ?: context.getString(R.string.add_transaction_error_generic)))
             }
         }
     }
