@@ -66,6 +66,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Cloud SQL connector (Postgres) for Cloud Run / GCE without exposing DB public IP -->
+        <dependency>
+            <groupId>com.google.cloud.sql</groupId>
+            <artifactId>postgres-socket-factory</artifactId>
+            <version>1.16.0</version>
+        </dependency>
+
         <!-- H2 for testing -->
         <dependency>
             <groupId>com.h2database</groupId>

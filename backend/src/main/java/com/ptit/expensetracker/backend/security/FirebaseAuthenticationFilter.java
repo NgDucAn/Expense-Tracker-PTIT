@@ -31,12 +31,15 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
 
     private final FirebaseAuth firebaseAuth;
 
+    @org.springframework.beans.factory.annotation.Value("${app.security.permit-h2-console:false}")
+    private boolean permitH2Console;
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
         return PATH_MATCHER.match("/actuator/health", path)
                 || PATH_MATCHER.match("/actuator/health/**", path)
-                || PATH_MATCHER.match("/h2-console/**", path)
+                || (permitH2Console && PATH_MATCHER.match("/h2-console/**", path))
                 || PATH_MATCHER.match("/error", path);
     }
 
