@@ -191,7 +191,7 @@ fun WalletSetupScreenContent(
                 if (state.isCreating) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text(text = stringResource(R.string.wallet_setup_create_wallet), fontSize = 16.sp, color = Color.White)
+                    Text(text = stringResource(R.string.wallet_setup_create_button), fontSize = 16.sp, color = Color.White)
                 }
             }
         }
@@ -206,7 +206,7 @@ fun WalletSetupScreenContent(
             // Header: title and description
             Column {
                 Text(
-                    text = stringResource(R.string.wallet_setup_header_title),
+                    text = stringResource(R.string.wallet_setup_title),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppColor.Light.PrimaryColor.contentColor,
@@ -216,7 +216,7 @@ fun WalletSetupScreenContent(
                         .padding(bottom = 16.dp)
                 )
                 Text(
-                    text = stringResource(R.string.wallet_setup_header_desc),
+                    text = stringResource(R.string.wallet_setup_description),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
@@ -362,7 +362,7 @@ fun WalletSetupScreenContent(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                text = stringResource(R.string.wallet_setup_initial_balance),
+                                text = stringResource(R.string.wallet_setup_initial_balance_label),
                                 style = MaterialTheme.typography.titleSmall,
                                 color = AppColor.Light.PrimaryColor.contentColor
                             )
@@ -409,7 +409,7 @@ fun WalletSetupScreenContent(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.wallet_setup_initial_balance),
+                            text = stringResource(R.string.wallet_setup_initial_balance_label),
                             style = MaterialTheme.typography.titleSmall,
                             color = AppColor.Light.PrimaryColor.contentColor
                         )

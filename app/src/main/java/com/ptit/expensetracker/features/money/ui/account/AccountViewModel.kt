@@ -15,12 +15,14 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import com.ptit.expensetracker.R
 import java.io.File
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val storage: FirebaseStorage,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<AccountState, AccountIntent, AccountEvent>() {
 
     private val databaseName = LocalDatabase.DATABASE_NAME
@@ -169,7 +171,7 @@ class AccountViewModel @Inject constructor(
             _viewState.value = _viewState.value.copy(isBackupLoading = true)
             val user = auth.currentUser
             if (user == null) {
-                emitEvent(AccountEvent.ShowError("Please sign in first"))
+                emitEvent(AccountEvent.ShowError(context.getString(R.string.account_error_please_sign_in)))
                 _viewState.value = _viewState.value.copy(isBackupLoading = false)
                 return@launch
             }
@@ -192,21 +194,21 @@ class AccountViewModel @Inject constructor(
                                         _viewState.value = _viewState.value.copy(isBackupLoading = false)
                                     }
                                     .addOnFailureListener { error ->
-                                        emitEvent(AccountEvent.ShowError(error.message ?: "Backup shm failed"))
+                                        emitEvent(AccountEvent.ShowError(error.message ?: context.getString(R.string.account_error_backup_shm_failed)))
                                         _viewState.value = _viewState.value.copy(isBackupLoading = false)
                                     }
                             }
                             .addOnFailureListener { error ->
-                                emitEvent(AccountEvent.ShowError(error.message ?: "Backup wal failed"))
+                                emitEvent(AccountEvent.ShowError(error.message ?: context.getString(R.string.account_error_backup_wal_failed)))
                                 _viewState.value = _viewState.value.copy(isBackupLoading = false)
                             }
                     }
                     .addOnFailureListener { error ->
-                        emitEvent(AccountEvent.ShowError(error.message ?: "Backup db failed"))
+                        emitEvent(AccountEvent.ShowError(error.message ?: context.getString(R.string.account_error_backup_db_failed)))
                         _viewState.value = _viewState.value.copy(isBackupLoading = false)
                     }
             } catch (e: Exception) {
-                emitEvent(AccountEvent.ShowError(e.localizedMessage ?: "Backup error"))
+                emitEvent(AccountEvent.ShowError(e.localizedMessage ?: context.getString(R.string.account_error_backup)))
                 _viewState.value = _viewState.value.copy(isBackupLoading = false)
             }
         }
@@ -217,7 +219,7 @@ class AccountViewModel @Inject constructor(
             _viewState.value = _viewState.value.copy(isRestoreLoading = true)
             val user = auth.currentUser
             if (user == null) {
-                emitEvent(AccountEvent.ShowError("Please sign in first"))
+                emitEvent(AccountEvent.ShowError(context.getString(R.string.account_error_please_sign_in)))
                 _viewState.value = _viewState.value.copy(isRestoreLoading = false)
                 return@launch
             }

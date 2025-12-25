@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextSecondary
@@ -81,19 +83,19 @@ fun BudgetOverviewCard(
                 // Total budgets
                 StatColumn(
                     value = totalBudgetsText,
-                    label = "Total budgets"
+                    label = stringResource(R.string.budgets_total_budgets_label)
                 )
                 
                 // Total spent
                 StatColumn(
                     value = totalSpentText,
-                    label = "Total spent"
+                    label = stringResource(R.string.budgets_total_spent_label)
                 )
                 
                 // End of month
                 StatColumn(
                     value = daysLeftText,
-                    label = "End of month"
+                    label = stringResource(R.string.budgets_end_of_month_label)
                 )
             }
             
@@ -106,7 +108,7 @@ fun BudgetOverviewCard(
                 colors = ButtonDefaults.buttonColors(containerColor = AppColor.Light.PrimaryColor.TextButtonColor)
             ) {
                 Text(
-                    "Create Budget",
+                    stringResource(R.string.budgets_create_budget_button),
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp

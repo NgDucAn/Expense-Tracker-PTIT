@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -94,7 +95,7 @@ fun AddWalletScreen(
                     snackbarHostState.showSnackbar(event.message)
                 }
                 is AddWalletEvent.ShowSuccess -> {
-                    val msg = if (state.isEditMode) "Wallet updated successfully" else "Wallet created successfully"
+                    val msg = if (state.isEditMode) context.getString(R.string.add_wallet_updated_success) else context.getString(R.string.add_wallet_created_success)
                     snackbarHostState.showSnackbar(msg)
                     onNavigateBack()
                 }
@@ -147,10 +148,10 @@ fun AddWalletScreenContent(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text(if (state.isEditMode) "Edit wallet" else "Add wallet", color = TextMain) },
+                title = { Text(if (state.isEditMode) stringResource(R.string.add_wallet_edit_title) else stringResource(R.string.add_wallet_title), color = TextMain) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Filled.Close, contentDescription = "Close", tint = TextMain)
+                        Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.add_wallet_close_cd), tint = TextMain)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -174,7 +175,7 @@ fun AddWalletScreenContent(
                 )
             ) {
                 Text(
-                    if (state.isEditMode) "UPDATE" else "SAVE", 
+                    if (state.isEditMode) stringResource(R.string.add_wallet_update_button) else stringResource(R.string.add_wallet_save_button), 
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
                 )
@@ -240,7 +241,7 @@ fun AddWalletScreenContent(
                                     decorationBox = { innerTextField ->
                                         if (state.walletName.isEmpty()) {
                                             Text(
-                                                text = "Name",
+                                                text = stringResource(R.string.add_wallet_name_label),
                                                 style = TextStyle(
                                                     fontSize = 20.sp,
                                                     color = AppColor.Light.PrimaryColor.disabledContentColor
@@ -262,10 +263,10 @@ fun AddWalletScreenContent(
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_currency),
-                                contentDescription = "Currency Icon",
+                                contentDescription = stringResource(R.string.add_wallet_currency_icon_cd),
                                 modifier = Modifier.size(40.dp)
                             )
-                            Text(text = state.currency?.currencyName ?: "Currency", fontSize = 16.sp, color = TextMain)
+                            Text(text = state.currency?.currencyName ?: stringResource(R.string.add_wallet_currency_label), fontSize = 16.sp, color = TextMain)
                         }
                     }
                 }
@@ -283,7 +284,7 @@ fun AddWalletScreenContent(
                         modifier = Modifier.padding(12.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("Initial Balance", style = MaterialTheme.typography.titleSmall, color = TextMain)
+                        Text(stringResource(R.string.add_wallet_initial_balance_label), style = MaterialTheme.typography.titleSmall, color = TextMain)
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -320,9 +321,9 @@ fun AddWalletScreenContent(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Enable Notification", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.add_wallet_enable_notification_title), fontWeight = FontWeight.Bold)
                                 Text(
-                                    "Get notified when there are changes to this wallet's transactions.",
+                                    stringResource(R.string.add_wallet_enable_notification_description),
                                     style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier.padding(top = 4.dp, end = 8.dp)
                                 )
@@ -342,9 +343,9 @@ fun AddWalletScreenContent(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Excluded from Total", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.add_wallet_excluded_from_total_title), fontWeight = FontWeight.Bold)
                                 Text(
-                                    "Ignore this wallet and its balance in the Total mode.",
+                                    stringResource(R.string.add_wallet_excluded_from_total_description),
                                     style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier.padding(top = 4.dp, end = 8.dp)
 

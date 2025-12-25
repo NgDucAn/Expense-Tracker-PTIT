@@ -53,6 +53,8 @@ fun AccountScreen(
             .setFilterByAuthorizedAccounts(false)
             .build()
 
+        Log.d("signin", "serverClientId=${context.getString(R.string.default_web_client_id)}")
+
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
             .build()

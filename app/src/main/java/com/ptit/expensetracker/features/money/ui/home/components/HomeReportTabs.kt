@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.ExpenseTrackerTheme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
@@ -40,19 +42,19 @@ import java.util.Calendar
 import com.ptit.expensetracker.ui.theme.TextSecondary
 import com.ptit.expensetracker.utils.formatAmountWithCurrency
 
-enum class MainTab(val title: String) {
-    Trending("Trending"),
-    Spending("Spending")
+enum class MainTab(@androidx.annotation.StringRes val titleRes: Int) {
+    Trending(R.string.home_tab_trending),
+    Spending(R.string.home_tab_spending)
 }
 
-enum class TrendingSubTab(val title: String) {
-    TotalSpent("Total Spent"),
-    TotalIncome("Total Income")
+enum class TrendingSubTab(@androidx.annotation.StringRes val titleRes: Int) {
+    TotalSpent(R.string.home_tab_total_spent),
+    TotalIncome(R.string.home_tab_total_income)
 }
 
-enum class SpendingSubTab(val title: String) {
-    Week("Week"),
-    Month("Month")
+enum class SpendingSubTab(@androidx.annotation.StringRes val titleRes: Int) {
+    Week(R.string.home_tab_week),
+    Month(R.string.home_tab_month)
 }
 
 @Composable
@@ -60,7 +62,7 @@ fun SpendingSummary(
     currencySymbol: String,
     current: Double,
     previous: Double,
-    period: String
+    @androidx.annotation.StringRes periodRes: Int
 ) {
     val changePercent = if (previous != 0.0) (current - previous) / previous * 100 else 0.0
     val icon = when {
@@ -88,7 +90,7 @@ fun SpendingSummary(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Total spent this $period",
+                text = stringResource(R.string.home_total_spent_period, stringResource(periodRes)),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White.copy(alpha = 0.7f)
             )
@@ -101,7 +103,7 @@ fun SpendingSummary(
             )
             Spacer(modifier = Modifier.width(2.dp))
             Text(
-                text = "${String.format("%.1f", abs(changePercent))}%",
+                text = "${String.format(java.util.Locale.US, "%.1f", abs(changePercent))}%",
                 color = color,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -151,7 +153,7 @@ fun HomeReportTabs(
                         text = {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    subTab.title,
+                                    stringResource(subTab.titleRes),
                                     color = Color(0xFF505D6D)
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
@@ -190,7 +192,7 @@ fun HomeReportTabs(
                                 modifier = Modifier.fillMaxSize()
                             ) {
                                 Text(
-                                    text = subTab.title,
+                                    text = stringResource(subTab.titleRes),
                                     color = if (isSelected) Color.White else Color.White.copy(alpha = 0.5f),
                                     style = MaterialTheme.typography.labelMedium
                                 )
@@ -199,16 +201,16 @@ fun HomeReportTabs(
                     }
                 }
                 // Summary under spending tabs
-                val (curr, prev, period) = if (selectedSpendingTab == SpendingSubTab.Week) {
-                    Triple(currentSpent, previousSpent, "week")
+                val (curr, prev, periodRes) = if (selectedSpendingTab == SpendingSubTab.Week) {
+                    Triple(currentSpent, previousSpent, R.string.home_tab_week)
                 } else {
-                    Triple(currentMonthSpent, previousMonthSpent, "month")
+                    Triple(currentMonthSpent, previousMonthSpent, R.string.home_tab_month)
                 }
                 SpendingSummary(
                     currencySymbol = currencySymbol,
                     current = curr,
                     previous = prev,
-                    period = period
+                    periodRes = periodRes
                 )
             }
         }
@@ -231,7 +233,7 @@ fun HomeReportTabs(
                         transactions.filter { it.transactionType == TransactionType.INFLOW }
                     if (filteredTx.isEmpty()) {
                         Text(
-                            text = "No transactions to display. Please add some.",
+                            text = stringResource(R.string.home_no_transactions),
                             color = TextSecondary,
                             modifier = Modifier.align(Alignment.Center)
                         )
@@ -269,12 +271,12 @@ fun HomeReportTabs(
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowLeft,
-                        contentDescription = "Previous",
+                        contentDescription = stringResource(R.string.home_nav_previous),
                         tint = Color(0xFF1E2A36)
                     )
                 }
                 Text(
-                    text = selectedMainTab.title,
+                    text = stringResource(selectedMainTab.titleRes),
                     style = MaterialTheme.typography.titleMedium,
                     color = Color(0xFF1E2A36),
                     modifier = Modifier.align(Alignment.Center)
@@ -288,7 +290,7 @@ fun HomeReportTabs(
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = "Next",
+                        contentDescription = stringResource(R.string.home_nav_next),
                         tint = Color(0xFF1E2A36)
                     )
                 }

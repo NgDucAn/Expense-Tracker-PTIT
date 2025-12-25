@@ -72,6 +72,8 @@ fun GoogleLoginScreen(
             .setFilterByAuthorizedAccounts(false)
             .build()
 
+        Log.d("google_login", "serverClientId=${context.getString(R.string.default_web_client_id)}")
+
         GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
             .build()

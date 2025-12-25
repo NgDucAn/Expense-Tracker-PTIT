@@ -28,6 +28,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.utils.CurrencyConverter
 import com.ptit.expensetracker.features.money.domain.model.TransactionType
 import com.ptit.expensetracker.features.money.domain.usecases.ObserveTransactionsUseCase
@@ -176,7 +177,7 @@ class HomeScreenViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update {
-                                it.copy(isLoading = false, error = "Failed to check currencies")
+                                it.copy(isLoading = false, error = context.getString(R.string.home_error_check_currencies))
                             }
                         },
                         { currenciesExist ->
@@ -193,7 +194,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "An error occurred: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_generic, e.message ?: ""))
                 }
             }
         }
@@ -210,7 +211,7 @@ class HomeScreenViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update {
-                                it.copy(isLoading = false, error = "Failed to save currencies")
+                                it.copy(isLoading = false, error = context.getString(R.string.home_error_save_currencies))
                             }
                         },
                         {
@@ -221,7 +222,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "Failed to load currencies: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_load_currencies, e.message ?: ""))
                 }
             }
         }
@@ -234,7 +235,7 @@ class HomeScreenViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update {
-                                it.copy(isLoading = false, error = "Failed to check categories")
+                                it.copy(isLoading = false, error = context.getString(R.string.home_error_check_categories))
                             }
                         },
                         { categoriesExist ->
@@ -254,7 +255,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "Failed to check categories: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_check_categories))
                 }
             }
         }
@@ -279,7 +280,7 @@ class HomeScreenViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update {
-                                it.copy(isLoading = false, error = "Failed to save categories")
+                                it.copy(isLoading = false, error = context.getString(R.string.home_error_save_categories))
                             }
                         },
                         {
@@ -290,7 +291,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "Failed to load categories: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_load_categories, e.message ?: ""))
                 }
             }
         }
@@ -304,7 +305,7 @@ class HomeScreenViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update {
-                                it.copy(isLoading = false, error = "Failed to load wallets")
+                                it.copy(isLoading = false, error = context.getString(R.string.home_error_load_wallets))
                             }
                         },
                         { walletsFlow ->
@@ -321,7 +322,7 @@ class HomeScreenViewModel @Inject constructor(
                                 }
                                 .catch { e ->
                                     _viewState.update {
-                                        it.copy(isLoading = false, error = "Failed to load wallets: ${e.message}")
+                                        it.copy(isLoading = false, error = context.getString(R.string.home_error_load_wallets_with_message, e.message ?: ""))
                                     }
                                 }
                                 .launchIn(viewModelScope)
@@ -330,7 +331,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "Failed to check wallets: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_check_wallets_with_message, e.message ?: ""))
                 }
             }
         }
@@ -346,12 +347,12 @@ class HomeScreenViewModel @Inject constructor(
                             when (failure) {
                                 is Failure.NotFound -> {
                                     _viewState.update {
-                                        it.copy(isLoading = false, error = "VND currency not found")
+                                        it.copy(isLoading = false, error = context.getString(R.string.home_error_vnd_not_found))
                                     }
                                 }
                                 else -> {
                                     _viewState.update {
-                                        it.copy(isLoading = false, error = "Failed to get currency")
+                                        it.copy(isLoading = false, error = context.getString(R.string.home_error_get_currency))
                                     }
                                 }
                             }
@@ -361,7 +362,7 @@ class HomeScreenViewModel @Inject constructor(
                             val defaultWallet = WalletWithCurrencyEntity(
                                 wallet = WalletEntity(
                                     id = 0, // Room will generate ID for new wallet
-                                    walletName = "Tiền mặt",
+                                    walletName = context.getString(R.string.home_default_wallet_name),
                                     currentBalance = 0.0,
                                     currencyId = vndCurrency.id,
                                     isMainWallet = true
@@ -376,7 +377,7 @@ class HomeScreenViewModel @Inject constructor(
                                         _viewState.update {
                                             it.copy(
                                                 isLoading = false,
-                                                error = "Failed to create default wallet"
+                                                error = context.getString(R.string.home_error_create_default_wallet)
                                             )
                                         }
                                     },
@@ -393,7 +394,7 @@ class HomeScreenViewModel @Inject constructor(
                 _viewState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to create default wallet: ${e.message}"
+                        error = context.getString(R.string.home_error_create_default_wallet)
                     )
                 }
             }
@@ -408,7 +409,7 @@ class HomeScreenViewModel @Inject constructor(
                     result.fold(
                         { failure ->
                             _viewState.update {
-                                it.copy(isLoading = false, error = "Failed to reload wallets")
+                                it.copy(isLoading = false, error = context.getString(R.string.home_error_reload_wallets))
                             }
                         },
                         { walletsFlow ->
@@ -418,7 +419,7 @@ class HomeScreenViewModel @Inject constructor(
                                 }
                                 .catch { e ->
                                     _viewState.update {
-                                        it.copy(isLoading = false, error = "Failed to reload wallets: ${e.message}")
+                                        it.copy(isLoading = false, error = context.getString(R.string.home_error_reload_wallets))
                                     }
                                 }
                                 .launchIn(viewModelScope)
@@ -427,7 +428,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _viewState.update {
-                    it.copy(isLoading = false, error = "Failed to reload wallets: ${e.message}")
+                    it.copy(isLoading = false, error = context.getString(R.string.home_error_reload_wallets))
                 }
             }
         }
@@ -460,7 +461,7 @@ class HomeScreenViewModel @Inject constructor(
 
                 // Format the balance with the main currency symbol
                 val currencySymbol = mainWallet?.currency?.symbol ?: "đ"
-                val formattedBalance = String.format("%,.0f %s", totalBalance, currencySymbol)
+                val formattedBalance = String.format(java.util.Locale.US, "%,.0f %s", totalBalance, currencySymbol)
 
                 // Convert domain models to entity models for UI state
                 val walletEntities = wallets.map { wallet ->
@@ -495,7 +496,7 @@ class HomeScreenViewModel @Inject constructor(
                 _viewState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to calculate total balance: ${e.message}"
+                        error = context.getString(R.string.home_error_calculate_balance, e.message ?: "")
                     )
                 }
             }

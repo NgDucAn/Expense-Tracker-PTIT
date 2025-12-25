@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextAccent
@@ -57,7 +59,7 @@ fun BudgetTransactionsScreenContent(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextMain)
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.budgets_back_cd), tint = TextMain)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

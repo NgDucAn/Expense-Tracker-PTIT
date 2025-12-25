@@ -16,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.ui.theme.*
 import com.ptit.expensetracker.utils.formatAmount
@@ -52,7 +54,7 @@ fun WalletSelector(
         ) {
             // Header
             Text(
-                text = "Chọn ví",
+                text = stringResource(R.string.debt_wallet_selector_title),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold
@@ -167,9 +169,9 @@ private fun WalletItem(
                 ) {
                     Text(
                         text = if (isAllWalletsOption) {
-                            "Tất cả ví"
+                            stringResource(R.string.debt_wallet_selector_all_wallets)
                         } else {
-                            wallet?.walletName ?: "Unknown Wallet"
+                            wallet?.walletName ?: stringResource(R.string.debt_wallet_selector_unknown_wallet)
                         },
                         color = if (isSelected) {
                             MaterialTheme.colorScheme.onPrimaryContainer
@@ -196,7 +198,7 @@ private fun WalletItem(
                     } else if (isAllWalletsOption) {
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "Xem nợ từ tất cả ví",
+                            text = stringResource(R.string.debt_wallet_selector_view_all_debts),
                             color = if (isSelected) {
                                 MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                             } else {
@@ -212,7 +214,7 @@ private fun WalletItem(
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Selected",
+                    contentDescription = stringResource(R.string.debt_wallet_selector_selected_cd),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(24.dp)
                 )

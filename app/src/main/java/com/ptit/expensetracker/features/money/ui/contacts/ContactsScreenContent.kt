@@ -35,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.domain.model.Contact
 
 // Define colors based on the image
@@ -60,19 +62,19 @@ fun ContactsScreenContent(
         containerColor = DarkBackgroundColor,
         topBar = {
             TopAppBar(
-                title = { Text("With", color = TextColorPrimary) },
+                title = { Text(stringResource(R.string.contacts_with_title), color = TextColorPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.contacts_back_cd),
                             tint = AccentColor
                         )
                     }
                 },
                 actions = {
                     TextButton(onClick = onDone) {
-                        Text("DONE", color = AccentColor, fontWeight = FontWeight.Bold)
+                        Text(stringResource(R.string.contacts_done_button), color = AccentColor, fontWeight = FontWeight.Bold)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -146,7 +148,7 @@ fun ContactsScreenContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = if (state.searchQuery.isNotEmpty()) "No contacts found" else "No contacts available",
+                            text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.contacts_no_contacts_found) else stringResource(R.string.contacts_no_contacts_available),
                             color = TextColorSecondary,
                             fontSize = 16.sp
                         )
@@ -231,7 +233,7 @@ private fun ContactItem(
         if (contact.isSelected) {
             Icon(
                 imageVector = Icons.Filled.Check,
-                contentDescription = "Selected",
+                contentDescription = stringResource(R.string.contacts_selected_cd),
                 tint = AccentColor,
                 modifier = Modifier.size(24.dp)
             )

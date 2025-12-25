@@ -28,7 +28,6 @@ sealed interface WalletSetupIntent : MviIntentBase {
  * UI state for WalletSetupScreen
  */
 data class WalletSetupState(
-    // Keep UI copy in string resources for i18n (use stringResource in composables).
     val title: String = "",
     val description: String = "",
     @DrawableRes val selectedIcon: Int = R.drawable.img_wallet_default_widget,

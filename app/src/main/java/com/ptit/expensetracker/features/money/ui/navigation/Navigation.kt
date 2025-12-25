@@ -57,8 +57,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.graphics.Color
 import android.net.Uri
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.ptit.expensetracker.features.ai.ui.chat.ChatAiScreen
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.ui.addwallet.AddWalletViewModel
 import com.ptit.expensetracker.ui.theme.AppColor.Light.SecondaryColor.color1
 import com.ptit.expensetracker.features.money.ui.onboarding.splash.SplashScreen
@@ -213,11 +215,11 @@ fun AppNavigation(
                                     )
                                     .padding(2.dp)
                             ) {
-                                Icon(
-                                    Icons.Filled.Add,
-                                    contentDescription = "Add Expense",
-                                    tint = Color.White
-                                )
+                            Icon(
+                                Icons.Filled.Add,
+                                contentDescription = stringResource(R.string.nav_add_expense_cd),
+                                tint = Color.White
+                            )
                             }
                         }
 
@@ -707,10 +709,10 @@ fun RowScope.AppBottomNavigationItem(
     navController: NavHostController
 ) {
     NavigationBarItem(
-        icon = { Icon(screen.icon, contentDescription = screen.label) },
+        icon = { Icon(screen.icon, contentDescription = stringResource(screen.labelRes)) },
         label = {
             Text(
-                text = screen.label,
+                text = stringResource(screen.labelRes),
                 fontSize = 10.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

@@ -19,6 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextSecondary
 import java.text.SimpleDateFormat
@@ -41,7 +43,7 @@ fun DatePickerItem(
     ) {
         Icon(
             imageVector = Icons.Default.DateRange,
-            contentDescription = "Calendar",
+            contentDescription = stringResource(R.string.add_budget_calendar_cd),
             tint = Color(0xFFFCA419),
             modifier = Modifier.size(24.dp)
         )
@@ -59,7 +61,7 @@ fun DatePickerItem(
         
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = "Select",
+            contentDescription = stringResource(R.string.add_budget_select_cd),
             tint = TextSecondary
         )
     }

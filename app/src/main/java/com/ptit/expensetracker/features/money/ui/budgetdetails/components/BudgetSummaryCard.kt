@@ -67,7 +67,7 @@ fun BudgetSummaryCard(
                     text = budget.category.title?.let {
                         stringResource(id = getStringResId(context, it))
                     } ?: run {
-                        "Select category"
+                        stringResource(R.string.budget_details_select_category)
                     },
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -89,7 +89,7 @@ fun BudgetSummaryCard(
             )
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Spent", fontSize = 14.sp, color = TextSecondary)
+                    Text(stringResource(R.string.budget_details_spent_label), fontSize = 14.sp, color = TextSecondary)
                     Text(
                         formatAmountWithCurrency(state.spentAmount, budget.wallet.currency.symbol),
                         fontSize = 18.sp,
@@ -98,7 +98,7 @@ fun BudgetSummaryCard(
                     )
                 }
                 Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                    Text("Left", fontSize = 14.sp, color = TextSecondary)
+                    Text(stringResource(R.string.budget_details_left_label), fontSize = 14.sp, color = TextSecondary)
                     Text(
                         formatAmountWithCurrency(state.remainingBudget, budget.wallet.currency.symbol),
                         fontSize = 18.sp,
@@ -119,7 +119,7 @@ fun BudgetSummaryCard(
                 trackColor = Color.Gray.copy(alpha = 0.3f)
             )
             Text(
-                "Today",
+                stringResource(R.string.budget_details_today),
                 fontSize = 12.sp,
                 color = TextSecondary,
                 modifier = Modifier

@@ -98,7 +98,12 @@ fun SplashScreenContent() {
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                // Placeholder for logo while assets are not provided
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo_2),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    contentScale = ContentScale.Fit
+                )
             }
 
             Spacer(modifier = Modifier.height(32.dp))

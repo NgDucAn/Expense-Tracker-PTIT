@@ -110,7 +110,7 @@ class CurrencyConverter @Inject constructor(@ApplicationContext private val cont
      */
     suspend fun getFormattedExchangeRate(fromCurrency: String, toCurrency: String): String? {
         val rate = getExchangeRate(fromCurrency, toCurrency) ?: return null
-        return String.format("1 %s = %.4f %s", fromCurrency, rate, toCurrency)
+        return String.format(java.util.Locale.US, "1 %s = %.4f %s", fromCurrency, rate, toCurrency)
     }
 }
 

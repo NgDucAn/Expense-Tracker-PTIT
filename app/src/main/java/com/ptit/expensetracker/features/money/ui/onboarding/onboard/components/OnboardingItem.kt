@@ -55,7 +55,7 @@ fun OnboardingItem(
             topIllustrationRes?.let { resId ->
                 Image(
                     painter = painterResource(id = resId),
-                    contentDescription = stringResource(R.string.onboarding_illustration_desc),
+                    contentDescription = stringResource(R.string.onboarding_illustration_cd),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
@@ -124,8 +124,8 @@ data class OnboardingStep(
 private fun OnboardingItemPreview() {
     ExpenseTrackerTheme {
         OnboardingItem(
-            title = stringResource(R.string.onboarding_slide_1_title),
-            description = stringResource(R.string.onboarding_slide_1_desc),
+            title = stringResource(R.string.onboarding_welcome_title),
+            description = stringResource(R.string.onboarding_welcome_description),
             topIllustrationRes = R.drawable.img_bg_ob1
         )
     }

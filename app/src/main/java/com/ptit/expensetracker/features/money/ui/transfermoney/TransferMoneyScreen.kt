@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -62,7 +63,7 @@ fun TransferMoneyScreen(
                     navController.popBackStack()
                 }
                 is TransferMoneyEvent.TransferCompleted -> {
-                    Toast.makeText(context, "Transfer completed successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.transfer_money_success), Toast.LENGTH_SHORT).show()
                 }
                 is TransferMoneyEvent.ShowError -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
@@ -92,7 +93,7 @@ fun TransferMoneyScreen(
                 val amountDouble = amount.toDouble()
                 viewModel.processIntent(TransferMoneyIntent.UpdateAmount(amountDouble))
             } catch (e: NumberFormatException) {
-                Toast.makeText(context, "Invalid amount format", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.transfer_money_error_invalid_amount), Toast.LENGTH_SHORT).show()
             }
             // Clear the saved state to avoid processing it again
             savedStateHandle.remove<String>("entered_amount")
@@ -152,7 +153,8 @@ fun TransferMoneyContent(
     onAddTransferFeeChange: (Boolean) -> Unit,
     onTransferFeeChange: (Double) -> Unit,
     onSaveClick: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    notePlaceholder: String = stringResource(R.string.transfer_money_note_placeholder)
 ) {
     val scrollState = rememberScrollState()
     
@@ -193,7 +195,7 @@ fun TransferMoneyContent(
                         .verticalScroll(scrollState)
                 ) {
                     // From section
-                    SectionHeader(title = "From")
+                    SectionHeader(title = stringResource(R.string.transfer_money_from_label))
 
                     // Group all "From" items in a single Surface
                     Surface(
@@ -226,7 +228,7 @@ fun TransferMoneyContent(
                             TransferItem(
                                 icon = Icons.Outlined.Email,
                                 painter = painterResource(id = R.drawable.icon_142),
-                                title = "Outgoing transfer"
+                                title = stringResource(R.string.transfer_money_outgoing_transfer)
                             )
 
                             HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
@@ -235,19 +237,19 @@ fun TransferMoneyContent(
                             TransferItem(
                                 icon = Icons.Default.Email,
                                 painter = painterResource(id = R.drawable.ic_description),
-                                title = "Note",
+                                title = stringResource(R.string.transfer_money_note_label),
                                 value = if (state.note.isNotEmpty()) state.note else null,
                                 iconTint = Color.Black,
                                 onClick = {
                                     // In a real app, show a dialog to enter note
-                                    onNoteChange("Transfer money")
+                                    onNoteChange(notePlaceholder)
                                 }
                             )
                         }
                     }
 
                     // To section
-                    SectionHeader(title = "To")
+                    SectionHeader(title = stringResource(R.string.transfer_money_to_label))
 
                     // Group all "To" items in a single Surface
                     Surface(
@@ -301,7 +303,7 @@ fun TransferMoneyContent(
                             TransferItem(
                                 icon = Icons.Outlined.Email,
                                 painter = painterResource(id = R.drawable.icon_143),
-                                title = "Incoming transfer"
+                                title = stringResource(R.string.transfer_money_incoming_transfer)
                             )
 
                             HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
@@ -310,19 +312,19 @@ fun TransferMoneyContent(
                             TransferItem(
                                 icon = Icons.Default.Email,
                                 painter = painterResource(id = R.drawable.ic_description),
-                                title = "Note",
+                                title = stringResource(R.string.transfer_money_note_label),
                                 value = if (state.note.isNotEmpty()) state.note else null,
                                 iconTint = Color.Black,
                                 onClick = {
                                     // In a real app, show a dialog to enter note
-                                    onNoteChange("Transfer money")
+                                    onNoteChange(notePlaceholder)
                                 }
                             )
                         }
                     }
 
                     // Options section
-                    SectionHeader(title = "Options")
+                    SectionHeader(title = stringResource(R.string.transfer_money_options_label))
 
                     // Group all "Options" items in a single Surface
                     Surface(
@@ -343,8 +345,8 @@ fun TransferMoneyContent(
 
                             // Exclude from report toggle
                             ToggleOption(
-                                title = "Exclude from report",
-                                subtitle = "These transactions will be excluded from report in both wallets",
+                                title = stringResource(R.string.transfer_money_exclude_from_report_title),
+                                subtitle = stringResource(R.string.transfer_money_exclude_from_report_subtitle),
                                 checked = state.excludeFromReport,
                                 onCheckedChange = onExcludeFromReportChange
                             )
@@ -366,7 +368,7 @@ fun TransferMoneyContent(
                                     amount = state.transferFee,
                                     currencySymbol = state.fromWallet?.currency?.symbol ?: "₫",
                                     onAmountChange = onTransferFeeChange,
-                                    placeholder = "Fee Amount",
+                                    placeholder = stringResource(R.string.transfer_money_fee_amount_placeholder),
                                     showOutline = false
                                 )
                             }
@@ -408,7 +410,7 @@ fun AmountSelector(
                 currency?.image?.let { imageBytes ->
                     AsyncImage(
                         model = imageBytes,
-                        contentDescription = "Currency",
+                        contentDescription = stringResource(R.string.transfer_money_currency_cd),
                         modifier = Modifier.size(24.dp)
                     )
                 } ?: Text(
@@ -421,7 +423,7 @@ fun AmountSelector(
             Spacer(modifier = Modifier.width(16.dp))
             
             Text(
-                text = "Amount",
+                text = stringResource(R.string.transfer_money_amount_label),
                 color = TextMain,
                 fontSize = 16.sp
             )
@@ -432,7 +434,7 @@ fun AmountSelector(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = if (amount.isNotEmpty()) "${currency?.symbol ?: "$"} $amount" else "Enter amount",
+                text = if (amount.isNotEmpty()) "${currency?.symbol ?: "$"} $amount" else stringResource(R.string.transfer_money_enter_amount_placeholder),
                 color = if (amount.isNotEmpty()) TextMain else Color.Gray,
                 fontSize = 16.sp,
                 fontWeight = if (amount.isNotEmpty()) FontWeight.Bold else FontWeight.Normal
@@ -442,7 +444,7 @@ fun AmountSelector(
             
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Select amount",
+                contentDescription = stringResource(R.string.transfer_money_select_amount_cd),
                 tint = Color.Gray
             )
         }
@@ -477,7 +479,7 @@ fun ToAmountDisplay(
                 currency?.image?.let { imageBytes ->
                     AsyncImage(
                         model = imageBytes,
-                        contentDescription = "Currency",
+                        contentDescription = stringResource(R.string.transfer_money_currency_cd),
                         modifier = Modifier.size(24.dp)
                     )
                 } ?: Text(
@@ -490,7 +492,7 @@ fun ToAmountDisplay(
             Spacer(modifier = Modifier.width(16.dp))
             
             Text(
-                text = "Converted Amount",
+                text = stringResource(R.string.transfer_money_converted_amount_label),
                 color = TextMain,
                 fontSize = 16.sp
             )

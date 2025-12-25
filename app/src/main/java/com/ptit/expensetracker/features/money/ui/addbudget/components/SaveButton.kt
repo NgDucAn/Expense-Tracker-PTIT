@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 
 @Composable
@@ -30,7 +32,7 @@ fun SaveButton(
         )
     ) {
         Text(
-            text = "Save",
+            text = stringResource(R.string.add_budget_save_button),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )

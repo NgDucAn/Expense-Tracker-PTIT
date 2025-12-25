@@ -8,6 +8,9 @@ import com.ptit.expensetracker.features.money.domain.usecases.GetWalletsUseCase
 import com.ptit.expensetracker.features.money.ui.transactions.MonthItem
 import androidx.compose.ui.graphics.Color
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.Context
+import com.ptit.expensetracker.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -21,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MonthlyReportViewModel @Inject constructor(
     private val getMonthlyReportUseCase: GetMonthlyReportUseCase,
-    private val getWalletsUseCase: GetWalletsUseCase
+    private val getWalletsUseCase: GetWalletsUseCase,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<MonthlyReportState, MonthlyReportIntent, MonthlyReportEvent>() {
 
     override val _viewState = MutableStateFlow(
@@ -69,7 +73,7 @@ class MonthlyReportViewModel @Inject constructor(
                 _viewState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to load data: ${e.message}"
+                        error = context.getString(R.string.monthly_report_error_load_data, e.message ?: "")
                     )
                 }
             }
@@ -108,7 +112,7 @@ class MonthlyReportViewModel @Inject constructor(
                             _viewState.update {
                                 it.copy(
                                     isLoading = false,
-                                    error = "Failed to load report"
+                                    error = context.getString(R.string.monthly_report_error_load_report)
                                 )
                             }
                         },
@@ -170,7 +174,7 @@ class MonthlyReportViewModel @Inject constructor(
                 _viewState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to load report: ${e.message}"
+                        error = context.getString(R.string.monthly_report_error_load_report_with_message, e.message ?: "")
                     )
                 }
             }

@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 
 // Import only what we need
@@ -240,7 +242,7 @@ private fun RowScope.NumpadActionButton(
         button.getIcon()?.let { icon ->
             Icon(
                 imageVector = icon,
-                contentDescription = "Action",
+                contentDescription = stringResource(R.string.add_transaction_action_cd),
                 tint = button.getContentColor(),
                 modifier = Modifier.size(24.dp)
             )

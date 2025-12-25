@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
@@ -112,7 +113,7 @@ fun DebtManagementScreenContent(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Quản lý nợ",
+                        text = stringResource(R.string.debt_management_screen_title),
                         color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
@@ -122,7 +123,7 @@ fun DebtManagementScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.debt_management_back_cd),
                             tint = IconTint
                         )
                     }
@@ -134,7 +135,7 @@ fun DebtManagementScreenContent(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_wallet),
-                            contentDescription = "Select Wallet",
+                            contentDescription = stringResource(R.string.debt_management_select_wallet_cd),
                             tint = IconTint
                         )
                     }
@@ -145,7 +146,7 @@ fun DebtManagementScreenContent(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_sort),
-                            contentDescription = "Filter",
+                            contentDescription = stringResource(R.string.debt_management_filter_cd),
                             tint = if (!state.filterOptions.isDefault()) MaterialTheme.colorScheme.primary else IconTint
                         )
                     }
@@ -156,7 +157,7 @@ fun DebtManagementScreenContent(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Refresh",
+                            contentDescription = stringResource(R.string.debt_management_refresh_cd),
                             tint = IconTint
                         )
                     }
@@ -257,7 +258,7 @@ fun DebtManagementScreenContent(
     // History bottom sheet
     if (state.showHistorySheet) {
         PaymentHistorySheet(
-            title = state.historyTitle ?: "Lịch sử",
+            title = state.historyTitle ?: stringResource(R.string.debt_management_history_default_title),
             items = state.historyItems,
             isLoading = state.historyLoading,
             error = state.historyError,
@@ -291,13 +292,13 @@ fun WalletInfoCard(
         ) {
             Column {
                 Text(
-                    text = "Ví được chọn",
+                    text = stringResource(R.string.debt_management_wallet_selected_label),
                     color = TextSecondary,
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = selectedWallet?.walletName ?: "Tất cả ví",
+                    text = selectedWallet?.walletName ?: stringResource(R.string.debt_management_all_wallets),
                     color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
@@ -307,13 +308,13 @@ fun WalletInfoCard(
             selectedWallet?.let {
                 Icon(
                     painter = painterResource(id = getDrawableResId(LocalContext.current, it.icon)),
-                    contentDescription = "Selected Wallet",
+                    contentDescription = stringResource(R.string.debt_management_wallet_selected_label),
                     tint = MaterialTheme.colorScheme.primary
                 )
             } ?: run {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_wallet),
-                    contentDescription = "Wallet",
+                    contentDescription = stringResource(R.string.debt_management_wallet_cd),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -340,7 +341,7 @@ fun DebtTabRow(
                 onClick = { onTabSelected(tab) },
                 text = {
                     Text(
-                        text = tab.displayName,
+                        text = stringResource(tab.displayNameResId),
                         fontSize = 14.sp,
                         fontWeight = if (selectedTab == tab) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -373,7 +374,7 @@ fun PayableDebtContent(
         // Unpaid debts section
         if (state.unpaidPayableDebts.isNotEmpty()) {
             item {
-                SectionHeader(title = "Chưa trả (${state.unpaidPayableDebts.size})")
+                SectionHeader(title = stringResource(R.string.debt_management_unpaid_payable_section, state.unpaidPayableDebts.size))
             }
             
             items(state.unpaidPayableDebts) { debt ->
@@ -389,7 +390,7 @@ fun PayableDebtContent(
         // Paid debts section
         if (state.paidPayableDebts.isNotEmpty()) {
             item {
-                SectionHeader(title = "Đã trả (${state.paidPayableDebts.size})")
+                SectionHeader(title = stringResource(R.string.debt_management_paid_payable_section, state.paidPayableDebts.size))
             }
             
             items(state.paidPayableDebts) { debt ->
@@ -437,7 +438,7 @@ fun ReceivableDebtContent(
         // Unpaid debts section
         if (state.unpaidReceivableDebts.isNotEmpty()) {
             item {
-                SectionHeader(title = "Chưa thu (${state.unpaidReceivableDebts.size})")
+                SectionHeader(title = stringResource(R.string.debt_management_unpaid_receivable_section, state.unpaidReceivableDebts.size))
             }
             
             items(state.unpaidReceivableDebts) { debt ->
@@ -453,7 +454,7 @@ fun ReceivableDebtContent(
         // Paid debts section
         if (state.paidReceivableDebts.isNotEmpty()) {
             item {
-                SectionHeader(title = "Đã thu (${state.paidReceivableDebts.size})")
+                SectionHeader(title = stringResource(R.string.debt_management_paid_receivable_section, state.paidReceivableDebts.size))
             }
             
             items(state.paidReceivableDebts) { debt ->
@@ -503,12 +504,12 @@ private fun PaymentSheet(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Thanh toán nợ",
+                text = stringResource(R.string.debt_management_payment_sheet_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "${debt.personName} • Còn lại ${formatAmount(debt.remainingAmount)} $currencySymbol",
+                text = stringResource(R.string.debt_management_payment_sheet_subtitle, debt.personName, formatAmount(debt.remainingAmount), currencySymbol),
                 style = MaterialTheme.typography.bodyMedium,
                 color = TextSecondary
             )
@@ -516,8 +517,8 @@ private fun PaymentSheet(
             OutlinedTextField(
                 value = amountText,
                 onValueChange = onAmountChange,
-                label = { Text("Số tiền") },
-                placeholder = { Text("Nhập số tiền cần thanh toán") },
+                label = { Text(stringResource(R.string.debt_management_payment_amount_label)) },
+                placeholder = { Text(stringResource(R.string.debt_management_payment_amount_placeholder)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Decimal
                 ),
@@ -528,8 +529,8 @@ private fun PaymentSheet(
             OutlinedTextField(
                 value = noteText,
                 onValueChange = onNoteChange,
-                label = { Text("Ghi chú") },
-                placeholder = { Text("Ví dụ: trả một phần") },
+                label = { Text(stringResource(R.string.debt_management_payment_note_label)) },
+                placeholder = { Text(stringResource(R.string.debt_management_payment_note_placeholder)) },
                 singleLine = false,
                 minLines = 2,
                 maxLines = 3,
@@ -544,7 +545,7 @@ private fun PaymentSheet(
                     modifier = Modifier.weight(1f),
                     onClick = onDismiss
                 ) {
-                    Text("Huỷ")
+                    Text(stringResource(R.string.debt_management_cancel_button))
                 }
                 Button(
                     modifier = Modifier.weight(1f),
@@ -557,7 +558,7 @@ private fun PaymentSheet(
                             strokeWidth = 2.dp
                         )
                     } else {
-                        Text("Xác nhận")
+                        Text(stringResource(R.string.debt_management_confirm_button))
                     }
                 }
             }
@@ -610,7 +611,7 @@ private fun PaymentHistorySheet(
 
                 items.isEmpty() -> {
                     Text(
-                        text = "Chưa có lịch sử",
+                        text = stringResource(R.string.debt_management_no_history),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -708,8 +709,8 @@ fun EmptyDebtState(
     ) {
         Text(
             text = when (debtType) {
-                DebtType.PAYABLE -> "Không có khoản nợ phải trả"
-                DebtType.RECEIVABLE -> "Không có khoản nợ được nhận"
+                DebtType.PAYABLE -> stringResource(R.string.debt_management_empty_payable_title)
+                DebtType.RECEIVABLE -> stringResource(R.string.debt_management_empty_receivable_title)
             },
             color = TextSecondary,
             fontSize = 16.sp,
@@ -720,8 +721,8 @@ fun EmptyDebtState(
         
         Text(
             text = when (debtType) {
-                DebtType.PAYABLE -> "Tất cả khoản vay đã được thanh toán"
-                DebtType.RECEIVABLE -> "Tất cả khoản cho vay đã được thu hồi"
+                DebtType.PAYABLE -> stringResource(R.string.debt_management_empty_payable_description)
+                DebtType.RECEIVABLE -> stringResource(R.string.debt_management_empty_receivable_description)
             },
             color = TextSecondary,
             fontSize = 14.sp

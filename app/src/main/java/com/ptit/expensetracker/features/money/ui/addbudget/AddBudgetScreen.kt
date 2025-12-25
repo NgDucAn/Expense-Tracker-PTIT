@@ -37,6 +37,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -124,8 +126,8 @@ fun AddBudgetScreen(
     if (showConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showConfirmDialog = false },
-            title = { Text("Budget Already Exists") },
-            text = { Text("A budget for this category already exists. Do you want to override it?") },
+            title = { Text(stringResource(R.string.add_budget_already_exists_title)) },
+            text = { Text(stringResource(R.string.add_budget_already_exists_message)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -133,14 +135,14 @@ fun AddBudgetScreen(
                         viewModel.processIntent(AddBudgetIntent.ConfirmOverride)
                     }
                 ) {
-                    Text("Yes, Override")
+                    Text(stringResource(R.string.add_budget_override_button))
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showConfirmDialog = false }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.add_budget_cancel_button))
                 }
             }
         )
@@ -197,7 +199,7 @@ fun AddBudgetScreenContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (state.isEditMode) "Edit Budget" else "Add Budget", color = TextMain) },
+                title = { Text(if (state.isEditMode) stringResource(R.string.add_budget_edit_title) else stringResource(R.string.add_budget_title), color = TextMain) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = backgroundColor
                 ),

@@ -28,6 +28,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.ui.theme.AppColor
 import com.ptit.expensetracker.ui.theme.AppColor.Light.PrimaryColor.cardColor
 import com.ptit.expensetracker.ui.theme.AppColor.Light.ReportButtonBackground
@@ -106,7 +107,7 @@ private fun ProfileCard(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.logo_google),
-                            contentDescription = stringResource(R.string.account_sign_in_with_google),
+                            contentDescription = stringResource(R.string.account_sign_in_cd),
                             modifier = Modifier.size(40.dp),
                             tint = Color.Unspecified
                         )
@@ -125,7 +126,7 @@ private fun ProfileCard(
             } else {
                 AsyncImage(
                     model = state.photoUrl,
-                    contentDescription = stringResource(R.string.account_profile_photo_desc),
+                    contentDescription = stringResource(R.string.account_profile_photo_cd),
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
@@ -270,19 +271,19 @@ private fun FeatureMenu(
         Column {
             FeatureItem(
                 iconRes = R.drawable.ic_basic_wallet,
-                title = stringResource(R.string.account_feature_wallets),
+                title = stringResource(R.string.account_wallets_section),
                 onClick = onWallet
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_placeholder,
-                title = stringResource(R.string.account_feature_category),
+                title = stringResource(R.string.account_category_section),
                 onClick = onCategories
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
             FeatureItem(
                 iconRes = R.drawable.ic_category_credit,
-                title = stringResource(R.string.account_feature_debts),
+                title = stringResource(R.string.account_debts_section),
                 onClick = onDebts
             )
             HorizontalDivider(color = Color.Gray.copy(alpha = 0.3f))
@@ -322,7 +323,7 @@ private fun FeatureItem(
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_down_24dp),
-            contentDescription = stringResource(R.string.common_navigate),
+            contentDescription = stringResource(R.string.account_navigate_cd),
             tint = TextSecondary,
             modifier = Modifier.rotate(-90f)
         )
@@ -332,7 +333,7 @@ private fun FeatureItem(
 @Composable
 private fun VersionInfo(version: String) {
     Text(
-        text = stringResource(R.string.common_version_format, version),
+        text = stringResource(R.string.account_version, version),
         style = MaterialTheme.typography.bodySmall,
         color = Color.Gray,
         modifier = Modifier

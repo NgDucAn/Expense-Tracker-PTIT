@@ -18,7 +18,9 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import com.ptit.expensetracker.R
 import androidx.compose.ui.unit.dp
 import com.ptit.expensetracker.features.money.domain.model.Wallet
 import com.ptit.expensetracker.ui.theme.AppColor
@@ -48,14 +50,14 @@ fun TransferTopBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(R.string.transfer_money_close_cd),
                     tint = Color(0xFF1E2A36),
                     modifier = Modifier.size(24.dp)
                 )
             }
             
             Text(
-                text = "Transfer money",
+                text = stringResource(R.string.transfer_money_title),
                 color = Color(0xFF1E2A36),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.Center)
@@ -68,7 +70,7 @@ fun TransferTopBar(
                     contentColor = Color(0xFFFCA419)
                 )
             ) {
-                Text("SAVE")
+                Text(stringResource(R.string.transfer_money_save_button))
             }
         }
     }
@@ -221,12 +223,12 @@ fun DateSelector(
     iconTint: Color? = null
 ) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    val displayValue = if (isToday(date)) "Today" else dateFormat.format(date)
+    val displayValue = if (isToday(date)) stringResource(R.string.transfer_money_today) else dateFormat.format(date)
     
     TransferItem(
         icon = Icons.Default.DateRange,
         painter = icon,
-        title = "Today",
+        title = stringResource(R.string.transfer_money_today),
         value = displayValue,
         iconTint = iconTint,
         onClick = {

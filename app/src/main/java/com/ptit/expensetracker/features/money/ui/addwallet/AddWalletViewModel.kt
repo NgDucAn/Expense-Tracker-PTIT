@@ -1,8 +1,10 @@
 package com.ptit.expensetracker.features.money.ui.addwallet
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.ptit.expensetracker.core.platform.BaseViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import com.ptit.expensetracker.features.money.data.data_source.local.model.CurrencyEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletWithCurrencyEntity
@@ -17,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.utils.Constants
 import com.ptit.expensetracker.utils.formatAmount
 import com.ptit.expensetracker.utils.formatCurrency
@@ -26,7 +29,8 @@ class AddWalletViewModel @Inject constructor(
     private val createWalletUseCase: CreateWalletUseCase,
     private val updateWalletUseCase: UpdateWalletUseCase,
     private val observeWalletByIdUseCase: ObserveWalletByIdUseCase,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<AddWalletState, AddWalletIntent, AddWalletEvent>(), CalculatorUtil.CalculatorCallback {
 
     override val _viewState = MutableStateFlow(AddWalletState())
@@ -47,7 +51,7 @@ class AddWalletViewModel @Inject constructor(
 
                     observeWalletByIdUseCase(ObserveWalletByIdUseCase.Params.ByWalletId(intent.walletId), scope =  viewModelScope) { result ->
                         result.fold(
-                            { failure -> emitEvent(AddWalletEvent.ShowError("Failed to load wallet to edit")) },
+                            { failure -> emitEvent(AddWalletEvent.ShowError(context.getString(R.string.add_wallet_error_load_wallet))) },
                             { walletFlow ->
                                 viewModelScope.launch {
                                     walletFlow.collect { wallet ->
@@ -164,14 +168,16 @@ class AddWalletViewModel @Inject constructor(
 
             // Input validation
             if (walletName.isBlank()) {
-                _viewState.value = state.copy(error = "Wallet name cannot be empty")
-                emitEvent(AddWalletEvent.ShowError("Wallet name cannot be empty"))
+                val errorMsg = context.getString(R.string.add_wallet_error_name_empty)
+                _viewState.value = state.copy(error = errorMsg)
+                emitEvent(AddWalletEvent.ShowError(errorMsg))
                 return@launch
             }
 
             if (currency == null) {
-                _viewState.value = state.copy(error = "Please select a currency")
-                emitEvent(AddWalletEvent.ShowError("Please select a currency"))
+                val errorMsg = context.getString(R.string.add_wallet_error_select_currency)
+                _viewState.value = state.copy(error = errorMsg)
+                emitEvent(AddWalletEvent.ShowError(errorMsg))
                 return@launch
             }
 
@@ -190,9 +196,9 @@ class AddWalletViewModel @Inject constructor(
                         { failure ->
                             _viewState.value = state.copy(
                                 isLoading = false,
-                                error = "Failed to update wallet: ${failure.javaClass.simpleName}"
+                                error = context.getString(R.string.add_wallet_error_update_wallet_with_message, failure.javaClass.simpleName)
                             )
-                            emitEvent(AddWalletEvent.ShowError("Failed to update wallet"))
+                            emitEvent(AddWalletEvent.ShowError(context.getString(R.string.add_wallet_error_update_wallet)))
                         },
                         {
                             _viewState.value = state.copy(
@@ -224,9 +230,9 @@ class AddWalletViewModel @Inject constructor(
                         { failure ->
                             _viewState.value = state.copy(
                                 isLoading = false,
-                                error = "Failed to save wallet: ${failure.javaClass.simpleName}"
+                                error = context.getString(R.string.add_wallet_error_save_wallet_with_message, failure.javaClass.simpleName)
                             )
-                            emitEvent(AddWalletEvent.ShowError("Failed to save wallet"))
+                            emitEvent(AddWalletEvent.ShowError(context.getString(R.string.add_wallet_error_save_wallet)))
                         },
                         {
                             _viewState.value = state.copy(

@@ -10,6 +10,7 @@ import com.ptit.expensetracker.features.money.domain.usecases.SaveCurrenciesUseC
 import com.ptit.expensetracker.features.money.domain.usecases.GetAllCurrenciesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import com.ptit.expensetracker.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -39,8 +40,9 @@ class CurrencyViewModel @Inject constructor(
         checkCurrenciesExistUseCase(UseCase.None(), viewModelScope) { result ->
             result.fold(
                 {
-                    _viewState.value = _viewState.value.copy(isLoading = false, error = "Failed to check currencies")
-                    emitEvent(CurrencyEvent.ShowError("Failed to check currencies"))
+                    val errorMsg = context.getString(R.string.currency_error_check_currencies)
+                    _viewState.value = _viewState.value.copy(isLoading = false, error = errorMsg)
+                    emitEvent(CurrencyEvent.ShowError(errorMsg))
                 },
                 { exists ->
                     if (!exists) {
@@ -50,8 +52,9 @@ class CurrencyViewModel @Inject constructor(
                                 saveCurrenciesUseCase(SaveCurrenciesUseCase.Params(list), viewModelScope) { saveResult ->
                                     saveResult.fold(
                                         {
-                                            _viewState.value = _viewState.value.copy(isLoading = false, error = "Failed to save currencies")
-                                            emitEvent(CurrencyEvent.ShowError("Failed to save currencies"))
+                                            val errorMsg = context.getString(R.string.currency_error_save_currencies)
+                                            _viewState.value = _viewState.value.copy(isLoading = false, error = errorMsg)
+                                            emitEvent(CurrencyEvent.ShowError(errorMsg))
                                         },
                                         {
                                             loadFromDb()
@@ -75,8 +78,9 @@ class CurrencyViewModel @Inject constructor(
         getAllCurrenciesUseCase(UseCase.None(), viewModelScope) { result ->
             result.fold(
                 {
-                    _viewState.value = _viewState.value.copy(isLoading = false, error = "Failed to load currencies")
-                    emitEvent(CurrencyEvent.ShowError("Failed to load currencies"))
+                    val errorMsg = context.getString(R.string.currency_error_load_currencies)
+                    _viewState.value = _viewState.value.copy(isLoading = false, error = errorMsg)
+                    emitEvent(CurrencyEvent.ShowError(errorMsg))
                 },
                 { flow ->
                     flow.onEach { list ->

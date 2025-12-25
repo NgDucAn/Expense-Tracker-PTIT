@@ -12,10 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavController
@@ -47,7 +49,7 @@ fun MonthlyReportScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Reports",
+                        text = stringResource(R.string.monthly_report_title),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp,
                         color = TextMain
@@ -57,7 +59,7 @@ fun MonthlyReportScreen(
                     IconButton(onClick = { navController?.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.monthly_report_back_cd),
                             tint = TextMain
                         )
                     }
@@ -109,7 +111,7 @@ fun MonthlyReportScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = uiState.error ?: "Có lỗi xảy ra",
+                        text = uiState.error ?: stringResource(R.string.monthly_report_error_generic),
                         color = TextSecondary
                     )
                 }
@@ -185,7 +187,7 @@ private fun OpeningClosingBalanceCard(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "Số dư đầu",
+                text = stringResource(R.string.monthly_report_opening_balance),
                 color = TextSecondary,
                 fontSize = 14.sp
             )
@@ -197,7 +199,7 @@ private fun OpeningClosingBalanceCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Số dư cuối",
+                text = stringResource(R.string.monthly_report_closing_balance),
                 color = TextSecondary,
                 fontSize = 14.sp
             )
@@ -242,7 +244,7 @@ private fun NetIncomeCard(
             ) {
                 Column {
                     Text(
-                        text = "Thu nhập ròng",
+                        text = stringResource(R.string.monthly_report_net_income),
                         color = TextMain,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold
@@ -256,7 +258,7 @@ private fun NetIncomeCard(
                     )
                 }
                 Text(
-                    text = "Xem chi tiết",
+                    text = stringResource(R.string.monthly_report_view_details),
                     color = AppColor.Light.PrimaryColor.TextButtonColor,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
@@ -272,7 +274,7 @@ private fun NetIncomeCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Khoản thu",
+                        text = stringResource(R.string.monthly_report_income),
                         color = TextSecondary,
                         fontSize = 13.sp
                     )
@@ -286,7 +288,7 @@ private fun NetIncomeCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = "Khoản chi",
+                        text = stringResource(R.string.monthly_report_expense),
                         color = TextSecondary,
                         fontSize = 13.sp
                     )
@@ -318,7 +320,7 @@ private fun GroupReportSection(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = "Báo cáo theo nhóm",
+            text = stringResource(R.string.monthly_report_by_group),
             color = TextMain,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
@@ -329,13 +331,13 @@ private fun GroupReportSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             SummaryChip(
-                title = "Khoản thu",
+                title = stringResource(R.string.monthly_report_income),
                 amount = totalIncome,
                 amountColor = AppColor.Light.InflowAmountColor,
                 modifier = Modifier.weight(1f)
             )
             SummaryChip(
-                title = "Khoản chi",
+                title = stringResource(R.string.monthly_report_expense),
                 amount = totalExpense,
                 amountColor = AppColor.Light.OutflowAmountColor,
                 modifier = Modifier.weight(1f)
@@ -349,13 +351,13 @@ private fun GroupReportSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             PieChartCard(
-                title = "Khoản thu",
+                title = stringResource(R.string.monthly_report_income),
                 categorySlices = incomeByCategory,
                 modifier = Modifier.weight(1f)
             )
             
             PieChartCard(
-                title = "Khoản chi",
+                title = stringResource(R.string.monthly_report_expense),
                 categorySlices = expenseByCategory,
                 modifier = Modifier.weight(1f)
             )
@@ -485,7 +487,7 @@ private fun PieChartCard(
             } else {
                 // Show empty state message
                 Text(
-                    text = "Không có dữ liệu",
+                    text = stringResource(R.string.monthly_report_no_data),
                     color = TextSecondary,
                     fontSize = 12.sp
                 )

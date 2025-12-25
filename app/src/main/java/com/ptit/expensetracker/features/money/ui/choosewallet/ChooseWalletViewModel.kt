@@ -8,6 +8,9 @@ import com.ptit.expensetracker.utils.CurrencyConverter
 import com.ptit.expensetracker.utils.TOTAL_WALLET_ID
 import com.ptit.expensetracker.utils.createTotalWallet
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.Context
+import com.ptit.expensetracker.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -18,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChooseWalletViewModel @Inject constructor(
     private val getWalletsUseCase: GetWalletsUseCase,
-    private val currencyConverter: CurrencyConverter
+    private val currencyConverter: CurrencyConverter,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<ChooseWalletState, ChooseWalletIntent, ChooseWalletEvent>() {
 
     override val _viewState = MutableStateFlow(ChooseWalletState())
@@ -44,7 +48,7 @@ class ChooseWalletViewModel @Inject constructor(
                         isLoading = false,
                         error = failure.toString()
                     )
-                    emitEvent(ChooseWalletEvent.ShowError("Failed to load wallets"))
+                    emitEvent(ChooseWalletEvent.ShowError(context.getString(R.string.choose_wallet_error_load_wallets)))
                 },
                 { walletsFlow ->
                     walletsFlow
@@ -97,14 +101,14 @@ class ChooseWalletViewModel @Inject constructor(
             val totalWallet = _viewState.value.totalWallet
             totalWallet?.let {
                 emitEvent(ChooseWalletEvent.WalletSelected(it, true))
-            } ?: emitEvent(ChooseWalletEvent.ShowError("Total wallet not available"))
+            } ?: emitEvent(ChooseWalletEvent.ShowError(context.getString(R.string.choose_wallet_error_total_not_available)))
             return
         }
         
         val selectedWallet = _viewState.value.wallets.find { it.id == selectedId }
         selectedWallet?.let {
             emitEvent(ChooseWalletEvent.WalletSelected(it))
-        } ?: emitEvent(ChooseWalletEvent.ShowError("No wallet selected"))
+        } ?: emitEvent(ChooseWalletEvent.ShowError(context.getString(R.string.choose_wallet_error_no_wallet_selected)))
     }
 
     private fun cancelSelection() {

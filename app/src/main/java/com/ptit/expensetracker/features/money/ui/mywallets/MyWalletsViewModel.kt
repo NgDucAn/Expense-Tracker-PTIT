@@ -10,6 +10,9 @@ import com.ptit.expensetracker.features.money.domain.usecases.DeleteWalletUseCas
 import com.ptit.expensetracker.features.money.domain.usecases.UpdateWalletUseCase
 import com.ptit.expensetracker.utils.CurrencyConverter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.Context
+import com.ptit.expensetracker.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -22,7 +25,8 @@ class MyWalletsViewModel @Inject constructor(
     private val getWalletsUseCase: GetWalletsUseCase,
     private val deleteWalletUseCase: DeleteWalletUseCase,
     private val updateWalletUseCase: UpdateWalletUseCase,
-    private val currencyConverter: CurrencyConverter
+    private val currencyConverter: CurrencyConverter,
+    @ApplicationContext private val context: Context
 ) : BaseViewModel<MyWalletsState, MyWalletsIntent, MyWalletsEvent>() {
 
     override val _viewState = MutableStateFlow(MyWalletsState())
@@ -40,7 +44,7 @@ class MyWalletsViewModel @Inject constructor(
                 val walletToDelete = _viewState.value.wallets.find { it.id == intent.walletId }
                 if (walletToDelete?.isMainWallet == true) {
                     // Cannot delete the main wallet
-                    emitEvent(MyWalletsEvent.ShowError("Cannot delete main wallet"))
+                    emitEvent(MyWalletsEvent.ShowError(context.getString(R.string.my_wallets_error_cannot_delete_main)))
                 } else {
                     viewModelScope.launch {
                         deleteWalletUseCase(DeleteWalletUseCase.Params(intent.walletId)) {
@@ -133,10 +137,10 @@ class MyWalletsViewModel @Inject constructor(
     private fun handleWalletsFailure(failure: Failure) {
         _viewState.value = _viewState.value.copy(
             isLoading = false,
-            error = "Failed to load wallets: ${failure.javaClass.simpleName}"
+            error = context.getString(R.string.my_wallets_error_load_wallets_with_message, failure.javaClass.simpleName)
         )
         
-        emitEvent(MyWalletsEvent.ShowError("Failed to load wallets"))
+        emitEvent(MyWalletsEvent.ShowError(context.getString(R.string.my_wallets_error_load_wallets)))
         handleFailure(failure)
     }
 

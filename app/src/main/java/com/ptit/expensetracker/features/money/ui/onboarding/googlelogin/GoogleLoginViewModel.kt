@@ -32,6 +32,7 @@ class GoogleLoginViewModel @Inject constructor(
 
     private fun handleGoogleSignIn(idToken: String?) {
         viewModelScope.launch {
+            android.util.Log.d("GoogleLoginVM", "handleGoogleSignIn called with token: ${idToken?.take(20)}...")
             if (idToken.isNullOrBlank()) {
                 emitEvent(GoogleLoginEvent.ShowError(context.getString(R.string.google_login_error_no_token)))
                 return@launch
@@ -41,8 +42,10 @@ class GoogleLoginViewModel @Inject constructor(
 
             try {
                 val credential = GoogleAuthProvider.getCredential(idToken, null)
+                android.util.Log.d("GoogleLoginVM", "Credential created, calling signInWithCredential")
                 auth.signInWithCredential(credential)
                     .addOnSuccessListener {
+                        android.util.Log.d("GoogleLoginVM", "Sign in successful")
                         viewModelScope.launch {
                             // Consider onboarding completed once user has logged in
                             onboardingRepository.setOnboardingCompleted(true)
@@ -51,23 +54,21 @@ class GoogleLoginViewModel @Inject constructor(
                         }
                     }
                     .addOnFailureListener { e ->
+                        android.util.Log.e("GoogleLoginVM", "Sign in failed", e)
                         _viewState.value = _viewState.value.copy(isLoading = false)
-                        val msg = e.localizedMessage
-                        if (msg.isNullOrBlank()) {
-                            emitEvent(GoogleLoginEvent.ShowError(context.getString(R.string.google_login_sign_in_error)))
-                        } else {
-                            emitEvent(
-                                GoogleLoginEvent.ShowError(
-                                    context.getString(R.string.google_login_error_auth_failed_format, msg)
-                                )
+                        val msg = e.message ?: e.toString()
+                        emitEvent(
+                            GoogleLoginEvent.ShowError(
+                                "Auth failed: $msg"
                             )
-                        }
+                        )
                     }
             } catch (e: Exception) {
+                android.util.Log.e("GoogleLoginVM", "Exception during sign in", e)
                 _viewState.value = _viewState.value.copy(isLoading = false)
                 emitEvent(
                     GoogleLoginEvent.ShowError(
-                        e.localizedMessage ?: context.getString(R.string.google_login_sign_in_error)
+                        e.message ?: context.getString(R.string.google_login_sign_in_error)
                     )
                 )
             }

@@ -16,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.TextMain
 import com.ptit.expensetracker.ui.theme.TextSecondary
 import java.text.NumberFormat
@@ -48,7 +50,7 @@ fun AmountItem(
             .clickable { onClick() }
     ) {
         Text(
-            text = "Amount",
+            text = stringResource(R.string.add_budget_amount_label),
             color = TextSecondary,
             fontSize = 16.sp,
             modifier = Modifier.padding(bottom = 8.dp)
