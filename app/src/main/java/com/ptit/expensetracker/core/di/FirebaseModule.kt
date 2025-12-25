@@ -14,7 +14,11 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance().apply {
+        // Force English language for Firebase Auth to avoid locale issues
+        // Vietnamese locale can cause "X-Firebase-Locale" header to be null
+        setLanguageCode("en")
+    }
 
     @Provides
     @Singleton
