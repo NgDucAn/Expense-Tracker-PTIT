@@ -758,6 +758,27 @@
     <string name="budgets_no_transactions">No transactions available for this budget</string>
     <string name="budgets_back_cd">Back</string>
 
+    <!-- Budget Alerts -->
+    <string name="budget_alert_badge_warning">Warning</string>
+    <string name="budget_alert_badge_exceeded">Exceeded</string>
+    <string name="budget_alert_badge_expiring">Expiring</string>
+    <string name="budget_alert_warning_title">Budget Warning: %1$s</string>
+    <string name="budget_alert_warning_message_default">You\'ve spent a significant portion of your budget. Consider reducing spending.</string>
+    <string name="budget_alert_exceeded_title">Budget Exceeded: %1$s</string>
+    <string name="budget_alert_exceeded_message_default">You\'ve exceeded your budget limit. Review your spending.</string>
+    <string name="budget_alert_expiring_title">Budget Expiring: %1$s</string>
+    <string name="budget_alert_expiring_message_default">Your budget is expiring soon. Consider creating a new one.</string>
+    <string name="budget_alert_daily_rate_title">High Spending Rate: %1$s</string>
+    <string name="budget_alert_daily_rate_message_default">You\'re spending faster than recommended. Slow down to stay within budget.</string>
+    <string name="budget_alert_channel_warning_name">Budget Warnings</string>
+    <string name="budget_alert_channel_warning_description">Notifications when you\'re approaching your budget limit</string>
+    <string name="budget_alert_channel_exceeded_name">Budget Exceeded</string>
+    <string name="budget_alert_channel_exceeded_description">Notifications when you\'ve exceeded your budget</string>
+    <string name="budget_alert_channel_expiring_name">Budget Expiring</string>
+    <string name="budget_alert_channel_expiring_description">Notifications when your budget is about to expire</string>
+    <string name="budget_alert_channel_daily_rate_name">Spending Rate Alerts</string>
+    <string name="budget_alert_channel_daily_rate_description">Notifications about your daily spending rate</string>
+
     <!-- Add Budget screen -->
     <string name="add_budget_title">Add Budget</string>
     <string name="add_budget_edit_title">Edit Budget</string>

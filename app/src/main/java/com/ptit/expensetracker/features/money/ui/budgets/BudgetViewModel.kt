@@ -264,6 +264,13 @@ class BudgetViewModel @Inject constructor(
             val progress = if (budget.amount > 0) (spentForThisBudget / budget.amount).toFloat()
                 .coerceIn(0f, 1f) else 0f
 
+            // Determine alert type based on progress
+            val alertType = when {
+                progress >= 1.0f -> com.ptit.expensetracker.features.money.ui.budgets.components.BudgetAlertType.EXCEEDED
+                progress >= 0.80f -> com.ptit.expensetracker.features.money.ui.budgets.components.BudgetAlertType.WARNING
+                else -> null
+            }
+
             DisplayableBudget(
                 id = budget.budgetId,
                 categoryName = budget.category.title,
@@ -277,7 +284,8 @@ class BudgetViewModel @Inject constructor(
                     currentWallet.currency.symbol
                 ),
                 progress = progress,
-                currencySymbol = currentWallet.currency.symbol
+                currencySymbol = currentWallet.currency.symbol,
+                alertType = alertType
             )
         }
 

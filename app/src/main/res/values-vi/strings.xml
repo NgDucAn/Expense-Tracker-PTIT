@@ -758,6 +758,27 @@
     <string name="budgets_no_transactions">Không có giao dịch khả dụng cho ngân sách này</string>
     <string name="budgets_back_cd">Quay lại</string>
 
+    <!-- Budget Alerts -->
+    <string name="budget_alert_badge_warning">Cảnh báo</string>
+    <string name="budget_alert_badge_exceeded">Vượt quá</string>
+    <string name="budget_alert_badge_expiring">Sắp hết hạn</string>
+    <string name="budget_alert_warning_title">Cảnh báo Ngân sách: %1$s</string>
+    <string name="budget_alert_warning_message_default">Bạn đã chi tiêu một phần đáng kể của ngân sách. Hãy cân nhắc giảm chi tiêu.</string>
+    <string name="budget_alert_exceeded_title">Ngân sách Vượt quá: %1$s</string>
+    <string name="budget_alert_exceeded_message_default">Bạn đã vượt quá giới hạn ngân sách. Hãy xem xét lại chi tiêu của bạn.</string>
+    <string name="budget_alert_expiring_title">Ngân sách Sắp Hết hạn: %1$s</string>
+    <string name="budget_alert_expiring_message_default">Ngân sách của bạn sắp hết hạn. Hãy cân nhắc tạo ngân sách mới.</string>
+    <string name="budget_alert_daily_rate_title">Tốc độ Chi tiêu Cao: %1$s</string>
+    <string name="budget_alert_daily_rate_message_default">Bạn đang chi tiêu nhanh hơn mức khuyến nghị. Hãy giảm tốc độ để nằm trong ngân sách.</string>
+    <string name="budget_alert_channel_warning_name">Cảnh báo Ngân sách</string>
+    <string name="budget_alert_channel_warning_description">Thông báo khi bạn sắp đạt giới hạn ngân sách</string>
+    <string name="budget_alert_channel_exceeded_name">Ngân sách Vượt quá</string>
+    <string name="budget_alert_channel_exceeded_description">Thông báo khi bạn đã vượt quá ngân sách</string>
+    <string name="budget_alert_channel_expiring_name">Ngân sách Sắp Hết hạn</string>
+    <string name="budget_alert_channel_expiring_description">Thông báo khi ngân sách của bạn sắp hết hạn</string>
+    <string name="budget_alert_channel_daily_rate_name">Cảnh báo Tốc độ Chi tiêu</string>
+    <string name="budget_alert_channel_daily_rate_description">Thông báo về tốc độ chi tiêu hàng ngày của bạn</string>
+
     <!-- Add Budget screen -->
     <string name="add_budget_title">Thêm Ngân sách</string>
     <string name="add_budget_edit_title">Chỉnh sửa Ngân sách</string>
