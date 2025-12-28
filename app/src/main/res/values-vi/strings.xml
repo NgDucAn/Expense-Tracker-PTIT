@@ -1052,6 +1052,29 @@
     <string name="color_span_default">#bbbbbb</string>
     <string name="color_span_selected">#D75C42</string>
     <string name="res_0x7f14020a_com_crashlytics_android_build_id">e96e2e632753413db5c09d283a1de5b9</string>
+    <string name="com_facebook_device_auth_instructions">Truy cập &lt;b&gt;facebook.com/device&lt;/b&gt; và nhập mã hiển thị ở trên.</string>
+    <string name="com_facebook_image_download_unknown_error">Lỗi không mong đợi khi tải xuống ảnh.</string>
+    <string name="com_facebook_internet_permission_error_message">Đăng nhập WebView yêu cầu quyền INTERNET</string>
+    <string name="com_facebook_internet_permission_error_title">Lỗi AndroidManifest</string>
+    <string name="com_facebook_like_button_liked">Đã thích</string>
+    <string name="com_facebook_like_button_not_liked">Thích</string>
+    <string name="com_facebook_loading">Đang tải…</string>
+    <string name="com_facebook_loginview_cancel_action">Hủy</string>
+    <string name="com_facebook_loginview_log_in_button">Đăng nhập</string>
+    <string name="com_facebook_loginview_log_in_button_continue">Tiếp tục với Facebook</string>
+    <string name="com_facebook_loginview_log_in_button_long">Đăng nhập bằng Facebook</string>
+    <string name="com_facebook_loginview_log_out_action">Đăng xuất</string>
+    <string name="com_facebook_loginview_log_out_button">Đăng xuất</string>
+    <string name="com_facebook_loginview_logged_in_as">Đã đăng nhập với: %1$s</string>
+    <string name="com_facebook_loginview_logged_in_using_facebook">Đã đăng nhập bằng Facebook</string>
+    <string name="com_facebook_send_button_text">Gửi</string>
+    <string name="com_facebook_share_button_text">Chia sẻ</string>
+    <string name="com_facebook_smart_device_instructions">Để kết nối tài khoản của bạn, mở ứng dụng Facebook trên thiết bị di động của bạn và kiểm tra thông báo.</string>
+    <string name="com_facebook_smart_device_instructions_or">- HOẶC -</string>
+    <string name="com_facebook_smart_login_confirmation_cancel">Không phải bạn?</string>
+    <string name="com_facebook_smart_login_confirmation_continue_as">Tiếp tục với %1$s</string>
+    <string name="com_facebook_smart_login_confirmation_title">Xác nhận Đăng nhập</string>
+    <string name="com_facebook_tooltip_default">Bạn đang kiểm soát - chọn thông tin bạn muốn chia sẻ với ứng dụng.</string>
     <string name="combine_successfully">Kết hợp thành công</string>
     <string name="coming_soon">Sắp ra mắt</string>
     <string name="common_google_play_services_enable_button">Bật</string>
@@ -1062,7 +1085,6 @@
     <string name="common_google_play_services_install_title">Lấy dịch vụ Google Play</string>
     <string name="common_google_play_services_notification_channel_name">Tính khả dụng của dịch vụ Google Play</string>
     <string name="common_google_play_services_notification_ticker">Lỗi dịch vụ Google Play</string>
-    <string name="common_google_play_services_unknown_issue">%1$s đang gặp sự cố với dịch vụ Google Play. Vui lòng thử lại.</string>
     <string name="common_google_play_services_unsupported_text">%1$s sẽ không chạy mà không có dịch vụ Google Play, dịch vụ này không được thiết bị của bạn hỗ trợ.</string>
     <string name="common_google_play_services_update_button">Cập nhật</string>
     <string name="common_google_play_services_update_text">%1$s sẽ không chạy trừ khi bạn cập nhật dịch vụ Google Play.</string>
@@ -1175,7 +1197,6 @@
     <string name="default_error_msg">Lỗi không xác định</string>
     <string name="default_note_transfer">Đã chuyển đến %1$s</string>
     <string name="default_note_transfer_add_fee">Thêm phí chuyển tiền</string>
-    <string name="default_web_client_id">221181791952-uut9r8952ef6mualol4ds081vjksvmat.apps.googleusercontent.com</string>
     <string name="deficit_budget_onboarding_step1">Điều chỉnh ngân sách giúp bạn cân bằng chi tiêu vượt quá. Do đó, bạn vẫn có thể đạt được các mục tiêu tài chính của mình.</string>
     <string name="deficit_budget_onboarding_step2">Ngân sách này là ngân sách bạn vừa chọn.</string>
     <string name="deficit_budget_onboarding_step3">Đây là ngân sách thặng dư. Bạn có thể chuyển quỹ từ ngân sách thặng dư sang ngân sách thâm hụt để tránh chi tiêu vượt quá.\nVuốt sang trái để chọn ngân sách thặng dư khác.</string>
@@ -1439,13 +1460,10 @@
     <string name="fab_transformation_scrim_behavior">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
     <string name="facebook">Facebook</string>
-    <string name="facebook_app_id">186738618063436</string>
-    <string name="facebook_client_token">8fbbaa314f3fde28899c69cee076f8d7</string>
     <string name="fallback_menu_item_copy_link">Sao chép liên kết</string>
     <string name="fallback_menu_item_open_in_browser">Mở trong trình duyệt</string>
     <string name="fallback_menu_item_share_link">Chia sẻ liên kết</string>
     <string name="family_wallet">Ví gia đình</string>
-    <string name="fb_login_protocol_scheme">fb186738618063436</string>
     <string name="fb_notification_content">Tính năng \"Kết nối với Facebook\" không còn khả dụng. Để đăng nhập, vui lòng sử dụng email và mật khẩu của bạn thay thế</string>
     <string name="fcm_fallback_notification_channel_label">Khác</string>
     <string name="fcm_sender_id">558891751052</string>
@@ -1476,7 +1494,6 @@
     <string name="finsify_selling_point_2_title">Báo cáo thông minh</string>
     <string name="finsify_selling_point_3_description">Mã hóa dữ liệu nhạy cảm của bạn bằng RSA1024 bit. Ví Liên kết được phát triển với chế độ Chỉ đọc.</string>
     <string name="finsify_selling_point_3_title">Bảo vệ quyền riêng tư</string>
-    <string name="firebase_database_url">https://api-project-558891751052.firebaseio.com</string>
     <string name="first_auto_reply_message">Chúng tôi rất muốn nghe từ bạn ❤️.</string>
     <string name="fishing">câu cá</string>
     <string name="fix">Sửa nó</string>
@@ -1515,7 +1532,6 @@
     <string name="future_plan">Tương lai</string>
     <string name="futute_period_three_months">Trong ba tháng tới</string>
     <string name="ga_trackingId">UA-39420218-1</string>
-    <string name="gcm_defaultSenderId">558891751052</string>
     <string name="generic_error_no_device_credential">Chưa đặt PIN, mẫu hoặc mật khẩu.</string>
     <string name="generic_error_no_keyguard">Thiết bị này không hỗ trợ PIN, mẫu hoặc mật khẩu.</string>
     <string name="generic_error_user_canceled">Xác thực đã bị người dùng hủy.</string>
@@ -1539,11 +1555,8 @@
     <string name="goal_wallet_introduction">Một ví giúp bạn tạo động lực, đặt kế hoạch tiết kiệm chi tiết và đạt được kết quả hiệu quả.</string>
     <string name="goal_wallet_replaced_savings">Ví mục tiêu là ví mới đã thay thế cho tính năng Tiết kiệm. Money Lover sẽ không tiếp tục hỗ trợ Tiết kiệm và xóa tính năng này trong tương lai. Bạn nên tạo Ví Mục tiêu mới để thay thế Tiết kiệm của bạn.</string>
     <string name="google">Google</string>
-    <string name="google_banner_unit_id">ca-app-pub-9895422139050049/1180314723</string>
-    <string name="google_crash_reporting_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
     <string name="google_play">Cửa hàng Google Play</string>
     <string name="google_search">Tìm kiếm Google</string>
-    <string name="google_storage_bucket">api-project-558891751052.appspot.com</string>
     <string name="goto_home">Về trang chủ</string>
     <string name="goto_settings">Đi đến cài đặt</string>
     <string name="goto_today">Nhảy đến hôm nay</string>
@@ -2614,7 +2627,6 @@
     <string name="product_tour__scene_3__title">Sẵn sàng. Luôn luôn.</string>
     <string name="product_tour__skip">Bỏ qua</string>
     <string name="progress">Tiến trình</string>
-    <string name="project_id">api-project-558891751052</string>
     <string name="projected_spending_desciption_money_insider_2">Bạn đã chi %1$s %2$s cho %3$s trong %4$s</string>
     <string name="projected_spending_desciption_money_insider_3">Bạn đã chi %1$s cho %2$s trong %3$s</string>
     <string name="projected_spending_desciption_money_insider_4">Bạn đã chi %1$s cho %2$s</string>
@@ -3029,7 +3041,6 @@
     <string name="send_mail">Gửi email</string>
     <string name="sending">Đang gửi…</string>
     <string name="sep">Tháng Chín</string>
-    <string name="server_client_id">558891751052-07sp24jhj6jknjf35qd9vqr1ff7csn5p.apps.googleusercontent.com</string>
     <string name="services">Dịch vụ</string>
     <string name="set">Đặt</string>
     <string name="set_a_budget">Đặt một ngân sách</string>
@@ -3712,8 +3723,37 @@
         <item>Xem tất cả giao dịch</item>
     </string-array>
 
+    <!-- Từ đồng nghĩa cho số tiền -->
+    <string-array name="amount_synonyms">
+        <item>số tiền</item>
+    </string-array>
+
+    <string-array name="expenseQueries">
+        <item>thêm một giao dịch %1$s cho %2$s vào %3$s</item>
+    </string-array>
 
 
+    <!-- Query patterns for Open App Feature Intent -->
+    <string-array name="open_add_transaction_queries">
+        <item>Hiển thị cho tôi Thêm Giao dịch Trên Expense Tracker</item>
+        <item>Mở thêm giao dịch trên Expense Tracker</item>
+        <item>Hiển thị màn hình thêm giao dịch</item>
+        <item>Tôi muốn thêm một giao dịch</item>
+        <item>Đưa tôi đến thêm giao dịch</item>
+    </string-array>
+
+    <string-array name="add_expense_queries">
+        <item>thêm {amount} vào danh mục ăn uống</item>
+        <item>thêm {amount} vào danh mục thực phẩm</item>
+        <item>ghi lại {amount} cho ăn uống</item>
+        <item>ghi lại {amount} cho thực phẩm</item>
+        <item>ghi nhật ký {amount} trong ăn uống</item>
+        <item>ghi nhật ký {amount} trong thực phẩm</item>
+        <item>theo dõi {amount} cho ăn uống</item>
+        <item>theo dõi {amount} cho thực phẩm</item>
+        <item>lưu {amount} vào ăn uống</item>
+        <item>lưu {amount} vào thực phẩm</item>
+    </string-array>
 </resources>
 
 
