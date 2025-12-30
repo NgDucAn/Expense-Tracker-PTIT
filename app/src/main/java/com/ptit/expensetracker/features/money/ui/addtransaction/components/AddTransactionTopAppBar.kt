@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import com.ptit.expensetracker.ui.theme.AppColor
+import com.ptit.expensetracker.R
 
 
 
@@ -27,7 +29,12 @@ fun AddTransactionTopAppBar(
                 contentColor = AppColor.Light.PrimaryColor.contentColor,
                 containerColor = Color.Transparent
             )) {
-                Text(text = "Cancel", fontSize = 16.sp, fontWeight = FontWeight.Normal, color = Color(0xFF2B3B48))
+                Text(
+                    text = stringResource(id = R.string.add_transaction_action_cancel),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF2B3B48)
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

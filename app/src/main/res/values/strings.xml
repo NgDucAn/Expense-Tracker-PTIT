@@ -279,13 +279,7 @@
     <string name="add_transaction_reminder_title">Reminder</string>
     <string name="add_transaction_subtransaction_title">Cashback</string>
     <string name="add_transaction_timecreated_title">Date</string>
-    <string name="add_transaction_title_add">Add transaction</string>
-    <string name="add_transaction_title_edit">Edit transaction</string>
     <string name="add_transaction_save_button">Save</string>
-    <string name="add_transaction_select_wallet">Select wallet</string>
-    <string name="add_transaction_add_more_details">Add more details</string>
-    <string name="add_transaction_with_label">With</string>
-    <string name="add_transaction_exclude_from_reports">Don\'t include this transaction in reports such as Overview</string>
     <string name="add_transaction_error_load_wallets">Failed to load wallets</string>
     <string name="add_transaction_error_load_wallets_with_message">Failed to load wallets: %1$s</string>
     <string name="add_transaction_error_set_date">Failed to set transaction date</string>
@@ -296,7 +290,6 @@
     <string name="add_transaction_wallet_icon_cd">Wallet Icon</string>
     <string name="add_transaction_select_wallet_cd">Select Wallet</string>
     <string name="add_transaction_action_cd">Action</string>
-    <string name="add_transaction_more_cd">More</string>
     <string name="add_user">Add member</string>
     <string name="add_wallet__remote_description">Connect to bank or services</string>
     <string name="add_wallet_copy_categories_title">Select categories</string>
@@ -3764,4 +3757,55 @@
         <item>save {amount} to eating</item>
         <item>save {amount} to food</item>
     </string-array>
+    <!-- Add Transaction -->
+    <string name="add_transaction_title_add">Add Transaction</string>
+    <string name="add_transaction_title_edit">Edit Transaction</string>
+    <string name="add_transaction_button_save">Save</string>
+    <string name="add_transaction_button_update">Update</string>
+    <string name="add_transaction_action_cancel">Cancel</string>
+    <string name="add_transaction_amount_label">Amount</string>
+    <string name="add_transaction_more_cd">More</string>
+    <string name="add_transaction_select_wallet">Select wallet</string>
+    <string name="add_transaction_select_category">Select category</string>
+    <string name="add_transaction_note_cd">Note</string>
+    <string name="add_transaction_note_placeholder">Write note</string>
+    <string name="add_transaction_exclude_from_report_label">Exclude from report</string>
+    <string name="add_transaction_exclude_from_reports">This transaction will not be included in reports</string>
+    <string name="add_transaction_with_label">With</string>
+    <string name="add_transaction_add_more_details">Add more details</string>
+    <string name="add_transaction_selected_photo_cd">Selected photo</string>
+    <string name="add_transaction_change_photo_cd">Change photo</string>
+    <string name="add_transaction_change_photo">Change photo</string>
+    <string name="add_transaction_remove_photo_cd">Remove photo</string>
+    <string name="add_transaction_add_photo_cd">Add photo</string>
+    <string name="add_transaction_add_photo">Add photo</string>
+
+    <!-- Image source dialog -->
+    <string name="add_transaction_image_dialog_title">Add Photo</string>
+    <string name="add_transaction_image_camera_cd">Camera</string>
+    <string name="add_transaction_image_take_photo">Take Photo</string>
+    <string name="add_transaction_image_gallery_cd">Gallery</string>
+    <string name="add_transaction_image_choose_from_gallery">Choose from Gallery</string>
+
+    <!-- Contact management -->
+    <string name="add_transaction_contact_add">Add</string>
+    <string name="add_transaction_contact_remove_cd">Remove contact</string>
+
+    <!-- Transaction Screen -->
+    <string name="transaction_balance">Balance</string>
+    <string name="transaction_more">More</string>
+    <string name="transaction_edit_wallet">Edit Wallet</string>
+    <string name="transaction_transfer_money">Transfer money</string>
+    <string name="transaction_only_individual_wallets">Only available for individual wallets</string>
+    <string name="transaction_this_month">This month</string>
+    <string name="transaction_empty_title">No transactions found</string>
+    <string name="transaction_empty_description">Do not have any transactions in %1$s</string>
+    <string name="transaction_empty_add_button">Add transaction</string>
+    <string name="transaction_summary_inflow">Inflow</string>
+    <string name="transaction_summary_outflow">Outflow</string>
+    <string name="transaction_summary_total">Total</string>
+
+    <!-- Common -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
 </resources>

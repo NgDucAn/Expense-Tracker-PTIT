@@ -212,8 +212,13 @@ private fun RowScope.NumpadButtonComponent(
                 )
             }
         } else {
+            val label = if (button == NumpadButton.SAVE) {
+                stringResource(id = R.string.add_transaction_button_save)
+            } else {
+                button.displayText
+            }
             Text(
-                text = button.displayText,
+                text = label,
                 color = button.getContentColor(),
                 fontSize = 20.sp
             )

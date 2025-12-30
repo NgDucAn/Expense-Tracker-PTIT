@@ -41,6 +41,8 @@ import kotlinx.coroutines.withContext
 import android.content.Intent
 import androidx.core.net.toUri
 import java.io.FileOutputStream
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 
 @Composable
 fun AddTransactionScreen(
@@ -276,8 +278,16 @@ fun AddTransactionScreen(
         },
         onCloseClick = onCloseClick,
         onCategoryClick = { navController.navigate(Screen.Category.route) },
-        title = state.screenTitle,
-        saveButtonText = state.saveButtonText
+        title = if (state.isEditMode) {
+            stringResource(R.string.add_transaction_title_edit)
+        } else {
+            stringResource(R.string.add_transaction_title_add)
+        },
+        saveButtonText = if (state.isEditMode) {
+            stringResource(R.string.add_transaction_button_update)
+        } else {
+            stringResource(R.string.add_transaction_button_save)
+        }
     )
 }
 

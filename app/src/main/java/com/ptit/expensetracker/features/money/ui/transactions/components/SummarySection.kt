@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.* // Import colors
 import com.ptit.expensetracker.utils.formatCurrency // Import formatter
 
@@ -28,12 +30,15 @@ fun SummarySection(
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        SummaryRow(label = "Inflow", amount = inflow, color = AppColor.Light.InflowAmountColor)
         SummaryRow(
-            label = "Outflow", 
-            amount = outflow, 
-            color = AppColor.Light.OutflowAmountColor,
-
+            label = stringResource(id = R.string.transaction_summary_inflow),
+            amount = inflow,
+            color = AppColor.Light.InflowAmountColor
+        )
+        SummaryRow(
+            label = stringResource(id = R.string.transaction_summary_outflow),
+            amount = outflow,
+            color = AppColor.Light.OutflowAmountColor
         )
         HorizontalDivider(
             modifier = Modifier
@@ -41,8 +46,8 @@ fun SummarySection(
             color = Color(0x14000000),
         )
         SummaryRow(
-            label = "", 
-            amount = total, 
+            label = stringResource(id = R.string.transaction_summary_total),
+            amount = total,
             color = TextMain,
             isTotal = true,
         )

@@ -145,9 +145,3 @@ sealed interface AddTransactionEvent : MviEventBase {
 // Extension properties for computed values
 val AddTransactionState.isEditing: Boolean 
     get() = isEditMode && editingTransactionId != null
-
-val AddTransactionState.screenTitle: String 
-    get() = if (isEditMode) "Edit Transaction" else "Add Transaction"
-
-val AddTransactionState.saveButtonText: String 
-    get() = if (isEditMode) "Update" else "Save"

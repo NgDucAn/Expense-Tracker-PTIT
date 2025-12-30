@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 import com.ptit.expensetracker.ui.theme.AppColor
 import java.text.NumberFormat
 import java.util.Locale
@@ -63,7 +65,7 @@ fun DisplayAmountRow(
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .background(Color(0xFF505D6D))
+                    .background(Color(0xFFE4E7EC))
             )
         }
 
@@ -73,7 +75,7 @@ fun DisplayAmountRow(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "Amount",
+                text = stringResource(id = R.string.add_transaction_amount_label),
                 color = Color(0xFF505D6D),
                 fontSize = 12.sp,
             )
