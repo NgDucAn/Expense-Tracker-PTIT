@@ -12,6 +12,7 @@ import com.ptit.expensetracker.backend.ai.dto.analyze.AiAnswerResponse;
 import com.ptit.expensetracker.backend.ai.dto.analyze.AiPlanRequest;
 import com.ptit.expensetracker.backend.ai.dto.analyze.AiPlanResponse;
 import com.ptit.expensetracker.backend.ai.service.AiService;
+import com.ptit.expensetracker.backend.ai.service.UnifiedChatService;
 import com.ptit.expensetracker.backend.common.exception.UnauthorizedException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,15 +36,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AiController {
 
-    private final AiService aiService;
+    private final AiService aiService; // For backward compatibility (parse-transaction, insights, etc.)
+    private final UnifiedChatService unifiedChatService; // New unified chat handler
 
+    /**
+     * Unified chat endpoint with intelligent routing.
+     * Automatically routes to appropriate handler (general chat, analytics, loan, investment).
+     */
     @PostMapping("/chat")
     public ResponseEntity<ChatResponse> chat(
             Authentication authentication,
             @Valid @RequestBody ChatRequest request) {
 
         String userId = resolveUserId(authentication);
-        ChatResponse response = aiService.chat(userId, request);
+        ChatResponse response = unifiedChatService.handleChat(userId, request);
         return ResponseEntity.ok(response);
     }
 
@@ -67,6 +73,12 @@ public class AiController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * @deprecated Use {@link #chat(Authentication, ChatRequest)} instead.
+     * This endpoint is kept for backward compatibility only.
+     * The unified chat endpoint automatically handles analytics queries.
+     */
+    @Deprecated
     @PostMapping("/plan")
     public ResponseEntity<AiPlanResponse> plan(
             Authentication authentication,
@@ -75,6 +87,12 @@ public class AiController {
         return ResponseEntity.ok(aiService.plan(userId, request));
     }
 
+    /**
+     * @deprecated Use {@link #chat(Authentication, ChatRequest)} instead.
+     * This endpoint is kept for backward compatibility only.
+     * The unified chat endpoint automatically handles analytics queries.
+     */
+    @Deprecated
     @PostMapping("/answer")
     public ResponseEntity<AiAnswerResponse> answer(
             Authentication authentication,

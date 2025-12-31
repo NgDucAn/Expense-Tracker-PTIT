@@ -19,6 +19,12 @@ public class ChatResponse {
      * in the client (e.g. "create_budget", "view_report").
      */
     List<String> suggestions;
+
+    /**
+     * Optional structured data (e.g. analytics results, loan options).
+     * Can be used by client for rendering charts, tables, etc.
+     */
+    java.util.Map<String, Object> data;
 }
 
 

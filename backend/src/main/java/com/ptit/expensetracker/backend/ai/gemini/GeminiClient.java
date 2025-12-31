@@ -49,35 +49,100 @@ public class GeminiClient {
                 ))
                 .build();
 
-        GeminiResponse response = geminiWebClient.post()
-                .uri(uriBuilder -> uriBuilder
-                        .path(path)
-                        .queryParam("key", properties.getApiKey())
-                        .build())
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(GeminiResponse.class)
-                .timeout(Duration.ofSeconds(20))
-                .retryWhen(Retry.backoff(2, Duration.ofMillis(300)))
-                .onErrorResume(ex -> {
-                    log.warn("Gemini call failed: {}", ex.getMessage());
-                    return Mono.error(new ApiException("Gemini call failed", "GEMINI_CALL_FAILED"));
-                })
-                .block();
+        try {
+            log.debug("Calling Gemini API: {} with model: {}", path, properties.getModel());
+            
+            GeminiResponse response = geminiWebClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(path)
+                            .queryParam("key", properties.getApiKey())
+                            .build())
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .bodyValue(request)
+                    .retrieve()
+                    .onStatus(status -> !status.is2xxSuccessful(), clientResponse -> {
+                        log.error("Gemini API returned status: {}", clientResponse.statusCode());
+                        return clientResponse.bodyToMono(String.class)
+                                .doOnNext(body -> log.error("Gemini API error response: {}", body))
+                                .then(Mono.error(new ApiException("Gemini API error: " + clientResponse.statusCode(), "GEMINI_API_ERROR")));
+                    })
+                    .bodyToMono(GeminiResponse.class)
+                    .timeout(Duration.ofSeconds(20))
+                    .retryWhen(Retry.backoff(2, Duration.ofMillis(300)))
+                    .onErrorResume(ex -> {
+                        log.error("Gemini call failed", ex);
+                        return Mono.error(new ApiException("Gemini call failed: " + ex.getMessage(), "GEMINI_CALL_FAILED"));
+                    })
+                    .block();
 
-        if (response == null || response.getCandidates() == null || response.getCandidates().isEmpty()) {
-            throw new ApiException("Gemini response is empty", "GEMINI_EMPTY_RESPONSE");
+            if (response == null || response.getCandidates() == null || response.getCandidates().isEmpty()) {
+                log.error("Gemini response is empty or has no candidates");
+                throw new ApiException("Gemini response is empty", "GEMINI_EMPTY_RESPONSE");
+            }
+
+            return response.getCandidates().stream()
+                    .map(GeminiResponse.Candidate::getContent)
+                    .filter(c -> c != null && c.getParts() != null)
+                    .flatMap(c -> c.getParts().stream())
+                    .map(GeminiResponse.Part::getText)
+                    .filter(t -> t != null && !t.isBlank())
+                    .findFirst()
+                    .orElseThrow(() -> new ApiException("Gemini returned no text", "GEMINI_NO_TEXT"));
+                    
+        } catch (Exception ex) {
+            log.error("Unexpected error in Gemini call", ex);
+            throw new ApiException("Gemini call failed: " + ex.getMessage(), "GEMINI_CALL_FAILED");
+        }
+    }
+
+    /**
+     * Call Gemini with function calling support.
+     */
+    public GeminiResponse callWithFunctions(GeminiRequest request) {
+        if (properties.getApiKey() == null || properties.getApiKey().isBlank()) {
+            throw new ApiException("Gemini API key is not configured", "GEMINI_KEY_MISSING");
         }
 
-        return response.getCandidates().stream()
-                .map(GeminiResponse.Candidate::getContent)
-                .filter(c -> c != null && c.getParts() != null)
-                .flatMap(c -> c.getParts().stream())
-                .map(GeminiResponse.Part::getText)
-                .filter(t -> t != null && !t.isBlank())
-                .findFirst()
-                .orElseThrow(() -> new ApiException("Gemini returned no text", "GEMINI_NO_TEXT"));
+        String path = String.format("/v1beta/models/%s:generateContent", properties.getModel());
+
+        try {
+            log.debug("Calling Gemini API: {} with model: {}", path, properties.getModel());
+            
+            GeminiResponse response = geminiWebClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path(path)
+                            .queryParam("key", properties.getApiKey())
+                            .build())
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .bodyValue(request)
+                    .retrieve()
+                    .onStatus(status -> !status.is2xxSuccessful(), clientResponse -> {
+                        log.error("Gemini API returned status: {}", clientResponse.statusCode());
+                        return clientResponse.bodyToMono(String.class)
+                                .doOnNext(body -> log.error("Gemini API error response: {}", body))
+                                .then(Mono.error(new ApiException("Gemini API error: " + clientResponse.statusCode(), "GEMINI_API_ERROR")));
+                    })
+                    .bodyToMono(GeminiResponse.class)
+                    .timeout(Duration.ofSeconds(20))
+                    .retryWhen(Retry.backoff(2, Duration.ofMillis(300)))
+                    .onErrorResume(ex -> {
+                        log.error("Gemini call with functions failed", ex);
+                        return Mono.error(new ApiException("Gemini call failed: " + ex.getMessage(), "GEMINI_CALL_FAILED"));
+                    })
+                    .block();
+
+            if (response == null || response.getCandidates() == null || response.getCandidates().isEmpty()) {
+                log.error("Gemini response is empty or has no candidates");
+                throw new ApiException("Gemini response is empty", "GEMINI_EMPTY_RESPONSE");
+            }
+
+            log.debug("Gemini call successful, got {} candidates", response.getCandidates().size());
+            return response;
+            
+        } catch (Exception ex) {
+            log.error("Unexpected error in Gemini call", ex);
+            throw new ApiException("Gemini call failed: " + ex.getMessage(), "GEMINI_CALL_FAILED");
+        }
     }
 }
 

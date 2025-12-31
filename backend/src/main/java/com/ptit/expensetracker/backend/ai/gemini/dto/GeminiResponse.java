@@ -3,6 +3,7 @@ package com.ptit.expensetracker.backend.ai.gemini.dto;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class GeminiResponse {
@@ -21,6 +22,13 @@ public class GeminiResponse {
     @Data
     public static class Part {
         private String text;
+        private FunctionCall functionCall;
+    }
+
+    @Data
+    public static class FunctionCall {
+        private String name;
+        private Map<String, Object> args;
     }
 }
 
