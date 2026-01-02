@@ -140,12 +140,6 @@ object MoneyUseCaseModule {
     
     @Provides
     @ViewModelScoped
-    fun provideSaveBudgetUseCase(budgetRepository: BudgetRepository): SaveBudgetUseCase {
-        return SaveBudgetUseCase(budgetRepository)
-    }
-    
-    @Provides
-    @ViewModelScoped
     fun provideGetDefaultWalletUseCase(walletRepository: WalletRepository): GetDefaultWalletUseCase {
         return GetDefaultWalletUseCase(walletRepository)
     }
