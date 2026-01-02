@@ -11,10 +11,12 @@ import com.ptit.expensetracker.features.ai.data.remote.dto.InsightsRequestDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.InsightsResponseDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ParseTransactionRequestDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ParsedTransactionDto
+import com.ptit.expensetracker.features.ai.data.remote.dto.context.FinancialContextDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AiApiService {
 
@@ -38,6 +40,13 @@ interface AiApiService {
 
     @DELETE("/api/ai/history")
     suspend fun clearHistory()
+
+    // Context sync
+    @POST("/api/ai/sync-context")
+    suspend fun syncContext(@Body body: FinancialContextDto)
+
+    @GET("/api/ai/context/{userId}")
+    suspend fun getContext(@Path("userId") userId: String): FinancialContextDto
 }
 
 

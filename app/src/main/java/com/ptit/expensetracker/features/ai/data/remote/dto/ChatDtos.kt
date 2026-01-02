@@ -9,5 +9,6 @@ data class ChatRequestDto(
 data class ChatResponseDto(
     val reply: String,
     val suggestions: List<String>? = emptyList(),
+    val data: Map<String, Any>? = null, // Structured data for charts, tables, etc.
 )
 

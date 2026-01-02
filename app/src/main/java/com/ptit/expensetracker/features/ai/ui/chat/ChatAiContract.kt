@@ -12,7 +12,9 @@ enum class ChatAiMode {
 
 data class ChatMessage(
     val text: String,
-    val isUser: Boolean
+    val isUser: Boolean,
+    val suggestions: List<String> = emptyList(),
+    val data: Map<String, Any>? = null // Structured data (analytics results, loan options, etc.)
 )
 
 data class ChatAiState(
@@ -29,12 +31,14 @@ sealed interface ChatAiIntent : MviIntentBase {
     data object ClearHistory : ChatAiIntent
     data class SelectMode(val mode: ChatAiMode) : ChatAiIntent
     data class ApplySuggestion(val text: String, val sendImmediately: Boolean = true) : ChatAiIntent
+    data class HandleAction(val action: String, val payload: Map<String, Any>? = null) : ChatAiIntent
 }
 
 sealed interface ChatAiEvent : MviEventBase {
     data class ShowError(val message: String) : ChatAiEvent
     data class PrefillTransaction(val parsed: ParsedTransactionDto) : ChatAiEvent
     data object HistoryCleared : ChatAiEvent
+    data class NavigateToScreen(val route: String, val arguments: Map<String, Any>? = null) : ChatAiEvent
 }
 
 

@@ -30,6 +30,7 @@ import com.ptit.expensetracker.features.money.domain.usecases.GetCategoryByNameU
 import com.ptit.expensetracker.features.money.domain.usecases.GetTransactionByIdUseCase
 import com.ptit.expensetracker.features.money.domain.model.Transaction
 import com.ptit.expensetracker.utils.formatAmountWithCurrency
+import com.ptit.expensetracker.features.ai.data.worker.FinancialContextSyncWorker
 import java.text.Normalizer
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -340,6 +341,9 @@ class AddTransactionViewModel @Inject constructor(
                                 isSuccess = true
                             )
                             
+                            // Sync financial context so AI sees latest data
+                            FinancialContextSyncWorker.enqueueOneTime(context)
+
                             // Emit appropriate success event
                             if (currentState.isEditMode) {
                                 emitEvent(AddTransactionEvent.TransactionUpdated)

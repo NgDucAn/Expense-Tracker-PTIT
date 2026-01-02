@@ -120,7 +120,8 @@ fun AppNavigation(
         currentRoute == Screen.SearchTransaction.route ||
         currentRoute == Screen.DebtManagement.route ||
         currentRoute == Screen.MonthlyReport.route ||
-        currentRoute == Screen.Onboarding.route
+        currentRoute == Screen.Onboarding.route ||
+        currentRoute == Screen.AiChat.route
 
     LaunchedEffect(shouldNavigateToAddTransaction.value) {
         if (shouldNavigateToAddTransaction.value) {
@@ -341,6 +342,7 @@ fun AppNavigation(
             }
             composable(Screen.AiChat.route) {
                 ChatAiScreen(
+                    onNavigateBack = { navController.popBackStack() },
                     onPrefillTransaction = { parsed ->
                         val amount = parsed.amount?.toString() ?: ""
                         val category = parsed.categoryName ?: ""
@@ -354,6 +356,29 @@ fun AppNavigation(
                             set("ai_description", desc)
                         }
                         navController.navigate(Screen.AddTransaction.createRoute())
+                    },
+                    onNavigate = { route, arguments ->
+                        when (route) {
+                            "add_budget" -> {
+                                navController.navigate(Screen.AddBudget.createRoute())
+                            }
+                            "monthly_report" -> {
+                                navController.navigate(Screen.MonthlyReport.route)
+                            }
+                            "home" -> {
+                                navController.navigate(Screen.Home.route) {
+                                    popUpTo(Screen.Home.route) { inclusive = false }
+                                }
+                            }
+                            else -> {
+                                // Try to navigate to the route directly
+                                try {
+                                    navController.navigate(route)
+                                } catch (e: Exception) {
+                                    // Route not found, ignore
+                                }
+                            }
+                        }
                     },
                     modifier = contentModifier
                 )

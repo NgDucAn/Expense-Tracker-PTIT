@@ -12,6 +12,7 @@ import com.ptit.expensetracker.features.ai.data.remote.dto.InsightsRequestDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.InsightsResponseDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ParseTransactionRequestDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ParsedTransactionDto
+import com.ptit.expensetracker.features.ai.data.remote.dto.context.FinancialContextDto
 import javax.inject.Inject
 
 class AiRepositoryImpl @Inject constructor(
@@ -37,6 +38,13 @@ class AiRepositoryImpl @Inject constructor(
     override suspend fun clearHistory() {
         api.clearHistory()
     }
+
+    override suspend fun syncContext(body: FinancialContextDto) {
+        api.syncContext(body)
+    }
+
+    override suspend fun getContext(userId: String): FinancialContextDto =
+        api.getContext(userId)
 }
 
 

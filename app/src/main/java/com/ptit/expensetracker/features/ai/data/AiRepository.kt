@@ -11,6 +11,7 @@ import com.ptit.expensetracker.features.ai.data.remote.dto.InsightsResponseDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ParseTransactionRequestDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ParsedTransactionDto
 import com.ptit.expensetracker.features.ai.data.remote.dto.ChatHistoryDto
+import com.ptit.expensetracker.features.ai.data.remote.dto.context.FinancialContextDto
 
 interface AiRepository {
     suspend fun chat(request: ChatRequestDto): ChatResponseDto
@@ -20,6 +21,8 @@ interface AiRepository {
     suspend fun answer(request: AiAnswerRequestDto): AiAnswerResponseDto
     suspend fun history(): List<ChatHistoryDto>
     suspend fun clearHistory()
+    suspend fun syncContext(body: FinancialContextDto)
+    suspend fun getContext(userId: String): FinancialContextDto
 }
 
 

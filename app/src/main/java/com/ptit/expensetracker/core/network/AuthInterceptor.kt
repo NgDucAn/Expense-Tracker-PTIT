@@ -18,20 +18,24 @@ class AuthInterceptor(
         val original = chain.request()
         val user = auth.currentUser
         if (user == null) {
+            android.util.Log.w("AuthInterceptor", "No user logged in, proceeding without token")
             return chain.proceed(original)
         }
 
         return try {
             val token = Tasks.await(user.getIdToken(true), 5, TimeUnit.SECONDS)?.token
             if (token.isNullOrBlank()) {
+                android.util.Log.w("AuthInterceptor", "Token is null or blank")
                 chain.proceed(original)
             } else {
+                android.util.Log.d("AuthInterceptor", "Token added: ${token.take(20)}...")
                 val newReq = original.newBuilder()
                     .addHeader("Authorization", "Bearer $token")
                     .build()
                 chain.proceed(newReq)
             }
         } catch (e: Exception) {
+            android.util.Log.e("AuthInterceptor", "Error getting token: ${e.message}")
             chain.proceed(original)
         }
     }
