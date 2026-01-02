@@ -42,6 +42,13 @@ import com.ptit.expensetracker.features.money.domain.usecases.GetDebtTransaction
 import com.ptit.expensetracker.features.money.domain.usecases.CreatePartialPaymentUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.GetDebtPaymentHistoryUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.GetMonthlyReportUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.CheckBudgetAlertsUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.GetActiveBudgetAlertsUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.DismissBudgetAlertUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.GetBudgetAlertSettingsUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.SaveBudgetAlertSettingsUseCase
+import com.ptit.expensetracker.features.money.domain.usecases.CalculateDailySpendingRateUseCase
+import com.ptit.expensetracker.features.money.domain.repository.BudgetAlertRepository
 import com.ptit.expensetracker.utils.CurrencyConverter
 import dagger.Module
 import dagger.Provides
@@ -326,5 +333,53 @@ object MoneyUseCaseModule {
         walletRepository: WalletRepository
     ): GetMonthlyReportUseCase {
         return GetMonthlyReportUseCase(transactionRepository, walletRepository)
+    }
+
+    // ==================== BUDGET ALERTS USE CASES ====================
+
+    @Provides
+    @ViewModelScoped
+    fun provideCheckBudgetAlertsUseCase(
+        budgetAlertRepository: BudgetAlertRepository
+    ): CheckBudgetAlertsUseCase {
+        return CheckBudgetAlertsUseCase(budgetAlertRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetActiveBudgetAlertsUseCase(
+        budgetAlertRepository: BudgetAlertRepository
+    ): GetActiveBudgetAlertsUseCase {
+        return GetActiveBudgetAlertsUseCase(budgetAlertRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideDismissBudgetAlertUseCase(
+        budgetAlertRepository: BudgetAlertRepository
+    ): DismissBudgetAlertUseCase {
+        return DismissBudgetAlertUseCase(budgetAlertRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetBudgetAlertSettingsUseCase(
+        budgetAlertRepository: BudgetAlertRepository
+    ): GetBudgetAlertSettingsUseCase {
+        return GetBudgetAlertSettingsUseCase(budgetAlertRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSaveBudgetAlertSettingsUseCase(
+        budgetAlertRepository: BudgetAlertRepository
+    ): SaveBudgetAlertSettingsUseCase {
+        return SaveBudgetAlertSettingsUseCase(budgetAlertRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideCalculateDailySpendingRateUseCase(): CalculateDailySpendingRateUseCase {
+        return CalculateDailySpendingRateUseCase()
     }
 }

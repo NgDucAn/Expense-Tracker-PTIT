@@ -13,7 +13,8 @@ data class DisplayableBudget(
     val amountFormatted: String,
     val leftAmountFormatted: String,
     val progress: Float,
-    val currencySymbol: String
+    val currencySymbol: String,
+    val alertType: com.ptit.expensetracker.features.money.ui.budgets.components.BudgetAlertType? = null
 )
 
 data class BudgetScreenState(

@@ -12,15 +12,27 @@ import com.ptit.expensetracker.features.money.data.data_source.local.dao.WalletD
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.CurrencyDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.TransactionDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.CategoryDao
+import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetAlertDao
+import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetAlertSettingsDao
 import com.ptit.expensetracker.features.money.data.data_source.local.model.BudgetEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.CategoryEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.CurrencyEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.TransactionEntity
 import com.ptit.expensetracker.features.money.data.data_source.local.model.WalletEntity
+import com.ptit.expensetracker.features.money.data.data_source.local.model.BudgetAlertEntity
+import com.ptit.expensetracker.features.money.data.data_source.local.model.BudgetAlertSettingsEntity
 
 @Database(
-    entities = [WalletEntity::class, CurrencyEntity::class, TransactionEntity::class, CategoryEntity::class, BudgetEntity::class],
-    version = 2,
+    entities = [
+        WalletEntity::class, 
+        CurrencyEntity::class, 
+        TransactionEntity::class, 
+        CategoryEntity::class, 
+        BudgetEntity::class,
+        BudgetAlertEntity::class,
+        BudgetAlertSettingsEntity::class
+    ],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -30,6 +42,8 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract val transactionDao: TransactionDao
     abstract val categoryDao: CategoryDao
     abstract val budgetDao: BudgetDao
+    abstract val budgetAlertDao: BudgetAlertDao
+    abstract val budgetAlertSettingsDao: BudgetAlertSettingsDao
 
     companion object {
         const val DATABASE_NAME = "expense_tracker_database.db"
