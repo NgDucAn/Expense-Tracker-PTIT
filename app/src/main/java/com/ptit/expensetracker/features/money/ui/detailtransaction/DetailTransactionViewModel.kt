@@ -12,6 +12,7 @@ import com.ptit.expensetracker.features.money.domain.usecases.DeleteTransactionU
 import com.ptit.expensetracker.features.money.domain.usecases.GetTransactionByIdUseCase
 import com.ptit.expensetracker.features.money.domain.usecases.SaveTransactionUseCase
 import com.ptit.expensetracker.features.money.ui.detailtransaction.components.TransactionImageCard
+import com.ptit.expensetracker.features.ai.data.worker.FinancialContextSyncWorker
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -130,6 +131,10 @@ class DetailTransactionViewModel @Inject constructor(
                         },
                         {
                             _viewState.value = _viewState.value.copy(isLoading = false)
+                            
+                            // Sync financial context so AI sees latest data
+                            FinancialContextSyncWorker.enqueueOneTime(appContext)
+                            
                             emitEvent(DetailTransactionEvent.TransactionDeleted)
                             emitEvent(DetailTransactionEvent.NavigateBack)
                         }

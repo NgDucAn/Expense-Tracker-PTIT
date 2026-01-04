@@ -13,9 +13,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ptit.expensetracker.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ptit.expensetracker.features.money.domain.model.Transaction
@@ -216,7 +218,7 @@ fun TransactionScreenContent(
 
                     } else {
                         Text(
-                            text = "Only available for individual wallets",
+                            text = stringResource(id = R.string.transaction_only_individual_wallets),
                             modifier = Modifier.padding(16.dp),
                             style = MaterialTheme.typography.bodyMedium.copy(color = TextSecondary)
                         )
@@ -285,7 +287,7 @@ fun TransactionScreenContent(
                         monthLabel = if (selectedTabIndex < state.months.size) {
                             state.months[selectedTabIndex].label
                         } else {
-                            "tháng này"
+                            stringResource(id = R.string.transaction_this_month)
                         },
                         onAddTransactionClick = onAddTransactionClick,
                         modifier = Modifier.weight(1f)
@@ -334,7 +336,7 @@ private fun MoreBottomSheetContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "More",
+            text = stringResource(id = R.string.transaction_more),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = TextMain,
@@ -355,7 +357,7 @@ private fun MoreBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Edit Wallet",
+                    text = stringResource(id = R.string.transaction_edit_wallet),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -377,7 +379,7 @@ private fun MoreBottomSheetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Transfer money",
+                    text = stringResource(id = R.string.transaction_transfer_money),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -448,7 +450,7 @@ fun TransactionTopAppBar(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    "Balance",
+                    stringResource(id = R.string.transaction_balance),
                     style = MaterialTheme.typography.labelMedium,
                     color = Color(0xFF505D6D),
                     fontSize = 12.sp

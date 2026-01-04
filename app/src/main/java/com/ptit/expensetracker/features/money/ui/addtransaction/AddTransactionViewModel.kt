@@ -517,6 +517,11 @@ class AddTransactionViewModel @Inject constructor(
     
     // Edit mode methods
     private fun loadTransactionForEdit(transactionId: Int) {
+        // Don't reload if already in edit mode for the same transaction
+        if (_viewState.value.isEditMode && _viewState.value.editingTransactionId == transactionId && !_viewState.value.isLoadingTransaction) {
+            return
+        }
+        
         viewModelScope.launch {
             _viewState.value = _viewState.value.copy(
                 isEditMode = true,
@@ -554,10 +559,18 @@ class AddTransactionViewModel @Inject constructor(
             emptyList()
         }
 
+        // Only update category if it hasn't been changed by user (i.e., if current category is still the original)
+        // This prevents overwriting user's category selection when returning from CategoryScreen
+        val currentCategory = _viewState.value.category
+        val shouldUpdateCategory = currentCategory == null || 
+                                   (currentCategory.id == transaction.category.id && 
+                                    currentCategory.metaData == transaction.category.metaData)
+        
         _viewState.value = _viewState.value.copy(
             isLoadingTransaction = false,
             wallet = transaction.wallet,
-            category = transaction.category,
+            // Only update category if it's still the original (not changed by user)
+            category = if (shouldUpdateCategory) transaction.category else currentCategory,
             transactionType = transaction.transactionType,
             description = transaction.description ?: "",
             transactionDate = transaction.transactionDate,

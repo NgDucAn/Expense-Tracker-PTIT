@@ -47,6 +47,7 @@ import androidx.navigation.NavController
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.ptit.expensetracker.R
 import com.ptit.expensetracker.features.money.ui.navigation.screen.Screen
@@ -101,6 +102,13 @@ fun GoogleLoginScreen(
                                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                 }
                             )
+                        } catch (e: androidx.credentials.exceptions.NoCredentialException) {
+                            Log.e("signin", "error: No credentials available", e)
+                            Toast.makeText(
+                                context,
+                                "Vui lòng thêm tài khoản Google vào thiết bị của bạn trong Cài đặt > Tài khoản",
+                                Toast.LENGTH_LONG
+                            ).show()
                         } catch (e: GetCredentialException) {
                             Log.e("google_login", "Credential error: ${e.message}", e)
                             Toast.makeText(

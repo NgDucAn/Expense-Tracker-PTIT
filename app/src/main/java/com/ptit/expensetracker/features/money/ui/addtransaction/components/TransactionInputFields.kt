@@ -311,17 +311,17 @@ fun TransactionInputFields(
 //                    HorizontalDivider(color = Color.Gray.copy(alpha = 0.5f), thickness = 0.5.dp)
 
                 // Exclude from report checkbox
-                Box(
-                    modifier = Modifier.background(
-                        shape = RoundedCornerShape(12.dp),
-                        color = Color.White
-                    )
-                ) {
-                    ExcludeFromReportRow(
-                        excludeFromReport = excludeFromReport,
-                        onExcludeFromReportChange = onExcludeFromReportChange
-                    )
-                }
+//                Box(
+//                    modifier = Modifier.background(
+//                        shape = RoundedCornerShape(12.dp),
+//                        color = Color.White
+//                    )
+//                ) {
+//                    ExcludeFromReportRow(
+//                        excludeFromReport = excludeFromReport,
+//                        onExcludeFromReportChange = onExcludeFromReportChange
+//                    )
+//                }
 
                 Text(
                     text = stringResource(R.string.add_transaction_exclude_from_reports),
@@ -453,12 +453,12 @@ private fun DateRow(
                         }
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(id = R.string.common_ok))
                 }
             },
             dismissButton = {
                 Button(onClick = { showDatePicker.value = false }) {
-                    Text("Cancel")
+                    Text(stringResource(id = R.string.common_cancel))
                 }
             }
         ) {
@@ -483,12 +483,12 @@ private fun DateRow(
 //                        onClick(Date(calendar.timeInMillis))
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(id = R.string.common_ok))
                 }
             },
             dismissButton = {
                 Button(onClick = { showTimePicker.value = false }) {
-                    Text("Cancel")
+                    Text(stringResource(id = R.string.common_cancel))
                 }
             }
         ) {
@@ -526,19 +526,19 @@ private fun CategoryRow(
             )
         }
 
-        Text(
-            text = category?.title?.let {
-                stringResource(
-                    getStringResId(
-                        LocalContext.current,
-                        it
+            Text(
+                text = category?.title?.let {
+                    stringResource(
+                        getStringResId(
+                            LocalContext.current,
+                            it
+                        )
                     )
-                )
-            } ?: "Select Category",
-            color = if (category != null) Color(0xFF1E2A36) else Color(0xFF505D6D),
-            fontSize = 20.sp,
-            modifier = Modifier.weight(1f)
-        )
+                } ?: stringResource(id = R.string.add_transaction_select_category),
+                color = if (category != null) Color(0xFF1E2A36) else Color(0xFF505D6D),
+                fontSize = 20.sp,
+                modifier = Modifier.weight(1f)
+            )
         Icon(
             imageVector = Icons.Filled.KeyboardArrowRight,
             contentDescription = stringResource(R.string.add_transaction_more_cd),
@@ -566,14 +566,19 @@ private fun EditableNoteRow(
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_description),
-            contentDescription = "Note",
+            contentDescription = stringResource(id = R.string.add_transaction_note_cd),
             modifier = Modifier.size(24.dp),
             tint = InputTextColor
         )
         TextField(
             value = description,
             onValueChange = onDescriptionChange,
-            placeholder = { Text("Write note", color = Color.Gray) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.add_transaction_note_placeholder),
+                    color = Color.Gray
+                )
+            },
             modifier = Modifier.weight(1f),
             textStyle = androidx.compose.ui.text.TextStyle(
                 color = InputTextColor,
@@ -611,7 +616,7 @@ private fun AttachmentRow(
             // Display the selected image
             AsyncImage(
                 model = photoUri,
-                contentDescription = "Selected photo",
+                contentDescription = stringResource(id = R.string.add_transaction_selected_photo_cd),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
@@ -635,12 +640,12 @@ private fun AttachmentRow(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_photo),
-                        contentDescription = "Change photo",
+                        contentDescription = stringResource(id = R.string.add_transaction_change_photo_cd),
                         tint = TextAccent,
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "Change photo",
+                        text = stringResource(id = R.string.add_transaction_change_photo),
                         color = TextAccent,
                         fontSize = 14.sp
                     )
@@ -652,7 +657,7 @@ private fun AttachmentRow(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = "Remove photo",
+                        contentDescription = stringResource(id = R.string.add_transaction_remove_photo_cd),
                         tint = Color.Red,
                         modifier = Modifier.size(20.dp)
                     )
@@ -676,13 +681,13 @@ private fun AttachmentRow(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_add_photo),
-                    contentDescription = "Add photo",
+                    contentDescription = stringResource(id = R.string.add_transaction_add_photo_cd),
                     modifier = Modifier.size(24.dp)
                 )
             }
 
             Text(
-                text = "Add photo",
+                text = stringResource(id = R.string.add_transaction_add_photo),
                 color = InputTextColor
             )
         }
@@ -708,7 +713,7 @@ private fun ExcludeFromReportRow(
 
         Column(modifier = Modifier.padding(start = 12.dp)) {
             Text(
-                text = "Exclude from report",
+                text = stringResource(id = R.string.add_transaction_exclude_from_report_label),
                 color = InputTextColor,
                 fontSize = 16.sp
             )
@@ -816,19 +821,19 @@ private fun ContactsInputRow(
             iconPainter?.let {
                 Image(
                     painter = painterResource(id = R.drawable.ic_with_friend),
-                    contentDescription = "With",
+                    contentDescription = stringResource(id = R.string.add_transaction_with_label),
                     modifier = Modifier.size(24.dp),
                 )
             } ?: run {
                 Image(
                     painter = painterResource(id = R.drawable.ic_with_friend),
-                    contentDescription = "With",
+                    contentDescription = stringResource(id = R.string.add_transaction_with_label),
                     modifier = Modifier.size(24.dp),
                 )
             }
 
             Text(
-                text = "With",
+                text = stringResource(id = R.string.add_transaction_with_label),
                 color = InputTextColor,
                 fontSize = 16.sp,
                 modifier = Modifier.weight(1f)
@@ -844,7 +849,7 @@ private fun ContactsInputRow(
                     )
                 ) {
                     Text(
-                        text = "Add",
+                        text = stringResource(id = R.string.add_transaction_contact_add),
                         fontSize = 14.sp
                     )
                 }
@@ -927,7 +932,7 @@ fun ContactChip(
             ) {
                 Icon(
                     imageVector = androidx.compose.material.icons.Icons.Default.Close,
-                    contentDescription = "Remove",
+                    contentDescription = stringResource(id = R.string.add_transaction_contact_remove_cd),
                     tint = Color.Black,
                     modifier = Modifier.size(14.dp)
                 )

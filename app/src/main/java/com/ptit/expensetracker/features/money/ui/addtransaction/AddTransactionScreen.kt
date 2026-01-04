@@ -13,6 +13,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import java.io.File
@@ -36,6 +41,8 @@ import kotlinx.coroutines.withContext
 import android.content.Intent
 import androidx.core.net.toUri
 import java.io.FileOutputStream
+import androidx.compose.ui.res.stringResource
+import com.ptit.expensetracker.R
 
 @Composable
 fun AddTransactionScreen(
@@ -103,11 +110,23 @@ fun AddTransactionScreen(
     }
     
     // Load transaction for edit if transactionId is provided, otherwise initialize for add mode
+    // Use a key to ensure this only runs once per transactionId
+    var hasLoadedTransaction by remember { mutableStateOf(false) }
+    var loadedTransactionId by remember { mutableStateOf<Int?>(null) }
+    
     LaunchedEffect(transactionId) {
         if (transactionId != null) {
-            viewModel.processIntent(AddTransactionIntent.LoadTransactionForEdit(transactionId))
+            // Only load if we haven't loaded this transaction yet
+            if (!hasLoadedTransaction || loadedTransactionId != transactionId) {
+                hasLoadedTransaction = true
+                loadedTransactionId = transactionId
+                viewModel.processIntent(AddTransactionIntent.LoadTransactionForEdit(transactionId))
+            }
         } else {
-            viewModel.processIntent(AddTransactionIntent.InitializeForAddMode)
+            if (!hasLoadedTransaction) {
+                viewModel.processIntent(AddTransactionIntent.InitializeForAddMode)
+                hasLoadedTransaction = true
+            }
         }
     }
     
@@ -135,22 +154,48 @@ fun AddTransactionScreen(
     }
 
     // Observe the selected category when returning from CategoryScreen
-    LaunchedEffect(Unit) {
-        val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    // Check savedStateHandle reactively - similar to AddBudgetScreen approach
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val savedStateHandle = currentBackStackEntry?.savedStateHandle
+    
+    // Observe category - check savedStateHandle whenever backStackEntry changes
+    LaunchedEffect(currentBackStackEntry?.id) {
         savedStateHandle?.get<Category>("selected_category")?.let { category ->
+            // Remove immediately to avoid processing multiple times
             savedStateHandle.remove<Category>("selected_category")
             viewModel.processIntent(AddTransactionIntent.SelectCategory(category))
         }
-        
-        // Observe selected wallet when returning from WalletScreen
-        savedStateHandle?.get<Wallet>("selected_wallet")?.let { wallet ->
-            savedStateHandle.remove<Wallet>("selected_wallet")
-            viewModel.processIntent(AddTransactionIntent.SelectWallet(wallet))
+    }
+    
+    // Also check on every recomposition to catch cases where entry doesn't change
+    // but savedStateHandle is updated (when returning from CategoryScreen)
+    val selectedCategory = savedStateHandle?.get<Category>("selected_category")
+    LaunchedEffect(selectedCategory) {
+        selectedCategory?.let { category ->
+            savedStateHandle?.remove<Category>("selected_category")
+            viewModel.processIntent(AddTransactionIntent.SelectCategory(category))
         }
+    }
+    
+    // Observe selected wallet when returning from WalletScreen
+    val selectedWallet = savedStateHandle?.get<Wallet>("selected_wallet")
+    val isTotalWallet = savedStateHandle?.get<Boolean>("is_total_wallet") ?: false
+    
+    LaunchedEffect(selectedWallet) {
+        selectedWallet?.let { wallet ->
+            savedStateHandle?.remove<Wallet>("selected_wallet")
+            viewModel.processIntent(AddTransactionIntent.SelectWallet(wallet))
+            // Also remove is_total_wallet flag if exists
+            savedStateHandle?.remove<Boolean>("is_total_wallet")
+        }
+    }
 
-        // Observe selected contacts when returning from ContactsScreen
-        savedStateHandle?.get<List<Contact>>("selected_contacts")?.let { contacts ->
-            savedStateHandle.remove<List<Contact>>("selected_contacts")
+    // Observe selected contacts when returning from ContactsScreen
+    val selectedContacts = savedStateHandle?.get<List<Contact>>("selected_contacts")
+    
+    LaunchedEffect(selectedContacts) {
+        selectedContacts?.let { contacts ->
+            savedStateHandle?.remove<List<Contact>>("selected_contacts")
             viewModel.processIntent(AddTransactionIntent.UpdateContacts(contacts))
         }
     }
@@ -238,8 +283,16 @@ fun AddTransactionScreen(
         },
         onCloseClick = onCloseClick,
         onCategoryClick = { navController.navigate(Screen.Category.route) },
-        title = state.screenTitle,
-        saveButtonText = state.saveButtonText
+        title = if (state.isEditMode) {
+            stringResource(R.string.add_transaction_title_edit)
+        } else {
+            stringResource(R.string.add_transaction_title_add)
+        },
+        saveButtonText = if (state.isEditMode) {
+            stringResource(R.string.add_transaction_button_update)
+        } else {
+            stringResource(R.string.add_transaction_button_save)
+        }
     )
 }
 

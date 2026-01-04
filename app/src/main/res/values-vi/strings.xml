@@ -279,13 +279,7 @@
     <string name="add_transaction_reminder_title">Nhắc nhở</string>
     <string name="add_transaction_subtransaction_title">Hoàn tiền</string>
     <string name="add_transaction_timecreated_title">Ngày</string>
-    <string name="add_transaction_title_add">Thêm giao dịch</string>
-    <string name="add_transaction_title_edit">Chỉnh sửa giao dịch</string>
     <string name="add_transaction_save_button">Lưu</string>
-    <string name="add_transaction_select_wallet">Chọn ví</string>
-    <string name="add_transaction_add_more_details">Thêm chi tiết</string>
-    <string name="add_transaction_with_label">Với</string>
-    <string name="add_transaction_exclude_from_reports">Không bao gồm giao dịch này trong báo cáo như Tổng quan</string>
     <string name="add_transaction_error_load_wallets">Không tải được ví</string>
     <string name="add_transaction_error_load_wallets_with_message">Không tải được ví: %1$s</string>
     <string name="add_transaction_error_set_date">Không đặt được ngày giao dịch</string>
@@ -296,7 +290,6 @@
     <string name="add_transaction_wallet_icon_cd">Biểu tượng Ví</string>
     <string name="add_transaction_select_wallet_cd">Chọn Ví</string>
     <string name="add_transaction_action_cd">Thao tác</string>
-    <string name="add_transaction_more_cd">Thêm</string>
     <string name="add_user">Thêm thành viên</string>
     <string name="add_wallet__remote_description">Kết nối với ngân hàng hoặc dịch vụ</string>
     <string name="add_wallet_copy_categories_title">Chọn danh mục</string>
@@ -783,6 +776,27 @@
     <string name="budgets_today">Hôm nay</string>
     <string name="budgets_no_transactions">Không có giao dịch khả dụng cho ngân sách này</string>
     <string name="budgets_back_cd">Quay lại</string>
+
+    <!-- Budget Alerts -->
+    <string name="budget_alert_badge_warning">Cảnh báo</string>
+    <string name="budget_alert_badge_exceeded">Vượt quá</string>
+    <string name="budget_alert_badge_expiring">Sắp hết hạn</string>
+    <string name="budget_alert_warning_title">Cảnh báo Ngân sách: %1$s</string>
+    <string name="budget_alert_warning_message_default">Bạn đã chi tiêu một phần đáng kể của ngân sách. Hãy cân nhắc giảm chi tiêu.</string>
+    <string name="budget_alert_exceeded_title">Ngân sách Vượt quá: %1$s</string>
+    <string name="budget_alert_exceeded_message_default">Bạn đã vượt quá giới hạn ngân sách. Hãy xem xét lại chi tiêu của bạn.</string>
+    <string name="budget_alert_expiring_title">Ngân sách Sắp Hết hạn: %1$s</string>
+    <string name="budget_alert_expiring_message_default">Ngân sách của bạn sắp hết hạn. Hãy cân nhắc tạo ngân sách mới.</string>
+    <string name="budget_alert_daily_rate_title">Tốc độ Chi tiêu Cao: %1$s</string>
+    <string name="budget_alert_daily_rate_message_default">Bạn đang chi tiêu nhanh hơn mức khuyến nghị. Hãy giảm tốc độ để nằm trong ngân sách.</string>
+    <string name="budget_alert_channel_warning_name">Cảnh báo Ngân sách</string>
+    <string name="budget_alert_channel_warning_description">Thông báo khi bạn sắp đạt giới hạn ngân sách</string>
+    <string name="budget_alert_channel_exceeded_name">Ngân sách Vượt quá</string>
+    <string name="budget_alert_channel_exceeded_description">Thông báo khi bạn đã vượt quá ngân sách</string>
+    <string name="budget_alert_channel_expiring_name">Ngân sách Sắp Hết hạn</string>
+    <string name="budget_alert_channel_expiring_description">Thông báo khi ngân sách của bạn sắp hết hạn</string>
+    <string name="budget_alert_channel_daily_rate_name">Cảnh báo Tốc độ Chi tiêu</string>
+    <string name="budget_alert_channel_daily_rate_description">Thông báo về tốc độ chi tiêu hàng ngày của bạn</string>
 
     <!-- Add Budget screen -->
     <string name="add_budget_title">Thêm Ngân sách</string>
@@ -3754,6 +3768,57 @@
         <item>lưu {amount} vào ăn uống</item>
         <item>lưu {amount} vào thực phẩm</item>
     </string-array>
+    <!-- Add Transaction (Vietnamese) -->
+    <string name="add_transaction_title_add">Thêm giao dịch</string>
+    <string name="add_transaction_title_edit">Chỉnh sửa giao dịch</string>
+    <string name="add_transaction_button_save">Lưu</string>
+    <string name="add_transaction_button_update">Cập nhật</string>
+    <string name="add_transaction_action_cancel">Hủy</string>
+    <string name="add_transaction_amount_label">Số tiền</string>
+    <string name="add_transaction_more_cd">Xem thêm</string>
+    <string name="add_transaction_select_wallet">Chọn ví</string>
+    <string name="add_transaction_select_category">Chọn danh mục</string>
+    <string name="add_transaction_note_cd">Ghi chú</string>
+    <string name="add_transaction_note_placeholder">Nhập ghi chú</string>
+    <string name="add_transaction_exclude_from_report_label">Loại khỏi báo cáo</string>
+    <string name="add_transaction_exclude_from_reports">Giao dịch này sẽ không được tính trong báo cáo</string>
+    <string name="add_transaction_with_label">Cùng với</string>
+    <string name="add_transaction_add_more_details">Thêm chi tiết</string>
+    <string name="add_transaction_selected_photo_cd">Ảnh đã chọn</string>
+    <string name="add_transaction_change_photo_cd">Đổi ảnh</string>
+    <string name="add_transaction_change_photo">Đổi ảnh</string>
+    <string name="add_transaction_remove_photo_cd">Xóa ảnh</string>
+    <string name="add_transaction_add_photo_cd">Thêm ảnh</string>
+    <string name="add_transaction_add_photo">Thêm ảnh</string>
+
+    <!-- Image source dialog (Vietnamese) -->
+    <string name="add_transaction_image_dialog_title">Thêm ảnh</string>
+    <string name="add_transaction_image_camera_cd">Máy ảnh</string>
+    <string name="add_transaction_image_take_photo">Chụp ảnh</string>
+    <string name="add_transaction_image_gallery_cd">Thư viện</string>
+    <string name="add_transaction_image_choose_from_gallery">Chọn từ thư viện</string>
+
+    <!-- Contact management (Vietnamese) -->
+    <string name="add_transaction_contact_add">Thêm</string>
+    <string name="add_transaction_contact_remove_cd">Xóa liên hệ</string>
+
+    <!-- Transaction Screen (Vietnamese) -->
+    <string name="transaction_balance">Số dư</string>
+    <string name="transaction_more">Thêm</string>
+    <string name="transaction_edit_wallet">Chỉnh sửa ví</string>
+    <string name="transaction_transfer_money">Chuyển tiền</string>
+    <string name="transaction_only_individual_wallets">Chỉ khả dụng cho ví cá nhân</string>
+    <string name="transaction_this_month">tháng này</string>
+    <string name="transaction_empty_title">Không tìm thấy giao dịch</string>
+    <string name="transaction_empty_description">Không có giao dịch nào trong %1$s</string>
+    <string name="transaction_empty_add_button">Thêm giao dịch</string>
+    <string name="transaction_summary_inflow">Thu vào</string>
+    <string name="transaction_summary_outflow">Chi ra</string>
+    <string name="transaction_summary_total">Tổng</string>
+
+    <!-- Common (Vietnamese) -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Hủy</string>
 </resources>
 
 

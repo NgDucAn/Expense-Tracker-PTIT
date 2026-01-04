@@ -1,6 +1,9 @@
 package com.ptit.expensetracker.features.money.di
 
+import com.google.gson.Gson
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetDao
+import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetAlertDao
+import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetAlertSettingsDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.CategoryDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.WalletDao
 import com.ptit.expensetracker.features.money.data.repository.WalletLocalRepository
@@ -8,11 +11,13 @@ import com.ptit.expensetracker.features.money.domain.repository.WalletRepository
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.CurrencyDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.TransactionDao
 import com.ptit.expensetracker.features.money.data.repository.BudgetRepositoryImpl
+import com.ptit.expensetracker.features.money.data.repository.BudgetAlertRepositoryImpl
 import com.ptit.expensetracker.features.money.data.repository.CategoryRepositoryImpl
 import com.ptit.expensetracker.features.money.data.repository.CurrencyLocalRepository
 import com.ptit.expensetracker.features.money.data.repository.TransactionRepositoryImpl
 import com.ptit.expensetracker.features.money.data.repository.OnboardingRepositoryImpl
 import com.ptit.expensetracker.features.money.domain.repository.BudgetRepository
+import com.ptit.expensetracker.features.money.domain.repository.BudgetAlertRepository
 import com.ptit.expensetracker.features.money.domain.repository.CategoryRepository
 import com.ptit.expensetracker.features.money.domain.repository.CurrencyRepository
 import com.ptit.expensetracker.features.money.domain.repository.TransactionRepository
@@ -69,5 +74,15 @@ object MoneyRepositoryModule {
         onboardingRepositoryImpl: OnboardingRepositoryImpl
     ): OnboardingRepository {
         return onboardingRepositoryImpl
+    }
+
+    @Provides
+    @Singleton
+    fun provideBudgetAlertRepository(
+        budgetAlertDao: BudgetAlertDao,
+        budgetAlertSettingsDao: BudgetAlertSettingsDao,
+        gson: Gson
+    ): BudgetAlertRepository {
+        return BudgetAlertRepositoryImpl(budgetAlertDao, budgetAlertSettingsDao, gson)
     }
 }

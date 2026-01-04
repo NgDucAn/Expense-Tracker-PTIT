@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +44,7 @@ fun EmptyTransactionsState(
         
         // Title
         Text(
-            text = "No transactions found",
+            text = stringResource(id = R.string.transaction_empty_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             color = onDarkSurface,
@@ -54,7 +55,7 @@ fun EmptyTransactionsState(
         
         // Description
         Text(
-            text = "Do not have any transactions in $monthLabel",
+            text = stringResource(id = R.string.transaction_empty_description, monthLabel),
             fontSize = 14.sp,
             color = TextSecondary,
             textAlign = TextAlign.Center,
@@ -74,7 +75,7 @@ fun EmptyTransactionsState(
             border = BorderStroke(0.dp, Color.Transparent)
         ) {
             Text(
-                text = "Add transaction",
+                text = stringResource(id = R.string.transaction_empty_add_button),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )

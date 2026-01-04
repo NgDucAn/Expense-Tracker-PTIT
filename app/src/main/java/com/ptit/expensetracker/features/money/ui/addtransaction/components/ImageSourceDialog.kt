@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,7 +46,7 @@ fun ImageSourceDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Add Photo",
+                    text = stringResource(id = R.string.add_transaction_image_dialog_title),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -67,13 +68,13 @@ fun ImageSourceDialog(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_camera),
-                        contentDescription = "Camera",
+                        contentDescription = stringResource(id = R.string.add_transaction_image_camera_cd),
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
-                        text = "Take Photo",
+                        text = stringResource(id = R.string.add_transaction_image_take_photo),
                         color = Color.White,
                         fontSize = 16.sp
                     )
@@ -96,13 +97,13 @@ fun ImageSourceDialog(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_photo),
-                        contentDescription = "Gallery",
+                        contentDescription = stringResource(id = R.string.add_transaction_image_gallery_cd),
                         tint = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
-                        text = "Choose from Gallery",
+                        text = stringResource(id = R.string.add_transaction_image_choose_from_gallery),
                         color = Color.White,
                         fontSize = 16.sp
                     )
@@ -111,7 +112,10 @@ fun ImageSourceDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel", color = Color.Gray)
+                Text(
+                    text = stringResource(id = R.string.common_cancel),
+                    color = Color.Gray
+                )
             }
         }
     )

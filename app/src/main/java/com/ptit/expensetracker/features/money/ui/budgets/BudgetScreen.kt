@@ -318,7 +318,8 @@ fun BudgetScreenContent(
                                 categoryName = stringResource(getStringResId(LocalContext.current, budget.categoryName)),
                                 amount = budget.amountFormatted,
                                 leftAmount = budget.leftAmountFormatted,
-                                progress = budget.progress
+                                progress = budget.progress,
+                                alertType = budget.alertType
                             )
                         }
                     }

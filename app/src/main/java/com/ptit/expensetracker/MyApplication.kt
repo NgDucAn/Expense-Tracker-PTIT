@@ -7,6 +7,9 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
+import com.ptit.expensetracker.features.ai.data.context.FinancialContextBuilder
+import com.ptit.expensetracker.features.ai.data.remote.AiApiService
+import com.ptit.expensetracker.features.ai.data.worker.FinancialContextSyncHelper
 import com.ptit.expensetracker.features.ai.data.worker.FinancialContextSyncWorker
 import com.ptit.expensetracker.features.money.data.worker.DailyReminderWorker
 import com.ptit.expensetracker.features.money.data.worker.ProcessRecurringBudgetsWorker
@@ -23,19 +26,38 @@ class MyApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
+    
+    @Inject
+    lateinit var financialContextBuilder: FinancialContextBuilder
+    
+    @Inject
+    lateinit var aiApiService: AiApiService
 
     override fun onCreate() {
         super.onCreate()
         // Force Firebase Auth to use English to avoid Vietnamese locale issues
         FirebaseAuth.getInstance().setLanguageCode("en")
-        // Schedule workers after Hilt injection is complete
+        
+        // Initialize sync helper for Worker
+        FinancialContextSyncHelper.initialize(financialContextBuilder, aiApiService)
+        
+        // Initialize WorkManager manually with HiltWorkerFactory
+        WorkManager.initialize(
+            this,
+            Configuration.Builder()
+                .setWorkerFactory(workerFactory)
+                .build()
+        )
+        
+        // Schedule workers after WorkManager is initialized
         scheduleWorkers()
     }
 
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
+    override val workManagerConfiguration: Configuration by lazy {
+        Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
+    }
 
     private fun scheduleWorkers() {
         scheduleRecurringBudgets()
