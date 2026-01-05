@@ -3819,6 +3819,31 @@
     <!-- Common (Vietnamese) -->
     <string name="common_ok">OK</string>
     <string name="common_cancel">Hủy</string>
+    <string name="common_back">Quay lại</string>
+    <string name="common_skip">Bỏ qua</string>
+    <string name="common_skip_for_now">Bỏ qua tạm thời</string>
+    <string name="common_error_format">Lỗi: %1$s</string>
+    <string name="common_navigate">Điều hướng</string>
+    <string name="common_version_format">Phiên bản %1$s</string>
+    <string name="common_user_fallback">Người dùng</string>
+
+    <!-- Account -->
+    <string name="account_feature_wallets">Ví</string>
+    <string name="account_feature_category">Danh mục</string>
+    <string name="account_feature_debts">Nợ</string>
+    <string name="account_feature_ai_assistant">Trợ lý AI</string>
+    <string name="account_backup_success">Sao lưu thành công</string>
+    <string name="account_restore_success">Khôi phục thành công</string>
+    <string name="account_sign_out_title">Đăng xuất</string>
+    <string name="account_sign_out_body">Bạn có muốn sao lưu dữ liệu trước khi đăng xuất không?</string>
+    <string name="account_signing_out">Đang đăng xuất…</string>
+    <string name="account_signing_out_dots">Đang đăng xuất...</string>
+    <string name="account_sign_out_and_backup">Đăng xuất &amp; sao lưu</string>
+    <string name="account_sign_out_without_backup">Đăng xuất (không sao lưu)</string>
+    <string name="account_restore_prompt_title">Khôi phục dữ liệu?</string>
+    <string name="account_restore_prompt_body">Bạn có muốn khôi phục dữ liệu từ bản sao lưu trên đám mây không?</string>
+    <string name="account_restore_prompt_restoring">Đang khôi phục bản sao lưu của bạn…</string>
+    <string name="account_restore_action">Khôi phục dữ liệu</string>
 </resources>
 
 

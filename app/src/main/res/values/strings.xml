@@ -1450,13 +1450,10 @@
     <string name="fab_transformation_scrim_behavior">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
     <string name="facebook">Facebook</string>
-    <string name="facebook_app_id">186738618063436</string>
-    <string name="facebook_client_token">8fbbaa314f3fde28899c69cee076f8d7</string>
     <string name="fallback_menu_item_copy_link">Copy link</string>
     <string name="fallback_menu_item_open_in_browser">Open in browser</string>
     <string name="fallback_menu_item_share_link">Share link</string>
     <string name="family_wallet">Family wallet</string>
-    <string name="fb_login_protocol_scheme">fb186738618063436</string>
     <string name="fb_notification_content">The \"Connect with Facebook\" feature no longer be available. To sign in, please use your email and password instead</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
     <string name="fcm_sender_id">558891751052</string>
@@ -1552,7 +1549,6 @@
     <string name="google">Google</string>
     <string name="google_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
     <string name="google_app_id">1:558891751052:android:8dc7d59128c3c522</string>
-    <string name="google_banner_unit_id">ca-app-pub-9895422139050049/1180314723</string>
     <string name="google_crash_reporting_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
     <string name="google_maps_key">AIzaSyCbF5rl8POZ7EwOI47K3F8lv5vmtZO-BFE</string>
     <string name="google_play">Google Play Store</string>
@@ -2628,7 +2624,6 @@
     <string name="product_tour__scene_3__title">Readily available. Always.</string>
     <string name="product_tour__skip">Skip</string>
     <string name="progress">Progress</string>
-    <string name="project_id">api-project-558891751052</string>
     <string name="projected_spending_desciption_money_insider_2">You spent %1$s %2$s on %3$s in %4$s</string>
     <string name="projected_spending_desciption_money_insider_3">You spent %1$s on %2$s in %3$s</string>
     <string name="projected_spending_desciption_money_insider_4">You spent %1$s on %2$s</string>
@@ -3043,7 +3038,6 @@
     <string name="send_mail">Send email</string>
     <string name="sending">Sending…</string>
     <string name="sep">September</string>
-    <string name="server_client_id">558891751052-07sp24jhj6jknjf35qd9vqr1ff7csn5p.apps.googleusercontent.com</string>
     <string name="services">Services</string>
     <string name="set">Set</string>
     <string name="set_a_budget">Set a budget</string>

@@ -144,6 +144,7 @@ fun WalletSetupScreenContent(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .statusBarsPadding()
                         .padding(horizontal = 8.dp, vertical = 8.dp)
                 ) {
                     TextButton(
@@ -153,7 +154,6 @@ fun WalletSetupScreenContent(
                     ) {
                         if (state.isRestoreLoading) {
                             CircularProgressIndicator(
-                                color = AppColor.Light.PrimaryColor.contentColor,
                                 modifier = Modifier.size(18.dp),
                                 strokeWidth = 2.dp
                             )

@@ -117,7 +117,7 @@ fun OnboardingScreen(
                     .padding(top = 4.dp)
             ) {
                 Text(
-                    text = if (pagerState.currentPage == slides.lastIndex) "Skip for now" else "Skip",
+                    text = if (pagerState.currentPage == slides.lastIndex) stringResource(R.string.onboarding_skip_for_now) else stringResource(R.string.onboarding_skip),
                     color = Color(0xFF6B7280)
                 )
             }
