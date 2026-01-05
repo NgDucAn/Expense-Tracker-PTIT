@@ -197,9 +197,9 @@ fun ChatAiScreen(
                 }
             }
 
-            // Global suggestion chips (only show if no message-specific suggestions)
+            // Global suggestion chips (only show if no message-specific suggestions and in CHAT mode)
             val lastMessage = state.messages.lastOrNull()
-            if (lastMessage?.suggestions.isNullOrEmpty() && !state.isLoading) {
+            if (lastMessage?.suggestions.isNullOrEmpty() && !state.isLoading && state.mode == ChatAiMode.CHAT) {
                 SuggestionRow(
                     onSuggestion = { text ->
                         viewModel.processIntent(ChatAiIntent.ApplySuggestion(text = text, sendImmediately = true))
@@ -734,10 +734,10 @@ private fun SuggestionRow(
     onSuggestion: (String) -> Unit
 ) {
     val suggestions = listOf(
-        "Báo cáo chi tiêu 3 tháng gần đây",
-        "Phân tích xu hướng chi tiêu",
-        "Cách quản lý chi tiêu hiệu quả",
         "Thống kê chi tiêu tháng này",
+        "So sánh chi tiêu 3 tháng gần đây",
+        "Tư vấn cho tôi nơi vay tiền uy tín ",
+        "Cách chi tiêu hiệu quả"
     )
     LazyRow(
         modifier = Modifier

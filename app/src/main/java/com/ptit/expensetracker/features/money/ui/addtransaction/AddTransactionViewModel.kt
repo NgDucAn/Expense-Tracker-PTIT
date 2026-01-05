@@ -405,51 +405,123 @@ class AddTransactionViewModel @Inject constructor(
         }
         
         viewModelScope.launch {
-            // 1) Try match by metadata/name directly (case-insensitive, accent-insensitive)
+            Log.d("AddTransactionVM", "Initializing category from AI: $categoryName")
+            
+            // 1) Try to resolve from database first (most reliable)
+            resolveCategory(categoryName)?.let { dbCategory ->
+                // Check if this is a parent category (has subcategories)
+                if (dbCategory.parentName == null) {
+                    // This is a parent category, try to find first child
+                    Log.d("AddTransactionVM", "Found parent category: ${dbCategory.title}, looking for first child")
+                    val firstChild = findFirstChildCategory(dbCategory.title)
+                    if (firstChild != null) {
+                        _viewState.value = _viewState.value.copy(
+                            category = firstChild,
+                            isValidCategory = true,
+                            isCategoryManuallySelected = false
+                        )
+                        Log.d("AddTransactionVM", "Using first child: ${firstChild.metaData} (${firstChild.title})")
+                        return@launch
+                    }
+                }
+                // It's a valid child category, use it
+                _viewState.value = _viewState.value.copy(
+                    category = dbCategory,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
+                Log.d("AddTransactionVM", "Found category in DB: ${dbCategory.metaData} (${dbCategory.title})")
+                return@launch
+            }
+            
+            // 2) Try match by metadata/name in offline categories
             findCategoryByMetadataOrName(categoryName)?.let { cat ->
-                val resolved = resolveCategoryFromDbOrFallback(cat.metaData)
-                // Don't mark as manually selected since this is from AI
+                // Check if this is a parent category
+                if (cat.parentName == null) {
+                    Log.d("AddTransactionVM", "Found parent category offline: ${cat.title}, looking for first child")
+                    val firstChild = findFirstChildCategoryOffline(cat.title)
+                    if (firstChild != null) {
+                        val resolved = resolveCategory(firstChild.metaData) ?: resolveCategory(firstChild.title)
+                        _viewState.value = _viewState.value.copy(
+                            category = resolved ?: firstChild,
+                            isValidCategory = true,
+                            isCategoryManuallySelected = false
+                        )
+                        Log.d("AddTransactionVM", "Using first child offline: ${firstChild.metaData}")
+                        return@launch
+                    }
+                }
+                // Try to get the actual DB version with proper ID
+                val resolved = resolveCategory(cat.metaData) ?: resolveCategory(cat.title)
                 _viewState.value = _viewState.value.copy(
                     category = resolved ?: cat,
                     isValidCategory = true,
                     isCategoryManuallySelected = false
                 )
-                Log.d("AddTransactionVM", "Matched category by metadata/name: ${cat.metaData}")
+                Log.d("AddTransactionVM", "Matched category offline: ${cat.metaData}")
                 return@launch
             }
-            // 2) Offline classification via synonyms/metadata
+            
+            // 3) Offline classification via synonyms
             findCategoryOffline(categoryName)?.let { matched ->
-                val resolved = resolveCategoryFromDbOrFallback(matched.metaData)
+                if (matched.parentName == null) {
+                    val firstChild = findFirstChildCategoryOffline(matched.title)
+                    if (firstChild != null) {
+                        val resolved = resolveCategory(firstChild.metaData) ?: resolveCategory(firstChild.title)
+                        _viewState.value = _viewState.value.copy(
+                            category = resolved ?: firstChild,
+                            isValidCategory = true,
+                            isCategoryManuallySelected = false
+                        )
+                        Log.d("AddTransactionVM", "Matched via synonyms, using first child: ${firstChild.metaData}")
+                        return@launch
+                    }
+                }
+                val resolved = resolveCategory(matched.metaData) ?: resolveCategory(matched.title)
                 _viewState.value = _viewState.value.copy(
                     category = resolved ?: matched,
                     isValidCategory = true,
                     isCategoryManuallySelected = false
                 )
+                Log.d("AddTransactionVM", "Matched via synonyms: ${matched.metaData}")
                 return@launch
             }
-            // 3) Fallback placeholder
-            _viewState.value = _viewState.value.copy(
-                category = Category(
-                    id = 0,
-                    metaData = "default",
-                    title = categoryName,
-                    icon = "ic_category_unknown",
-                    type = CategoryType.EXPENSE,
-                    parentName = "other"
-                ),
-                isValidCategory = true,
-                isCategoryManuallySelected = false
-            )
-            Log.d("AddTransactionVM", "Defaulted to placeholder category: $categoryName")
+            
+            // 4) Fallback to "Chi tiêu khác" (IS_OTHER_EXPENSE)
+            Log.w("AddTransactionVM", "No match found for: $categoryName, falling back to IS_OTHER_EXPENSE")
+            resolveCategory("IS_OTHER_EXPENSE")?.let { fallback ->
+                _viewState.value = _viewState.value.copy(
+                    category = fallback,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
+                Log.d("AddTransactionVM", "Using fallback category: ${fallback.title}")
+            }
         }
     }
-
-    private suspend fun resolveCategoryFromDbOrFallback(metaOrName: String): Category? {
-        return resolveCategory(metaOrName)
-            ?: resolveCategory("IS_OTHER_EXPENSE")
+    
+    // Find first child category from database by parent title
+    private suspend fun findFirstChildCategory(parentTitle: String): Category? = suspendCoroutine { cont ->
+        viewModelScope.launch {
+            val allCategories = offlineCategories
+            val firstChild = allCategories.firstOrNull { it.parentName == parentTitle }
+            if (firstChild != null) {
+                // Try to get from DB
+                resolveCategory(firstChild.metaData)?.let { cont.resume(it) }
+                    ?: resolveCategory(firstChild.title)?.let { cont.resume(it) }
+                    ?: cont.resume(firstChild)
+            } else {
+                cont.resume(null)
+            }
+        }
+    }
+    
+    // Find first child category from offline categories by parent title
+    private fun findFirstChildCategoryOffline(parentTitle: String): Category? {
+        return offlineCategories.firstOrNull { it.parentName == parentTitle }
     }
 
-    private suspend fun resolveCategory(metaOrName: String): Category? = suspendCoroutine { cont ->
+private suspend fun resolveCategory(metaOrName: String): Category? = suspendCoroutine { cont ->
         getCategoryByNameUseCase(
             params = GetCategoryByNameUseCase.Params(metaOrName),
             scope = viewModelScope
