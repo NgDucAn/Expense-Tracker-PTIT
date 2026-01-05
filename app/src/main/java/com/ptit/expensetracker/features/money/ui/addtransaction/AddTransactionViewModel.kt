@@ -215,7 +215,8 @@ class AddTransactionViewModel @Inject constructor(
         _viewState.value = _viewState.value.copy(
             category = category,
             isValidCategory = category != null,
-            showCategories = false
+            showCategories = false,
+            isCategoryManuallySelected = true // Mark as manually selected
         )
     }
 
@@ -397,30 +398,47 @@ class AddTransactionViewModel @Inject constructor(
 
     // Handle initializing a category from a category name/metadata received from AI
     private fun initializeCategory(categoryName: String) {
+        // Don't override if user has manually selected a category
+        if (_viewState.value.isCategoryManuallySelected) {
+            Log.d("AddTransactionVM", "Category already manually selected, skipping AI initialization")
+            return
+        }
+        
         viewModelScope.launch {
             // 1) Try match by metadata/name directly (case-insensitive, accent-insensitive)
             findCategoryByMetadataOrName(categoryName)?.let { cat ->
                 val resolved = resolveCategoryFromDbOrFallback(cat.metaData)
-                selectCategory(resolved ?: cat)
+                // Don't mark as manually selected since this is from AI
+                _viewState.value = _viewState.value.copy(
+                    category = resolved ?: cat,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
                 Log.d("AddTransactionVM", "Matched category by metadata/name: ${cat.metaData}")
                 return@launch
             }
             // 2) Offline classification via synonyms/metadata
             findCategoryOffline(categoryName)?.let { matched ->
                 val resolved = resolveCategoryFromDbOrFallback(matched.metaData)
-                selectCategory(resolved ?: matched)
+                _viewState.value = _viewState.value.copy(
+                    category = resolved ?: matched,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
                 return@launch
             }
             // 3) Fallback placeholder
-            selectCategory(
-                Category(
+            _viewState.value = _viewState.value.copy(
+                category = Category(
                     id = 0,
                     metaData = "default",
                     title = categoryName,
                     icon = "ic_category_unknown",
                     type = CategoryType.EXPENSE,
                     parentName = "other"
-                )
+                ),
+                isValidCategory = true,
+                isCategoryManuallySelected = false
             )
             Log.d("AddTransactionVM", "Defaulted to placeholder category: $categoryName")
         }
@@ -559,17 +577,14 @@ class AddTransactionViewModel @Inject constructor(
             emptyList()
         }
 
-        // Only update category if it hasn't been changed by user (i.e., if current category is still the original)
-        // This prevents overwriting user's category selection when returning from CategoryScreen
+        // Only update category if it hasn't been manually changed by user
         val currentCategory = _viewState.value.category
-        val shouldUpdateCategory = currentCategory == null || 
-                                   (currentCategory.id == transaction.category.id && 
-                                    currentCategory.metaData == transaction.category.metaData)
+        val shouldUpdateCategory = !_viewState.value.isCategoryManuallySelected
         
         _viewState.value = _viewState.value.copy(
             isLoadingTransaction = false,
             wallet = transaction.wallet,
-            // Only update category if it's still the original (not changed by user)
+            // Only update category if user hasn't manually selected one
             category = if (shouldUpdateCategory) transaction.category else currentCategory,
             transactionType = transaction.transactionType,
             description = transaction.description ?: "",
@@ -588,7 +603,10 @@ class AddTransactionViewModel @Inject constructor(
             // Set validation flags
             isValidAmount = transaction.amount > 0,
             isValidCategory = true,
-            isValidWallet = true
+            isValidWallet = true,
+            
+            // Reset manual selection flag when loading transaction
+            isCategoryManuallySelected = false
         )
         
         // Initialize calculator with loaded amount and currency

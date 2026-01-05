@@ -76,7 +76,10 @@ data class AddTransactionState(
     val eventName: String = "",
     val reminderSet: Boolean = false,
     val excludeFromReport: Boolean = false,
-    val photoUri: String? = null
+    val photoUri: String? = null,
+    
+    // Track if category was manually selected by user
+    val isCategoryManuallySelected: Boolean = false
 ) : MviStateBase
 
 // Represents user actions or intents on the Add Transaction screen
