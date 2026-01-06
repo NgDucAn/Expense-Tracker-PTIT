@@ -97,11 +97,11 @@ public class LoanAdvisorAgent {
             // Build suggestions
             List<String> suggestions = new ArrayList<>();
             if (eligibility.getEligible()) {
-                suggestions.add("VIEW_LOAN_PROVIDERS");
-                suggestions.add("CALCULATE_LOAN_PAYMENT");
+                suggestions.add("Xem danh sách ngân hàng");
+                suggestions.add("Tính toán khoản vay");
             } else {
-                suggestions.add("IMPROVE_FINANCIAL_HEALTH");
-                suggestions.add("REDUCE_EXPENSES");
+                suggestions.add("Cải thiện sức khỏe tài chính");
+                suggestions.add("Giảm chi phí");
             }
 
             return ChatResponse.builder()
@@ -149,7 +149,7 @@ public class LoanAdvisorAgent {
                     Bối cảnh tài chính người dùng:
                     %s
                     
-                    Yêu cầu:
+                    Yêu cầu: tất cả đều ngắn gọn, súc tích
                     1. Giải thích rõ ràng về khả năng vay của người dùng
                     2. Nếu đủ điều kiện: Giới thiệu 2-3 nhà cung cấp tốt nhất với ưu/nhược điểm
                     3. Nếu không đủ điều kiện: Giải thích lý do và đưa ra lời khuyên cụ thể

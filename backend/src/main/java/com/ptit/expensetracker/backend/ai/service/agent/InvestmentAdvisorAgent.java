@@ -110,10 +110,10 @@ public class InvestmentAdvisorAgent {
 
             // Build suggestions
             List<String> suggestions = new ArrayList<>();
-            suggestions.add("VIEW_INVESTMENT_OPTIONS");
-            suggestions.add("CALCULATE_INVESTMENT_RETURN");
+            suggestions.add("Xem các kênh đầu tư");
+            suggestions.add("Tính lợi nhuận dự kiến");
             if (riskTolerance.equals("LOW") || riskTolerance.equals("CONSERVATIVE")) {
-                suggestions.add("EXPLORE_HIGHER_RISK_OPTIONS");
+                suggestions.add("Khám phá các kênh rủi ro cao hơn");
             }
 
             return ChatResponse.builder()
@@ -198,7 +198,7 @@ public class InvestmentAdvisorAgent {
                     Bối cảnh tài chính người dùng:
                     %s
                     
-                    Yêu cầu:
+                    Yêu cầu: tất cả đều ngắn gọn
                     1. Giải thích rõ ràng về khả năng đầu tư của người dùng
                     2. Giới thiệu 3-4 lựa chọn đầu tư phù hợp nhất với ưu/nhược điểm
                     3. Giải thích phân bổ đầu tư được khuyến nghị và lý do

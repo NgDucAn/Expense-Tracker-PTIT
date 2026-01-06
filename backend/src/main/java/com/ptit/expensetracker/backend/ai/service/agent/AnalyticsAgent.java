@@ -122,8 +122,8 @@ public class AnalyticsAgent {
                     Bối cảnh tài chính người dùng:
                     %s
                     
-                    Yêu cầu:
-                    1. Giải thích kết quả phân tích một cách rõ ràng, dễ hiểu
+                    Yêu cầu tất cả đều ngắn gọn:
+                    1. Giải thích kết quả phân tích một cách ngắn gọn, rõ ràng, dễ hiểu
                     2. Chỉ ra các điểm đáng chú ý (tích cực hoặc cần cải thiện)
                     3. Đưa ra 2-3 gợi ý hành động cụ thể dựa trên kết quả
                     4. Sử dụng tiếng Việt, giọng điệu thân thiện
@@ -165,23 +165,23 @@ public class AnalyticsAgent {
         // Add suggestions based on analysis type
         switch (analysisType.toUpperCase()) {
             case "CATEGORY_SPENDING":
-                suggestions.add("VIEW_DETAILED_REPORT");
-                suggestions.add("CREATE_BUDGET");
+                suggestions.add("Xem báo cáo chi tiết");
+                suggestions.add("Tạo ngân sách mới");
                 break;
             
             case "MONTHLY_COMPARISON", "SPENDING_TREND":
-                suggestions.add("VIEW_MONTHLY_CHART");
-                suggestions.add("SET_SPENDING_GOAL");
+                suggestions.add("Xem biểu đồ theo tháng");
+                suggestions.add("Đặt mục tiêu chi tiêu");
                 break;
             
             case "SAVINGS_POTENTIAL":
-                suggestions.add("CREATE_SAVINGS_GOAL");
-                suggestions.add("VIEW_INVESTMENT_OPTIONS");
+                suggestions.add("Tạo mục tiêu tiết kiệm");
+                suggestions.add("Xem các lựa chọn đầu tư");
                 break;
             
             case "BUDGET_VS_ACTUAL":
-                suggestions.add("UPDATE_BUDGET");
-                suggestions.add("VIEW_BUDGET_DETAILS");
+                suggestions.add("Cập nhật ngân sách");
+                suggestions.add("Xem chi tiết ngân sách");
                 break;
         }
 
@@ -189,7 +189,7 @@ public class AnalyticsAgent {
         if (analysisResult.containsKey("recommendation")) {
             String recommendation = analysisResult.get("recommendation").toString();
             if ("LOW".equals(recommendation)) {
-                suggestions.add("REDUCE_SPENDING");
+                suggestions.add("Giảm chi tiêu");
             }
         }
 

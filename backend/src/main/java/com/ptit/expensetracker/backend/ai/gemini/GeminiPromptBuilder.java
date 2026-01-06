@@ -50,7 +50,7 @@ public class GeminiPromptBuilder {
         sb.append("{\"metadata\":\"IS_OTHER_EXPENSE\",\"name\":\"expense_other\",\"title\":\"cate_expense_other\"},");
         sb.append("{\"metadata\":\"IS_OUTGOING_TRANSFER\",\"name\":\"outgoing_transfer\",\"title\":\"cate_outgoing_transfer\"},");
         sb.append("{\"metadata\":\"IS_LOAN\",\"name\":\"loan\",\"title\":\"cate_loan\"},");
-        sb.append("{\"metadata\":\"IS_REPAYMENT\",\"name\":\"repayment\",\"title\":\"cate_repayment\"},");
+        sb.append("{\"metadata\":\"IS_REPAYMENT\",\"name\":\"repayment \",\"title\":\"cate_repayment\"},");
         sb.append("{\"metadata\":\"IS_PAY_INTEREST\",\"name\":\"pay_interest\",\"title\":\"cate_pay_interest\"}");
         sb.append("],\"income\":[");
         sb.append("{\"metadata\":\"salary0\",\"name\":\"salary\",\"title\":\"cate_salary\"},");
@@ -60,7 +60,9 @@ public class GeminiPromptBuilder {
         sb.append("{\"metadata\":\"IS_INCOMING_TRANSFER\",\"name\":\"incoming_transfer\",\"title\":\"cate_incoming_transfer\"},");
         sb.append("{\"metadata\":\"IS_COLLECT_INTEREST\",\"name\":\"collect_interest\",\"title\":\"cate_collect_interest\"}");
         sb.append("]} ");
-        sb.append("Ưu tiên dùng metadata (ví dụ: \"foodndrink0\") trong categoryName. ");
+        sb.append("LƯU Ý QUAN TRỌNG: Nếu category có 'subs' (subcategories), BẮT BUỘC phải chọn một trong các subcategory trong mảng 'subs', KHÔNG được trả về parent category. ");
+        sb.append("Ví dụ: Nếu giao dịch liên quan đến giải trí/vui chơi, trả về 'streaming_service0' hoặc 'fun_money0', KHÔNG trả về 'entertainment0'. ");
+        sb.append("Ưu tiên dùng metadata (ví dụ: \"foodndrink0\", \"streaming_service0\") trong categoryName. ");
 
         if (locale != null && !locale.isBlank()) {
             sb.append("Locale: ").append(locale).append(". ");
