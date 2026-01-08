@@ -62,7 +62,12 @@ public class GeminiPromptBuilder {
         sb.append("]} ");
         sb.append("LƯU Ý QUAN TRỌNG: Nếu category có 'subs' (subcategories), BẮT BUỘC phải chọn một trong các subcategory trong mảng 'subs', KHÔNG được trả về parent category. ");
         sb.append("Ví dụ: Nếu giao dịch liên quan đến giải trí/vui chơi, trả về 'streaming_service0' hoặc 'fun_money0', KHÔNG trả về 'entertainment0'. ");
-        sb.append("Ưu tiên dùng metadata (ví dụ: \"foodndrink0\", \"streaming_service0\") trong categoryName. ");
+        sb.append("QUY TẮC PHÂN BIỆT LOAN / DEBT: ");
+        sb.append("IS_LOAN dùng khi NGƯỜI DÙNG đưa tiền cho người khác (cho vay, cho mượn). ");
+        sb.append("IS_DEBT dùng khi NGƯỜI DÙNG nhận tiền từ người khác (vay, mượn tiền). ");
+        sb.append("Nếu câu có 'cho tôi vay', 'vay của', 'mượn tiền từ' => IS_DEBT. ");
+        sb.append("Nếu câu có 'cho người khác vay', 'đưa tiền cho', 'cho mượn tiền' => IS_LOAN. ");
+        sb.append("Ưu tiên dùng metadata (ví dụ: \"foodndrink0\", \"streaming_service0\", \"IS_DEBT\", \"IS_LOAN\" ) trong categoryName. ");
 
         if (locale != null && !locale.isBlank()) {
             sb.append("Locale: ").append(locale).append(". ");

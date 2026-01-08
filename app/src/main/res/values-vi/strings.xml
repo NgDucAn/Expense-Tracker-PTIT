@@ -941,7 +941,7 @@
     <string name="cate_children_babies">Trẻ em &amp; Em bé</string>
     <string name="cate_clothing">Quần áo</string>
     <string name="cate_collect_interest">Thu lãi</string>
-    <string name="cate_debt">Nợ</string>
+    <string name="cate_debt">Đi vay</string>
     <string name="cate_debt_collection">Thu nợ</string>
     <string name="cate_deposit">Tiền gửi</string>
     <string name="cate_doctor">Bác sĩ</string>
@@ -972,7 +972,7 @@
     <string name="cate_interest">Tiền lãi</string>
     <string name="cate_internet">Hóa đơn Internet</string>
     <string name="cate_invest">Đầu tư</string>
-    <string name="cate_loan">Vay</string>
+    <string name="cate_loan">Cho vay</string>
     <string name="cate_maintenance">Bảo trì</string>
     <string name="cate_makeup">Trang điểm</string>
     <string name="cate_marriage">Kết hôn</string>
