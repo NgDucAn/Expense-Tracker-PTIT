@@ -108,20 +108,20 @@ fun CategoryAppBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onSortClick) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = stringResource(R.string.sort_button_desc)
-                )
-            }
-            IconButton(onClick = onSearchClick) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = stringResource(R.string.search_button_desc)
-                )
-            }
-        },
+//        actions = {
+//            IconButton(onClick = onSortClick) {
+//                Icon(
+//                    imageVector = Icons.Default.Menu,
+//                    contentDescription = stringResource(R.string.sort_button_desc)
+//                )
+//            }
+//            IconButton(onClick = onSearchClick) {
+//                Icon(
+//                    imageVector = Icons.Default.Search,
+//                    contentDescription = stringResource(R.string.search_button_desc)
+//                )
+//            }
+//        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface,
             titleContentColor = MaterialTheme.colorScheme.onSurface,

@@ -39,13 +39,13 @@ fun DetailTransactionTopBar(
             }
         },
         actions = {
-            IconButton(onClick = onCopyClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_w_add),
-                    contentDescription = "Copy",
-                    tint = TextMain
-                )
-            }
+//            IconButton(onClick = onCopyClick) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_w_add),
+//                    contentDescription = "Copy",
+//                    tint = TextMain
+//                )
+//            }
             IconButton(onClick = onShareClick) {
                 Icon(
                     imageVector = Icons.Filled.Share,

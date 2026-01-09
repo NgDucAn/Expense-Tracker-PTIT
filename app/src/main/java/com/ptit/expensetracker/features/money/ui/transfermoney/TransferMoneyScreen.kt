@@ -324,56 +324,56 @@ fun TransferMoneyContent(
                     }
 
                     // Options section
-                    SectionHeader(title = stringResource(R.string.transfer_money_options_label))
+//                    SectionHeader(title = stringResource(R.string.transfer_money_options_label))
 
                     // Group all "Options" items in a single Surface
-                    Surface(
-                        modifier = sectionModifier,
-                        color = Color.White,
-                        shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
-                    ) {
-                        Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                            // Date selector
-                            DateSelector(
-                                date = state.date,
-                                icon = painterResource(id = R.drawable.ic_calendar),
-                                iconTint = Color.Black,
-                                onDateChange = onDateChange
-                            )
-
-                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
-
-                            // Exclude from report toggle
-                            ToggleOption(
-                                title = stringResource(R.string.transfer_money_exclude_from_report_title),
-                                subtitle = stringResource(R.string.transfer_money_exclude_from_report_subtitle),
-                                checked = state.excludeFromReport,
-                                onCheckedChange = onExcludeFromReportChange
-                            )
-
-                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
-
-                            // Add transfer fee toggle
-                            ToggleOption(
-                                title = "Add transfer fee",
-                                checked = state.addTransferFee,
-                                onCheckedChange = onAddTransferFeeChange
-                            )
-
-                            // Transfer fee field (if enabled)
-                            if (state.addTransferFee) {
-                                HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
-
-                                AmountTextField(
-                                    amount = state.transferFee,
-                                    currencySymbol = state.fromWallet?.currency?.symbol ?: "₫",
-                                    onAmountChange = onTransferFeeChange,
-                                    placeholder = stringResource(R.string.transfer_money_fee_amount_placeholder),
-                                    showOutline = false
-                                )
-                            }
-                        }
-                    }
+//                    Surface(
+//                        modifier = sectionModifier,
+//                        color = Color.White,
+//                        shape = MaterialTheme.shapes.medium.copy(CornerSize(12.dp))
+//                    ) {
+//                        Column(modifier = Modifier.padding(vertical = 8.dp)) {
+//                            // Date selector
+//                            DateSelector(
+//                                date = state.date,
+//                                icon = painterResource(id = R.drawable.ic_calendar),
+//                                iconTint = Color.Black,
+//                                onDateChange = onDateChange
+//                            )
+//
+//                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
+//
+//                            // Exclude from report toggle
+//                            ToggleOption(
+//                                title = stringResource(R.string.transfer_money_exclude_from_report_title),
+//                                subtitle = stringResource(R.string.transfer_money_exclude_from_report_subtitle),
+//                                checked = state.excludeFromReport,
+//                                onCheckedChange = onExcludeFromReportChange
+//                            )
+//
+//                            HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
+//
+//                            // Add transfer fee toggle
+//                            ToggleOption(
+//                                title = "Add transfer fee",
+//                                checked = state.addTransferFee,
+//                                onCheckedChange = onAddTransferFeeChange
+//                            )
+//
+//                            // Transfer fee field (if enabled)
+//                            if (state.addTransferFee) {
+//                                HorizontalDivider(thickness = 0.5.dp, color = Color.Gray.copy(alpha = 0.3f))
+//
+//                                AmountTextField(
+//                                    amount = state.transferFee,
+//                                    currencySymbol = state.fromWallet?.currency?.symbol ?: "₫",
+//                                    onAmountChange = onTransferFeeChange,
+//                                    placeholder = stringResource(R.string.transfer_money_fee_amount_placeholder),
+//                                    showOutline = false
+//                                )
+//                            }
+//                        }
+//                    }
                 }
             }
         }

@@ -303,65 +303,65 @@ fun AddWalletScreenContent(
                 }
 
                 // Section 3: Toggles
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.White
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(stringResource(R.string.add_wallet_enable_notification_title), fontWeight = FontWeight.Bold)
-                                Text(
-                                    stringResource(R.string.add_wallet_enable_notification_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, end = 8.dp)
-                                )
-                            }
-                            Switch(
-                                checked = state.enableNotification,
-                                onCheckedChange = onNotificationToggle,
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = Color.White,
-                                    checkedTrackColor = AppColor.Light.PrimaryColor.TextButtonColor
-                                )
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(stringResource(R.string.add_wallet_excluded_from_total_title), fontWeight = FontWeight.Bold)
-                                Text(
-                                    stringResource(R.string.add_wallet_excluded_from_total_description),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    modifier = Modifier.padding(top = 4.dp, end = 8.dp)
-
-                                )
-                            }
-                            Switch(
-                                checked = state.excludedFromTotal,
-                                onCheckedChange = onExcludedFromTotalToggle,
-                                colors = SwitchDefaults.colors(
-                                    checkedThumbColor = Color.White,
-                                    checkedTrackColor = AppColor.Light.PrimaryColor.TextButtonColor
-                                )
-                            )
-                        }
-                    }
-                }
+//                Card(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    shape = RoundedCornerShape(12.dp),
+//                    colors = CardDefaults.cardColors(
+//                        containerColor = Color.White
+//                    ),
+//                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+//                ) {
+//                    Column(
+//                        modifier = Modifier.padding(12.dp),
+//                        verticalArrangement = Arrangement.spacedBy(16.dp)
+//                    ) {
+//                        Row(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                            horizontalArrangement = Arrangement.SpaceBetween
+//                        ) {
+//                            Column(modifier = Modifier.weight(1f)) {
+//                                Text(stringResource(R.string.add_wallet_enable_notification_title), fontWeight = FontWeight.Bold)
+//                                Text(
+//                                    stringResource(R.string.add_wallet_enable_notification_description),
+//                                    style = MaterialTheme.typography.bodySmall,
+//                                    modifier = Modifier.padding(top = 4.dp, end = 8.dp)
+//                                )
+//                            }
+//                            Switch(
+//                                checked = state.enableNotification,
+//                                onCheckedChange = onNotificationToggle,
+//                                colors = SwitchDefaults.colors(
+//                                    checkedThumbColor = Color.White,
+//                                    checkedTrackColor = AppColor.Light.PrimaryColor.TextButtonColor
+//                                )
+//                            )
+//                        }
+//                        Row(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                            horizontalArrangement = Arrangement.SpaceBetween
+//                        ) {
+//                            Column(modifier = Modifier.weight(1f)) {
+//                                Text(stringResource(R.string.add_wallet_excluded_from_total_title), fontWeight = FontWeight.Bold)
+//                                Text(
+//                                    stringResource(R.string.add_wallet_excluded_from_total_description),
+//                                    style = MaterialTheme.typography.bodySmall,
+//                                    modifier = Modifier.padding(top = 4.dp, end = 8.dp)
+//
+//                                )
+//                            }
+//                            Switch(
+//                                checked = state.excludedFromTotal,
+//                                onCheckedChange = onExcludedFromTotalToggle,
+//                                colors = SwitchDefaults.colors(
+//                                    checkedThumbColor = Color.White,
+//                                    checkedTrackColor = AppColor.Light.PrimaryColor.TextButtonColor
+//                                )
+//                            )
+//                        }
+//                    }
+//                }
             }
         }
 

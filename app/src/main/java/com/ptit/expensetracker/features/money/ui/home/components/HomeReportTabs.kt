@@ -73,7 +73,7 @@ fun SpendingSummary(
     val color = when {
         changePercent > 0 -> AppColor.Light.InflowAmountColor
         changePercent < 0 -> AppColor.Light.OutflowAmountColor
-        else -> Color.Yellow
+        else -> Color.Black
     }
     Column(
         modifier = Modifier.fillMaxWidth(),
