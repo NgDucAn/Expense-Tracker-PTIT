@@ -36,21 +36,18 @@ public class IntelligentRoutingService {
      */
     public FunctionCall routeIntent(String userId, String userMessage, String financialContext) {
         try {
-            // Build routing prompt
+            // Build prompt xác định function
             String prompt = buildRoutingPrompt(userMessage, financialContext);
 
-            // Build function declarations for Gemini
+            // Chuẩn bị danh sách function
             List<GeminiRequest.Tool> tools = functionRegistry.getAllFunctions().stream()
                     .map(this::toTool)
                     .collect(Collectors.toList());
 
             // Build request with function calling
             GeminiRequest request = GeminiRequest.builder()
-                    .contents(List.of(
-                            GeminiRequest.Content.builder()
-                                    .parts(List.of(
-                                            GeminiRequest.Part.builder().text(prompt).build()
-                                    ))
+                    .contents(List.of(GeminiRequest.Content.builder()
+                                    .parts(List.of(GeminiRequest.Part.builder().text(prompt).build()))
                                     .build()
                     ))
                     .tools(tools)

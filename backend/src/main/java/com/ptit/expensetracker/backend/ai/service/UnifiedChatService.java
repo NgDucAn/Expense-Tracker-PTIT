@@ -39,10 +39,10 @@ public class UnifiedChatService {
      */
     public ChatResponse handleChat(String userId, ChatRequest request) {
         try {
-            // 1. Get enriched financial context
+            // 1. Xây dựng context
             String financialContext = contextService.buildEnrichedContext(userId);
 
-            // 2. Route to appropriate handler
+            // 2. Route đến bộ xử lý phù hợp
             FunctionCall functionCall = routingService.routeIntent(
                     userId,
                     request.getMessage(),
