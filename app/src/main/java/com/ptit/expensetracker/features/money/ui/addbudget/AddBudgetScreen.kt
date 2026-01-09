@@ -75,32 +75,37 @@ fun AddBudgetScreen(
     var showConfirmDialog by remember { mutableStateOf(false) }
     var categoryIdToOverride by remember { mutableStateOf(0) }
     // Date range picker state
-    var showDatePicker by remember { mutableStateOf(false) }
+    var datePickerTrigger by remember { mutableStateOf(0) } // Counter to trigger LaunchedEffect
     var datePickerType by remember { mutableStateOf(DatePickerType.START) }
     val context = LocalContext.current
 
-    // Determine which date to show initially
-    val calendarInstance = Calendar.getInstance().apply {
-        time = if (datePickerType == DatePickerType.START) state.startDate else state.endDate
-    }
-
-    // Show native date picker for start or end date
-    if (showDatePicker) {
-        DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                val pickedDate = Calendar.getInstance().apply { set(year, month, dayOfMonth, 0, 0, 0) }.time
-                if (datePickerType == DatePickerType.START) {
-                    viewModel.processIntent(AddBudgetIntent.SelectStartDate(pickedDate))
-                } else {
-                    viewModel.processIntent(AddBudgetIntent.SelectEndDate(pickedDate))
-                }
-                showDatePicker = false
-            },
-            calendarInstance.get(Calendar.YEAR),
-            calendarInstance.get(Calendar.MONTH),
-            calendarInstance.get(Calendar.DAY_OF_MONTH)
-        ).show()
+    // Show native date picker for start or end date using LaunchedEffect
+    // Use datePickerTrigger as key to ensure dialog shows correctly on every click
+    LaunchedEffect(datePickerTrigger) {
+        if (datePickerTrigger > 0) {
+            // Calculate calendar instance inside LaunchedEffect to ensure latest values
+            val calendarInstance = Calendar.getInstance().apply {
+                time = if (datePickerType == DatePickerType.START) state.startDate else state.endDate
+            }
+            
+            val datePickerDialog = DatePickerDialog(
+                context,
+                { _, year, month, dayOfMonth ->
+                    val pickedDate = Calendar.getInstance().apply { 
+                        set(year, month, dayOfMonth, 0, 0, 0) 
+                    }.time
+                    if (datePickerType == DatePickerType.START) {
+                        viewModel.processIntent(AddBudgetIntent.SelectStartDate(pickedDate))
+                    } else {
+                        viewModel.processIntent(AddBudgetIntent.SelectEndDate(pickedDate))
+                    }
+                },
+                calendarInstance.get(Calendar.YEAR),
+                calendarInstance.get(Calendar.MONTH),
+                calendarInstance.get(Calendar.DAY_OF_MONTH)
+            )
+            datePickerDialog.show()
+        }
     }
 
     LaunchedEffect(key1 = Unit) {
@@ -162,12 +167,12 @@ fun AddBudgetScreen(
         // Pick start date
         onStartDateClick = {
             datePickerType = DatePickerType.START
-            showDatePicker = true
+            datePickerTrigger++ // Increment to trigger LaunchedEffect
         },
         // Pick end date
         onEndDateClick = {
             datePickerType = DatePickerType.END
-            showDatePicker = true
+            datePickerTrigger++ // Increment to trigger LaunchedEffect
         },
         onWalletClick = { viewModel.processIntent(AddBudgetIntent.NavigateToSelectWallet) },
         onTotalClick = { viewModel.processIntent(AddBudgetIntent.ToggleTotal(true)) },

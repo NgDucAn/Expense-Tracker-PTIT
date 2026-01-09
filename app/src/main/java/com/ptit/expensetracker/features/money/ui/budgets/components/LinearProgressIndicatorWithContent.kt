@@ -105,7 +105,7 @@ fun StraightProgressIndicator(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Amount you can spend",
+                text = "Số tiền bạn có thể chi tiêu",
                 fontSize = 12.sp,
                 color = Color.Gray
             )
@@ -126,7 +126,7 @@ fun StraightProgressIndicator(
                 // Use annotated string to combine text with different styles
                 Text(
                     text = buildAnnotatedString {
-                        append("Spent: ")
+                        append("Đã tiêu: ")
                         withStyle(
                             style = SpanStyle(
                                 color = if (animatedProgress > 0.8f) Color.Red else foregroundColor,

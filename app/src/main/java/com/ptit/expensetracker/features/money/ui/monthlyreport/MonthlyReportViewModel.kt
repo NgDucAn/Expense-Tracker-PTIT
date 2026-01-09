@@ -30,9 +30,9 @@ class MonthlyReportViewModel @Inject constructor(
 
     override val _viewState = MutableStateFlow(
         MonthlyReportState(
-            months = MonthItem.buildMonthItems(monthsBack = 11).filter { !it.isFuture },
+            months = MonthItem.buildMonthItems(monthsBack = 18).filter { !it.isFuture },
             selectedTabIndex = MonthItem.findThisMonthIndex(
-                MonthItem.buildMonthItems(monthsBack = 11).filter { !it.isFuture }
+                MonthItem.buildMonthItems(monthsBack = 18).filter { !it.isFuture }
             )
         )
     )

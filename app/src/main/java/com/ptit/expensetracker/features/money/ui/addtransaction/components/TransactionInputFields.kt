@@ -232,31 +232,31 @@ fun TransactionInputFields(
                 // More details section
 
                 // With Person Row
-                Box(
-                    modifier = Modifier.background(
-                        shape = RoundedCornerShape(12.dp),
-                        color = Color.White
-                    )
-                ) {
-                    if (withContacts.isEmpty()) {
-                        InputRow(
-                            icon = MyIcons.Group,
-                            iconPainter = painterResource(R.drawable.ic_with),
-                            text = stringResource(R.string.add_transaction_with_label),
-                            onClick = onWithPersonClick,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    } else {
-                        ContactsInputRow(
-                            icon = MyIcons.Group,
-                            iconPainter = painterResource(R.drawable.ic_with),
-                            contacts = withContacts,
-                            onClick = onWithPersonClick,
-                            onContactRemove = onContactRemove,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
-                }
+//                Box(
+//                    modifier = Modifier.background(
+//                        shape = RoundedCornerShape(12.dp),
+//                        color = Color.White
+//                    )
+//                ) {
+//                    if (withContacts.isEmpty()) {
+//                        InputRow(
+//                            icon = MyIcons.Group,
+//                            iconPainter = painterResource(R.drawable.ic_with),
+//                            text = stringResource(R.string.add_transaction_with_label),
+//                            onClick = onWithPersonClick,
+//                            modifier = Modifier.padding(horizontal = 16.dp)
+//                        )
+//                    } else {
+//                        ContactsInputRow(
+//                            icon = MyIcons.Group,
+//                            iconPainter = painterResource(R.drawable.ic_with),
+//                            contacts = withContacts,
+//                            onClick = onWithPersonClick,
+//                            onContactRemove = onContactRemove,
+//                            modifier = Modifier.padding(horizontal = 16.dp)
+//                        )
+//                    }
+//                }
 
                 // Event Row
 //                    Box(
