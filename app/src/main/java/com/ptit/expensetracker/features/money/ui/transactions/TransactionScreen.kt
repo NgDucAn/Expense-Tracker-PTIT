@@ -464,9 +464,9 @@ fun TransactionTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = onSearchClick) {
-                Icon(Icons.Filled.Search, contentDescription = "Search", tint = IconTint)
-            }
+//            IconButton(onClick = onSearchClick) {
+//                Icon(Icons.Filled.Search, contentDescription = "Search", tint = IconTint)
+//            }
             IconButton(onClick = onMoreOptionsClick) {
                 Icon(
                     Icons.Filled.MoreVert,

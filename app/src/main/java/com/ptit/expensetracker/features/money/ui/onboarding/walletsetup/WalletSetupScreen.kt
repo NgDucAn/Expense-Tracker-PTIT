@@ -346,7 +346,7 @@ fun WalletSetupScreenContent(
         ModalBottomSheet(
             onDismissRequest = onChangeBalance,
             sheetState = bottomSheetState,
-            containerColor = AppColor.Light.PrimaryColor.containerColorSecondary
+            containerColor = Color.White
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
