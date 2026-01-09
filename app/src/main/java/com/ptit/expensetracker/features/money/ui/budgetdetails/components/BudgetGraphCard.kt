@@ -45,14 +45,14 @@ fun BudgetGraphCard(
             Spacer(modifier = Modifier.height(16.dp))
             Column {
                 InfoRow(
-                    label = "Recommended daily spending",
+                    label = "Đề xuất chi tiêu hàng ngày",
                     value = formatAmountWithCurrency(state.recommendedDailySpending, state.budget?.wallet?.currency?.symbol ?: "USD")
                 )
                 InfoRow(
-                    "Projected spending",
+                    "Chi tiêu dự kiến",
                     formatAmountWithCurrency(state.projectedSpending, state.budget?.wallet?.currency?.symbol ?: "USD"))
-                InfoRow("Actual daily spending",
-                    formatAmountWithCurrency(state.actualDailySpending, state.budget?.wallet?.currency?.symbol ?: "USD"))
+//                InfoRow("Chi tiêu thực tế hàng ngày",
+//                    formatAmountWithCurrency(state.actualDailySpending, state.budget?.wallet?.currency?.symbol ?: "USD"))
             }
         }
     }
