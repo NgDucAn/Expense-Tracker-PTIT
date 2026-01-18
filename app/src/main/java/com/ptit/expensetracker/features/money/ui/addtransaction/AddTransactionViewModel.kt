@@ -30,6 +30,10 @@ import com.ptit.expensetracker.features.money.domain.usecases.GetCategoryByNameU
 import com.ptit.expensetracker.features.money.domain.usecases.GetTransactionByIdUseCase
 import com.ptit.expensetracker.features.money.domain.model.Transaction
 import com.ptit.expensetracker.utils.formatAmountWithCurrency
+import com.ptit.expensetracker.features.ai.data.worker.FinancialContextSyncWorker
+import java.text.Normalizer
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class AddTransactionViewModel @Inject constructor(
@@ -50,15 +54,20 @@ class AddTransactionViewModel @Inject constructor(
             .map { it.toCategory() }
     }
 
-    // Normalize input string (lowercase and trim)
-    private fun normalize(input: String): String = input.trim().lowercase()
+    // Normalize input string (lowercase, trim, remove accents)
+    private fun normalize(input: String): String {
+        val lower = input.trim().lowercase()
+        val normalized = Normalizer.normalize(lower, Normalizer.Form.NFD)
+        // Remove diacritical marks
+        return normalized.replace(Regex("\\p{Mn}+"), "")
+    }
 
     // Attempt to find a matching category offline (exact metadata match or via synonyms)
     private fun findCategoryOffline(name: String): Category? {
         val norm = normalize(name)
-        // 1. Exact match on metadata (digits removed)
+        // 1. Exact match on metadata (digits removed, accent-insensitive)
         offlineCategories.firstOrNull { cat ->
-            cat.metaData.filter { ch -> !ch.isDigit() }.lowercase() == norm
+            normalize(cat.metaData.filter { ch -> !ch.isDigit() }) == norm
         }?.let { return it }
         // 2. Match via synonyms arrays (resource arrays named like "<category>_category_synonyms")
         offlineCategories.forEach { cat ->
@@ -120,6 +129,7 @@ class AddTransactionViewModel @Inject constructor(
             is AddTransactionIntent.SelectWallet -> selectWallet(intent.wallet)
             is AddTransactionIntent.SelectCategory -> selectCategory(intent.category)
             is AddTransactionIntent.UpdateDescription -> updateDescription(intent.description)
+            is AddTransactionIntent.InitializeDescription -> initializeDescription(intent.description)
             is AddTransactionIntent.SelectTransactionType -> selectTransactionType(intent.type)
             is AddTransactionIntent.SelectDate -> selectDate(intent.date)
             is AddTransactionIntent.NumpadPressed -> handleNumpadPress(intent.button)
@@ -205,7 +215,8 @@ class AddTransactionViewModel @Inject constructor(
         _viewState.value = _viewState.value.copy(
             category = category,
             isValidCategory = category != null,
-            showCategories = false
+            showCategories = false,
+            isCategoryManuallySelected = true // Mark as manually selected
         )
     }
 
@@ -331,6 +342,9 @@ class AddTransactionViewModel @Inject constructor(
                                 isSuccess = true
                             )
                             
+                            // Sync financial context so AI sees latest data
+                            FinancialContextSyncWorker.enqueueOneTime(context)
+
                             // Emit appropriate success event
                             if (currentState.isEditMode) {
                                 emitEvent(AddTransactionEvent.TransactionUpdated)
@@ -382,46 +396,149 @@ class AddTransactionViewModel @Inject constructor(
         _viewState.value = _viewState.value.copy(photoUri = uri)
     }
 
-    // Handle initializing a category from a category name received from Google Assistant
+    // Handle initializing a category from a category name/metadata received from AI
     private fun initializeCategory(categoryName: String) {
+        // Don't override if user has manually selected a category
+        if (_viewState.value.isCategoryManuallySelected) {
+            Log.d("AddTransactionVM", "Category already manually selected, skipping AI initialization")
+            return
+        }
+        
         viewModelScope.launch {
-            // Offline classification first
-            findCategoryOffline(categoryName)?.let { matched ->
-                // Use the matched category's title to find the actual category in database
-                getCategoryByNameUseCase(
-                    params = GetCategoryByNameUseCase.Params(matched.title),
-                    scope = viewModelScope
-                ) { result ->
-                    result.fold(
-                        { failure ->
-                            // Database category not found, use the offline matched category
-                            selectCategory(matched)
-                            Log.d("AddTransactionVM", "Using offline category: ${matched.metaData}")
-                        },
-                        { dbCategory ->
-                            // Found in database, use that instead
-                            selectCategory(dbCategory)
-                            Log.d("AddTransactionVM", "Found database category: ${dbCategory.metaData}")
-                        }
-                    )
+            Log.d("AddTransactionVM", "Initializing category from AI: $categoryName")
+            
+            // 1) Try to resolve from database first (most reliable)
+            resolveCategory(categoryName)?.let { dbCategory ->
+                // Check if this is a parent category (has subcategories)
+                if (dbCategory.parentName == null) {
+                    // This is a parent category, try to find first child
+                    Log.d("AddTransactionVM", "Found parent category: ${dbCategory.title}, looking for first child")
+                    val firstChild = findFirstChildCategory(dbCategory.title)
+                    if (firstChild != null) {
+                        _viewState.value = _viewState.value.copy(
+                            category = firstChild,
+                            isValidCategory = true,
+                            isCategoryManuallySelected = false
+                        )
+                        Log.d("AddTransactionVM", "Using first child: ${firstChild.metaData} (${firstChild.title})")
+                        return@launch
+                    }
                 }
+                // It's a valid child category, use it
+                _viewState.value = _viewState.value.copy(
+                    category = dbCategory,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
+                Log.d("AddTransactionVM", "Found category in DB: ${dbCategory.metaData} (${dbCategory.title})")
                 return@launch
             }
-            // Fallback: no offline match, use default placeholder
-            try {
-                val defaultCategory = Category(
-                    id = 0,
-                    metaData = "default",
-                    title = categoryName,
-                    icon = "ic_category_unknown",
-                    type = CategoryType.EXPENSE,
-                    parentName = "other"
+            
+            // 2) Try match by metadata/name in offline categories
+            findCategoryByMetadataOrName(categoryName)?.let { cat ->
+                // Check if this is a parent category
+                if (cat.parentName == null) {
+                    Log.d("AddTransactionVM", "Found parent category offline: ${cat.title}, looking for first child")
+                    val firstChild = findFirstChildCategoryOffline(cat.title)
+                    if (firstChild != null) {
+                        val resolved = resolveCategory(firstChild.metaData) ?: resolveCategory(firstChild.title)
+                        _viewState.value = _viewState.value.copy(
+                            category = resolved ?: firstChild,
+                            isValidCategory = true,
+                            isCategoryManuallySelected = false
+                        )
+                        Log.d("AddTransactionVM", "Using first child offline: ${firstChild.metaData}")
+                        return@launch
+                    }
+                }
+                // Try to get the actual DB version with proper ID
+                val resolved = resolveCategory(cat.metaData) ?: resolveCategory(cat.title)
+                _viewState.value = _viewState.value.copy(
+                    category = resolved ?: cat,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
                 )
-                selectCategory(defaultCategory)
-                Log.d("AddTransactionVM", "Defaulted to placeholder category: $categoryName")
-            } catch (e: Exception) {
-                Log.e("AddTransactionVM", "Error initializing category: ${e.message}")
+                Log.d("AddTransactionVM", "Matched category offline: ${cat.metaData}")
+                return@launch
             }
+            
+            // 3) Offline classification via synonyms
+            findCategoryOffline(categoryName)?.let { matched ->
+                if (matched.parentName == null) {
+                    val firstChild = findFirstChildCategoryOffline(matched.title)
+                    if (firstChild != null) {
+                        val resolved = resolveCategory(firstChild.metaData) ?: resolveCategory(firstChild.title)
+                        _viewState.value = _viewState.value.copy(
+                            category = resolved ?: firstChild,
+                            isValidCategory = true,
+                            isCategoryManuallySelected = false
+                        )
+                        Log.d("AddTransactionVM", "Matched via synonyms, using first child: ${firstChild.metaData}")
+                        return@launch
+                    }
+                }
+                val resolved = resolveCategory(matched.metaData) ?: resolveCategory(matched.title)
+                _viewState.value = _viewState.value.copy(
+                    category = resolved ?: matched,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
+                Log.d("AddTransactionVM", "Matched via synonyms: ${matched.metaData}")
+                return@launch
+            }
+            
+            // 4) Fallback to "Chi tiêu khác" (IS_OTHER_EXPENSE)
+            Log.w("AddTransactionVM", "No match found for: $categoryName, falling back to IS_OTHER_EXPENSE")
+            resolveCategory("IS_OTHER_EXPENSE")?.let { fallback ->
+                _viewState.value = _viewState.value.copy(
+                    category = fallback,
+                    isValidCategory = true,
+                    isCategoryManuallySelected = false
+                )
+                Log.d("AddTransactionVM", "Using fallback category: ${fallback.title}")
+            }
+        }
+    }
+    
+    // Find first child category from database by parent title
+    private suspend fun findFirstChildCategory(parentTitle: String): Category? = suspendCoroutine { cont ->
+        viewModelScope.launch {
+            val allCategories = offlineCategories
+            val firstChild = allCategories.firstOrNull { it.parentName == parentTitle }
+            if (firstChild != null) {
+                // Try to get from DB
+                resolveCategory(firstChild.metaData)?.let { cont.resume(it) }
+                    ?: resolveCategory(firstChild.title)?.let { cont.resume(it) }
+                    ?: cont.resume(firstChild)
+            } else {
+                cont.resume(null)
+            }
+        }
+    }
+    
+    // Find first child category from offline categories by parent title
+    private fun findFirstChildCategoryOffline(parentTitle: String): Category? {
+        return offlineCategories.firstOrNull { it.parentName == parentTitle }
+    }
+
+private suspend fun resolveCategory(metaOrName: String): Category? = suspendCoroutine { cont ->
+        getCategoryByNameUseCase(
+            params = GetCategoryByNameUseCase.Params(metaOrName),
+            scope = viewModelScope
+        ) { result ->
+            result.fold(
+                { _ -> cont.resume(null) },
+                { cat -> cont.resume(cat) }
+            )
+        }
+    }
+
+    private fun findCategoryByMetadataOrName(input: String): Category? {
+        val normInput = normalize(input)
+        return offlineCategories.firstOrNull { cat ->
+            normalize(cat.metaData) == normInput ||
+            normalize(cat.title) == normInput ||
+            (cat.parentName != null && normalize(cat.parentName) == normInput)
         }
     }
     
@@ -456,6 +573,10 @@ class AddTransactionViewModel @Inject constructor(
 
     private fun showNumpad() {
         _viewState.value = _viewState.value.copy(showNumpad = true)
+    }
+
+    private fun initializeDescription(description: String) {
+        _viewState.value = _viewState.value.copy(description = description)
     }
 
     private fun hideNumpad() {
@@ -528,17 +649,14 @@ class AddTransactionViewModel @Inject constructor(
             emptyList()
         }
 
-        // Only update category if it hasn't been changed by user (i.e., if current category is still the original)
-        // This prevents overwriting user's category selection when returning from CategoryScreen
+        // Only update category if it hasn't been manually changed by user
         val currentCategory = _viewState.value.category
-        val shouldUpdateCategory = currentCategory == null || 
-                                   (currentCategory.id == transaction.category.id && 
-                                    currentCategory.metaData == transaction.category.metaData)
+        val shouldUpdateCategory = !_viewState.value.isCategoryManuallySelected
         
         _viewState.value = _viewState.value.copy(
             isLoadingTransaction = false,
             wallet = transaction.wallet,
-            // Only update category if it's still the original (not changed by user)
+            // Only update category if user hasn't manually selected one
             category = if (shouldUpdateCategory) transaction.category else currentCategory,
             transactionType = transaction.transactionType,
             description = transaction.description ?: "",
@@ -557,7 +675,10 @@ class AddTransactionViewModel @Inject constructor(
             // Set validation flags
             isValidAmount = transaction.amount > 0,
             isValidCategory = true,
-            isValidWallet = true
+            isValidWallet = true,
+            
+            // Reset manual selection flag when loading transaction
+            isCategoryManuallySelected = false
         )
         
         // Initialize calculator with loaded amount and currency

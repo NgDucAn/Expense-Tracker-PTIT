@@ -152,7 +152,7 @@
     <string name="debt_error_load_wallets">Could not load wallet list</string>
     <string name="debt_error_load_data">Could not load debt data</string>
     <string name="debt_error_load_data_with_message">Error loading data: %1$s</string>
-    
+
     <!-- Debt Management Screen UI -->
     <string name="debt_management_screen_title">Debt Management</string>
     <string name="debt_management_back_cd">Back</string>
@@ -180,7 +180,7 @@
     <string name="debt_management_empty_payable_description">All loans have been paid</string>
     <string name="debt_management_empty_receivable_title">No debts to collect</string>
     <string name="debt_management_empty_receivable_description">All loans have been collected</string>
-    
+
     <!-- Debt Components -->
     <string name="debt_card_paid_label">Paid</string>
     <string name="debt_card_collected_label">Collected</string>
@@ -1450,13 +1450,10 @@
     <string name="fab_transformation_scrim_behavior">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
     <string name="facebook">Facebook</string>
-    <string name="facebook_app_id">186738618063436</string>
-    <string name="facebook_client_token">8fbbaa314f3fde28899c69cee076f8d7</string>
     <string name="fallback_menu_item_copy_link">Copy link</string>
     <string name="fallback_menu_item_open_in_browser">Open in browser</string>
     <string name="fallback_menu_item_share_link">Share link</string>
     <string name="family_wallet">Family wallet</string>
-    <string name="fb_login_protocol_scheme">fb186738618063436</string>
     <string name="fb_notification_content">The \"Connect with Facebook\" feature no longer be available. To sign in, please use your email and password instead</string>
     <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
     <string name="fcm_sender_id">558891751052</string>
@@ -1552,7 +1549,6 @@
     <string name="google">Google</string>
     <string name="google_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
     <string name="google_app_id">1:558891751052:android:8dc7d59128c3c522</string>
-    <string name="google_banner_unit_id">ca-app-pub-9895422139050049/1180314723</string>
     <string name="google_crash_reporting_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
     <string name="google_maps_key">AIzaSyCbF5rl8POZ7EwOI47K3F8lv5vmtZO-BFE</string>
     <string name="google_play">Google Play Store</string>
@@ -2628,7 +2624,6 @@
     <string name="product_tour__scene_3__title">Readily available. Always.</string>
     <string name="product_tour__skip">Skip</string>
     <string name="progress">Progress</string>
-    <string name="project_id">api-project-558891751052</string>
     <string name="projected_spending_desciption_money_insider_2">You spent %1$s %2$s on %3$s in %4$s</string>
     <string name="projected_spending_desciption_money_insider_3">You spent %1$s on %2$s in %3$s</string>
     <string name="projected_spending_desciption_money_insider_4">You spent %1$s on %2$s</string>
@@ -3043,7 +3038,6 @@
     <string name="send_mail">Send email</string>
     <string name="sending">Sending…</string>
     <string name="sep">September</string>
-    <string name="server_client_id">558891751052-07sp24jhj6jknjf35qd9vqr1ff7csn5p.apps.googleusercontent.com</string>
     <string name="services">Services</string>
     <string name="set">Set</string>
     <string name="set_a_budget">Set a budget</string>
@@ -3808,4 +3802,72 @@
     <!-- Common -->
     <string name="common_ok">OK</string>
     <string name="common_cancel">Cancel</string>
+
+    <!-- ===== i18n: Account / Onboarding / Google Login / Wallet Setup (new) ===== -->
+    <!-- Common -->
+    <string name="common_back">Back</string>
+    <string name="common_skip">Skip</string>
+    <string name="common_skip_for_now">Skip for now</string>
+    <string name="common_error_format">Error: %1$s</string>
+    <string name="common_navigate">Navigate</string>
+    <string name="common_version_format">Version %1$s</string>
+    <string name="common_user_fallback">User</string>
+
+    <!-- Account -->
+    <string name="account_feature_wallets">Wallets</string>
+    <string name="account_feature_category">Category</string>
+    <string name="account_feature_debts">Debts</string>
+    <string name="account_feature_ai_assistant">AI Assistant</string>
+    <string name="account_backup_success">Backup Success</string>
+    <string name="account_restore_success">Restore Success</string>
+    <string name="account_sign_out_title">Sign out</string>
+    <string name="account_sign_out_body">Do you want to back up your data before signing out?</string>
+    <string name="account_signing_out">Signing out…</string>
+    <string name="account_signing_out_dots">Signing out...</string>
+    <string name="account_sign_out_and_backup">Sign out &amp; backup</string>
+    <string name="account_sign_out_without_backup">Sign out (no backup)</string>
+
+    <string name="account_restore_prompt_title">Restore data?</string>
+    <string name="account_restore_prompt_body">Do you want to restore your data from cloud backup?</string>
+    <string name="account_restore_prompt_restoring">Restoring your backup…</string>
+    <string name="account_restore_action">Restore data</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_login_or_create_account">Log in or create account</string>
+    <string name="onboarding_illustration_desc">Onboarding illustration</string>
+    <string name="onboarding_slide_1_title">Welcome to Expense Tracker</string>
+    <string name="onboarding_slide_1_desc">Take control of your finances with smart budgeting, expense tracking, and personalized insights.</string>
+    <string name="onboarding_slide_2_title">Track Every Expense</string>
+    <string name="onboarding_slide_2_desc">Automatically categorize your spending and see where your money goes in real-time.</string>
+    <string name="onboarding_slide_3_title">Smart Budgeting</string>
+    <string name="onboarding_slide_3_desc">Set personalized budgets and get alerts when you’re close to your limits.</string>
+    <string name="onboarding_slide_4_title">You’re All Set!</string>
+    <string name="onboarding_slide_4_desc">Start your journey to financial freedom. Create your main wallet and begin tracking today.</string>
+
+    <!-- Google Login -->
+    <string name="google_login_title">Sign in with Google</string>
+    <string name="google_login_desc">Sign in to sync and back up your data. You can still create a wallet later or skip to enter the app now.</string>
+    <string name="google_login_button">Continue with Google</string>
+    <string name="google_login_sign_in_canceled">Sign-in canceled</string>
+    <string name="google_login_sign_in_error">Sign-in error</string>
+    <string name="google_login_error_no_token">No token received</string>
+    <string name="google_login_error_auth_failed_format">Auth failed: %1$s</string>
+
+    <!-- Account (extra a11y) -->
+    <string name="account_profile_photo_desc">Profile photo</string>
+
+    <!-- Wallet Setup -->
+    <string name="wallet_setup_skip">Skip</string>
+    <string name="wallet_setup_create_wallet">CREATE WALLET</string>
+    <string name="wallet_setup_header_title">First, create a wallet</string>
+    <string name="wallet_setup_header_desc">Expense Tracker helps you to keep track of spending money from wallets. Each wallet represents a source of money such as Cash or a Bank Account.</string>
+    <string name="wallet_setup_initial_balance">Initial Balance</string>
+
+    <!-- Errors (shared) -->
+    <string name="error_please_sign_in_first">Please sign in first</string>
+    <string name="error_restore_db_failed">Restore db failed</string>
+    <string name="error_restore_wal_failed">Restore wal failed</string>
+    <string name="error_restore_shm_failed">Restore shm failed</string>
+    <string name="error_restore_generic">Restore error</string>
+    <string name="error_init_categories_failed">Failed to initialize categories</string>
 </resources>

@@ -17,6 +17,7 @@ sealed interface WalletSetupIntent : MviIntentBase {
     object ChangeBalance : WalletSetupIntent
     data class BalanceEntered(val amount: String) : WalletSetupIntent
     object ConfirmSetup : WalletSetupIntent
+    object SkipSetup : WalletSetupIntent
 
     // Added for calculator numpad integration
     object ToggleNumpad : WalletSetupIntent
@@ -34,6 +35,7 @@ data class WalletSetupState(
     val selectedCurrency: Currency? = null,
     val enteredAmount: String = "",
     val isCreating: Boolean = false,
+    val isRestoreLoading: Boolean = false,
     val error: String? = null,
 
     // Added for calculator numpad integration

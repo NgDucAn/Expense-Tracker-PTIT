@@ -67,11 +67,63 @@ abstract class LocalDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * Migration from version 2 to 3: Add budget alert tables
+         */
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create budget_alert table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS budget_alert (
+                        alertId TEXT PRIMARY KEY NOT NULL,
+                        budgetId INTEGER NOT NULL,
+                        alertType INTEGER NOT NULL,
+                        severity INTEGER NOT NULL,
+                        message TEXT NOT NULL,
+                        timestamp INTEGER NOT NULL,
+                        isRead INTEGER NOT NULL DEFAULT 0,
+                        isDismissed INTEGER NOT NULL DEFAULT 0,
+                        FOREIGN KEY(budgetId) REFERENCES budget(budgetId) ON DELETE CASCADE
+                    )
+                """)
+                
+                // Create indexes for budget_alert
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_budget_alert_budgetId ON budget_alert(budgetId)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_budget_alert_alertType ON budget_alert(alertType)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_budget_alert_isDismissed ON budget_alert(isDismissed)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_budget_alert_timestamp ON budget_alert(timestamp)")
+                
+                // Create budget_alert_settings table
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS budget_alert_settings (
+                        settingsId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        budgetId INTEGER,
+                        enableWarningAlerts INTEGER NOT NULL DEFAULT 1,
+                        warningThresholds TEXT NOT NULL DEFAULT '[80,90,95]',
+                        enableExceededAlerts INTEGER NOT NULL DEFAULT 1,
+                        enableExpiringAlerts INTEGER NOT NULL DEFAULT 1,
+                        expiringDaysBefore INTEGER NOT NULL DEFAULT 3,
+                        enableDailyRateAlerts INTEGER NOT NULL DEFAULT 1,
+                        dailyRateThreshold REAL NOT NULL DEFAULT 1.5,
+                        enablePushNotifications INTEGER NOT NULL DEFAULT 1,
+                        enableInAppAlerts INTEGER NOT NULL DEFAULT 1,
+                        quietHoursStart INTEGER,
+                        quietHoursEnd INTEGER,
+                        alertFrequency INTEGER NOT NULL DEFAULT 0,
+                        FOREIGN KEY(budgetId) REFERENCES budget(budgetId) ON DELETE CASCADE
+                    )
+                """)
+                
+                // Create index for budget_alert_settings
+                database.execSQL("CREATE INDEX IF NOT EXISTS index_budget_alert_settings_budgetId ON budget_alert_settings(budgetId)")
+            }
+        }
+
         fun getDatabase(context: Context): LocalDatabase {
             // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, LocalDatabase::class.java, DATABASE_NAME)
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     /**
                      * Setting this option in your app's database builder means that Room
                      * permanently deletes all data from the tables in your database when it

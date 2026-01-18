@@ -76,7 +76,10 @@ data class AddTransactionState(
     val eventName: String = "",
     val reminderSet: Boolean = false,
     val excludeFromReport: Boolean = false,
-    val photoUri: String? = null
+    val photoUri: String? = null,
+    
+    // Track if category was manually selected by user
+    val isCategoryManuallySelected: Boolean = false
 ) : MviStateBase
 
 // Represents user actions or intents on the Add Transaction screen
@@ -107,6 +110,7 @@ sealed interface AddTransactionIntent : MviIntentBase {
     // New intents for handling Google Assistant data
     data class InitializeCategory(val categoryName: String) : AddTransactionIntent
     data class InitializeDate(val dateString: String) : AddTransactionIntent
+    data class InitializeDescription(val description: String) : AddTransactionIntent
     
     // New intents for numpad visibility control
     data object ShowNumpad : AddTransactionIntent

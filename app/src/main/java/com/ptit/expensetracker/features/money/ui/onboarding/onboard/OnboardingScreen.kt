@@ -47,8 +47,16 @@ fun OnboardingScreen(
     val scope = rememberCoroutineScope()
 
     fun navigateToWalletSetup() {
-        navController.navigate(Screen.WalletSetup.route) {
-            popUpTo(Screen.Splash.route) { inclusive = true }
+        // Skip flow (no login): keep existing behavior, do NOT allow skipping WalletSetup
+        navController.navigate(Screen.WalletSetup.createRoute(allowSkip = false)) {
+            popUpTo(Screen.Onboarding.route) { inclusive = true }
+            launchSingleTop = true
+        }
+    }
+
+    fun navigateToGoogleLogin() {
+        navController.navigate(Screen.GoogleLogin.route) {
+            launchSingleTop = true
         }
     }
 
@@ -80,13 +88,13 @@ fun OnboardingScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Primary action button at the very bottom
             Button(
                 onClick = {
                     if (pagerState.currentPage < slides.lastIndex) {
                         scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
                     } else {
-                        navigateToWalletSetup()
+                        // Last page: login flow
+                        navigateToGoogleLogin()
                     }
                 },
                 modifier = Modifier
@@ -108,7 +116,10 @@ fun OnboardingScreen(
                     .fillMaxWidth()
                     .padding(top = 4.dp)
             ) {
-                Text(text = if (pagerState.currentPage == slides.lastIndex) stringResource(R.string.onboarding_skip_for_now) else stringResource(R.string.onboarding_skip), color = Color(0xFF6B7280))
+                Text(
+                    text = if (pagerState.currentPage == slides.lastIndex) stringResource(R.string.onboarding_skip_for_now) else stringResource(R.string.onboarding_skip),
+                    color = Color(0xFF6B7280)
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp).navigationBarsPadding())

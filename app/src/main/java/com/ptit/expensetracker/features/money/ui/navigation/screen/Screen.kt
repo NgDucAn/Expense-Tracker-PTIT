@@ -8,14 +8,18 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ptit.expensetracker.R
 
 sealed class Screen(val route: String, @StringRes val labelRes: Int, val icon: ImageVector) {
     data object Splash       : Screen("splash",      R.string.nav_splash,       Icons.Default.Home)
     data object Onboarding   : Screen("onboarding",  R.string.nav_onboarding,   Icons.Default.Home)
-    data object WalletSetup  : Screen("wallet_setup", R.string.nav_setup_wallet, Icons.Default.AccountCircle)
-    data object IconPicker    : Screen("icon_picker", R.string.nav_select_icon, Icons.Default.Add)
+    data object GoogleLogin  : Screen("google_login",R.string.nav_account, Icons.Default.AccountCircle)
+    data object WalletSetup  : Screen("wallet_setup?allowSkip={allowSkip}",R.string.nav_setup_wallet,Icons.Default.AccountCircle) {
+        fun createRoute(allowSkip: Boolean = false) = "wallet_setup?allowSkip=$allowSkip"
+    }
+    data object IconPicker    : Screen("icon_picker",R.string.nav_select_icon, Icons.Default.Add)
     data object Home        : Screen("home",        R.string.nav_home,         Icons.Default.Home)
     data object Transactions:
         Screen("transactions", R.string.nav_transactions, Icons.AutoMirrored.Filled.List)
@@ -44,7 +48,7 @@ sealed class Screen(val route: String, @StringRes val labelRes: Int, val icon: I
     }
     data object EnterAmount : 
         Screen("enter_amount?currencyCode={currencyCode}&currencySymbol={currencySymbol}&currencyId={currencyId}", 
-              R.string.nav_enter_amount, 
+              R.string.nav_enter_amount,
               Icons.Default.Add) {
         fun createRoute(currencyId: Int, currencyCode: String, currencySymbol: String) = 
             "enter_amount?currencyId=$currencyId&currencyCode=$currencyCode&currencySymbol=$currencySymbol"
@@ -75,4 +79,5 @@ sealed class Screen(val route: String, @StringRes val labelRes: Int, val icon: I
 
     // Monthly Report Screen
     data object MonthlyReport : Screen("monthly_report", R.string.nav_reports, Icons.Default.ShoppingCart)
+    data object AiChat : Screen("ai_chat", R.string.nav_account, Icons.Default.Chat)
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ptit.expensetracker.core.platform.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.ptit.expensetracker.features.money.data.data_source.local.db.LocalDatabase
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +36,7 @@ class AccountViewModel @Inject constructor(
             is AccountIntent.GoogleSignIn -> handleGoogleSignIn(intent.idToken)
             is AccountIntent.SignInError -> emitEvent(AccountEvent.ShowError(intent.message))
             AccountIntent.SignOut -> signOut()
+            is AccountIntent.SignOutWithBackup -> signOutWithBackup(intent.context)
             is AccountIntent.BackupData -> backupData(intent.context)
             is AccountIntent.RestoreData -> restoreData(intent.context)
         }
@@ -45,7 +47,8 @@ class AccountViewModel @Inject constructor(
 
         viewModelScope.launch {
             if (idToken.isNullOrBlank()) {
-                emitEvent(AccountEvent.ShowError(context.getString(R.string.account_error_no_token)))
+                _viewState.value = _viewState.value.copy(isSigningIn = false)
+                emitEvent(AccountEvent.ShowError("No token received"))
                 return@launch
             }
             try {
@@ -55,10 +58,12 @@ class AccountViewModel @Inject constructor(
                         processIntent(AccountIntent.LoadProfile)
                     }
                     .addOnFailureListener { e: Exception ->
-                        emitEvent(AccountEvent.ShowError(context.getString(R.string.account_error_auth_failed, e.localizedMessage ?: "")))
+                        _viewState.value = _viewState.value.copy(isSigningIn = false)
+                        emitEvent(AccountEvent.ShowError("Auth failed: ${e.localizedMessage}"))
                     }
             } catch (e: Exception) {
-                emitEvent(AccountEvent.ShowError(e.localizedMessage ?: context.getString(R.string.account_error_sign_in)))
+                _viewState.value = _viewState.value.copy(isSigningIn = false)
+                emitEvent(AccountEvent.ShowError(e.localizedMessage ?: "Sign-in error"))
             }
         }
     }
@@ -67,25 +72,97 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             val user = auth.currentUser
             if (user != null) {
+                val wasSignedIn = _viewState.value.isSignedIn
                 _viewState.value = _viewState.value.copy(
                     isSignedIn = true,
                     displayName = user.displayName,
-                    photoUrl = user.photoUrl?.toString()
+                    photoUrl = user.photoUrl?.toString(),
+                    isSigningIn = false
                 )
+                logFirebaseIdToken()
+                if (!wasSignedIn) {
+                    emitEvent(AccountEvent.ShowPostLoginRestorePrompt)
+                }
+            } else {
+                // Signed out / not signed in
+                _viewState.value = AccountState()
             }
         }
     }
 
     private fun signIn() {
         // Trigger UI sign-in flow
+        _viewState.value = _viewState.value.copy(isSigningIn = true)
         emitEvent(AccountEvent.LaunchSignInFlow)
     }
 
     private fun signOut() {
         viewModelScope.launch {
+            if (_viewState.value.isSigningOut) return@launch
+            _viewState.value = _viewState.value.copy(isSigningOut = true)
+            // Small delay so UI can show a sign-out effect (loading state)
+            delay(350)
             auth.signOut()
             _viewState.value = AccountState()
             emitEvent(AccountEvent.SignOutSuccess)
+        }
+    }
+
+    private fun signOutWithBackup(context: Context) {
+        viewModelScope.launch {
+            if (_viewState.value.isSigningOut) return@launch
+            _viewState.value = _viewState.value.copy(isSigningOut = true, isBackupLoading = true)
+
+            val user = auth.currentUser
+            if (user == null) {
+                _viewState.value = _viewState.value.copy(isSigningOut = false, isBackupLoading = false)
+                emitEvent(AccountEvent.ShowError("Please sign in first"))
+                return@launch
+            }
+
+            try {
+                val dbFile = context.getDatabasePath(databaseName)
+                val dbDir = dbFile.parentFile!!
+                val walFile = File(dbDir, "${databaseName}-wal")
+                val shmFile = File(dbDir, "${databaseName}-shm")
+                val refDb = storage.reference.child("backups/${user.uid}/$databaseName")
+                val refWal = storage.reference.child("backups/${user.uid}/${databaseName}-wal")
+                val refShm = storage.reference.child("backups/${user.uid}/${databaseName}-shm")
+
+                refDb.putFile(Uri.fromFile(dbFile))
+                    .addOnSuccessListener {
+                        refWal.putFile(Uri.fromFile(walFile))
+                            .addOnSuccessListener {
+                                refShm.putFile(Uri.fromFile(shmFile))
+                                    .addOnSuccessListener {
+                                        emitEvent(AccountEvent.BackupSuccess)
+                                        // Give UI a moment to show success/transition, then sign out
+                                        viewModelScope.launch {
+                                            _viewState.value = _viewState.value.copy(isBackupLoading = false)
+                                            delay(350)
+                                            auth.signOut()
+                                            _viewState.value = AccountState()
+                                            emitEvent(AccountEvent.SignOutSuccess)
+                                        }
+                                    }
+                                    .addOnFailureListener { error ->
+                                        _viewState.value = _viewState.value.copy(isSigningOut = false, isBackupLoading = false)
+                                        emitEvent(AccountEvent.ShowError(error.message ?: "Backup shm failed"))
+                                    }
+                            }
+                            .addOnFailureListener { error ->
+                                _viewState.value = _viewState.value.copy(isSigningOut = false, isBackupLoading = false)
+                                emitEvent(AccountEvent.ShowError(error.message ?: "Backup wal failed"))
+                            }
+                    }
+                    .addOnFailureListener { error ->
+                        _viewState.value = _viewState.value.copy(isSigningOut = false, isBackupLoading = false)
+                        emitEvent(AccountEvent.ShowError(error.message ?: "Backup db failed"))
+                    }
+            } catch (e: Exception) {
+                _viewState.value = _viewState.value.copy(isSigningOut = false, isBackupLoading = false)
+                emitEvent(AccountEvent.ShowError(e.localizedMessage ?: "Backup error"))
+            }
         }
     }
 
@@ -182,5 +259,20 @@ class AccountViewModel @Inject constructor(
                 _viewState.value = _viewState.value.copy(isRestoreLoading = false)
             }
         }
+    }
+
+    /**
+     * Fetch and log Firebase ID token to Logcat for debugging backend calls.
+     * Token is short-lived (~1h); refreshes by using forceRefresh = true.
+     */
+    private fun logFirebaseIdToken() {
+        val user = auth.currentUser ?: return
+        user.getIdToken(true)
+            .addOnSuccessListener { result ->
+                Log.d("FirebaseIdToken", "ID token: ${result.token}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("FirebaseIdToken", "Failed to get ID token: ${e.message}")
+            }
     }
 }

@@ -92,6 +92,9 @@ fun HomeScreen(
         onSeeAllWalletsClick = {
             navController.navigate(Screen.MyWallets.route)
         },
+        onAiChatClick = {
+            navController.navigate(Screen.AiChat.route)
+        },
         onSelectMainTab = { viewModel.processIntent(HomeScreenIntent.SelectMainTab(it)) },
         onSelectTrendingTab = { viewModel.processIntent(HomeScreenIntent.SelectTrendingTab(it)) },
         onSelectSpendingTab = { viewModel.processIntent(HomeScreenIntent.SelectSpendingTab(it)) }
@@ -105,6 +108,7 @@ fun HomeScreenContent(
     onToggleBalanceVisibility: () -> Unit,
     onSeeReportsClick: () -> Unit,
     onSeeAllWalletsClick: () -> Unit = {},
+    onAiChatClick: () -> Unit = {},
     onSelectMainTab: (MainTab) -> Unit,
     onSelectTrendingTab: (TrendingSubTab) -> Unit,
     onSelectSpendingTab: (SpendingSubTab) -> Unit
@@ -121,7 +125,8 @@ fun HomeScreenContent(
             TopBalanceBar(
                 balance = state.totalBalance,
                 isVisible = state.isBalanceVisible,
-                onToggleVisibility = onToggleBalanceVisibility
+                onToggleVisibility = onToggleBalanceVisibility,
+                onAiChatClick = onAiChatClick
             )
             MyWalletsSection(
                 wallets = state.wallets,
@@ -168,7 +173,8 @@ fun HomeScreenContent(
 fun TopBalanceBar(
     balance: String,
     isVisible: Boolean,
-    onToggleVisibility: () -> Unit
+    onToggleVisibility: () -> Unit,
+    onAiChatClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -205,7 +211,7 @@ fun TopBalanceBar(
 
         Row() {
             // Icon chatbot
-            IconButton(onClick = { /* TODO: Handle search click */ }) {
+            IconButton(onClick = onAiChatClick) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_ai_chatbot),
                     contentDescription = stringResource(R.string.home_chatbot_cd)
@@ -299,6 +305,7 @@ fun WalletItem(wallet: WalletWithCurrencyEntity) {
         // Số dư của ví
         Text(
             text = String.format(
+                java.util.Locale.US,
                 "%,.0f %s",
                 wallet.wallet.currentBalance,
                 wallet.currency.currencyCode
@@ -359,6 +366,7 @@ fun HomeScreenContentPreview() {
             onToggleBalanceVisibility = {},
             onSeeReportsClick = {},
             onSeeAllWalletsClick = {},
+            onAiChatClick = {},
             onSelectMainTab = {},
             onSelectTrendingTab = {},
             onSelectSpendingTab = {}

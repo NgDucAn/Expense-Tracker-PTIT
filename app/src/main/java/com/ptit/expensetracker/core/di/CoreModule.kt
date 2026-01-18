@@ -11,6 +11,7 @@ import dagger.hilt.components.SingletonComponent
     includes = [
         DatabaseModule::class,
         FirebaseModule::class,
+        NetworkModule::class,
     ]
 )
 @InstallIn(SingletonComponent::class)

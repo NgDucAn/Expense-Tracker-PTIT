@@ -47,12 +47,14 @@ fun SplashScreen(
             when (event) {
                 is SplashEvent.GoToHome -> {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(0)
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                        launchSingleTop = true
                     }
                 }
                 is SplashEvent.GoToOnboarding -> {
                     navController.navigate(Screen.Onboarding.route) {
-                        popUpTo(0)
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                        launchSingleTop = true
                     }
                 }
                 else -> {}

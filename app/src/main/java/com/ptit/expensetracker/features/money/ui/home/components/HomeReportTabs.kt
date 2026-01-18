@@ -103,7 +103,7 @@ fun SpendingSummary(
             )
             Spacer(modifier = Modifier.width(2.dp))
             Text(
-                text = "${String.format("%.1f", abs(changePercent))}%",
+                text = "${String.format(java.util.Locale.US, "%.1f", abs(changePercent))}%",
                 color = color,
                 style = MaterialTheme.typography.bodyMedium
             )

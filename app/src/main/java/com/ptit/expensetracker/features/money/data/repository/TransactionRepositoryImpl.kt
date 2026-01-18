@@ -61,7 +61,7 @@ class TransactionRepositoryImpl @Inject constructor(
      */
     override fun getTransactionsByMonth(year: Int, month: Int, walletId: Int?): Flow<List<Transaction>> {
         // Format month to ensure it's 2 digits (01-12)
-        val monthFormatted = String.format("%02d", month)
+        val monthFormatted = String.format(java.util.Locale.US, "%02d", month)
         
         return transactionDao.getTransactionsByMonth(
             year.toString(), 

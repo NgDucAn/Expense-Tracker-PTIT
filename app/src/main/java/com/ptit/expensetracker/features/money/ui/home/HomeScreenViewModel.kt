@@ -461,7 +461,7 @@ class HomeScreenViewModel @Inject constructor(
 
                 // Format the balance with the main currency symbol
                 val currencySymbol = mainWallet?.currency?.symbol ?: "đ"
-                val formattedBalance = String.format("%,.0f %s", totalBalance, currencySymbol)
+                val formattedBalance = String.format(java.util.Locale.US, "%,.0f %s", totalBalance, currencySymbol)
 
                 // Convert domain models to entity models for UI state
                 val walletEntities = wallets.map { wallet ->

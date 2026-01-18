@@ -45,6 +45,7 @@ import com.ptit.expensetracker.ui.theme.TextMain
 @Composable
 fun WalletSetupScreen(
     navController: NavController,
+    allowSkip: Boolean = false,
     viewModel: WalletSetupViewModel = hiltViewModel()
 ) {
     val state by viewModel.viewState.collectAsState()
@@ -79,18 +80,31 @@ fun WalletSetupScreen(
             when (event) {
                 is WalletSetupEvent.NavigateToIconPicker -> navController.navigate(Screen.IconPicker.route)
                 is WalletSetupEvent.NavigateToCurrencyPicker -> navController.navigate(Screen.Currency.route)
-                is WalletSetupEvent.NavigateToEnterAmount -> navController.navigate(Screen.EnterAmount.route)
-                is WalletSetupEvent.NavigateToHome -> navController.navigate(Screen.Home.route) {
-//                    popUpTo(0)
+                is WalletSetupEvent.NavigateToEnterAmount -> {
+                    val currency = state.selectedCurrency
+                    val route = Screen.EnterAmount.createRoute(
+                        currencyId = currency?.id ?: 0,
+                        currencyCode = currency?.currencyCode ?: "USD",
+                        currencySymbol = currency?.symbol ?: "$"
+                    )
+                    navController.navigate(route)
+                }
+                is WalletSetupEvent.NavigateToHome -> {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.WalletSetup.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
 
-                null -> TODO()
+                null -> Unit
             }
         }
     }
 
     WalletSetupScreenContent(
         state = state,
+        allowSkip = allowSkip,
+        onSkipSetup = { viewModel.processIntent(WalletSetupIntent.SkipSetup) },
         onChangeIcon = { viewModel.processIntent(WalletSetupIntent.ChangeIcon) },
         onUpdateName = { viewModel.processIntent(WalletSetupIntent.UpdateName(it)) },
         onChangeCurrency = { viewModel.processIntent(WalletSetupIntent.ChangeCurrency) },
@@ -112,6 +126,8 @@ fun WalletSetupScreen(
 @Composable
 fun WalletSetupScreenContent(
     state: WalletSetupState,
+    allowSkip: Boolean,
+    onSkipSetup: () -> Unit,
     onChangeIcon: () -> Unit,
     onUpdateName: (String) -> Unit,
     onChangeCurrency: () -> Unit,
@@ -123,11 +139,42 @@ fun WalletSetupScreenContent(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Scaffold(
         containerColor = AppColor.Light.PrimaryColor.containerColor,
+        topBar = {
+            if (allowSkip) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                ) {
+                    TextButton(
+                        onClick = onSkipSetup,
+                        enabled = !state.isRestoreLoading,
+                        modifier = Modifier.align(Alignment.CenterEnd)
+                    ) {
+                        if (state.isRestoreLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(R.string.common_skip),
+                                color = AppColor.Light.PrimaryColor.contentColor
+                            )
+                        }
+                    }
+                }
+            }
+        },
         bottomBar = {
             // Confirm button
             Button(
                 onClick = onConfirmSetup,
-                enabled = state.walletName.isNotBlank() && (state.formattedAmount.isNotBlank() && !state.formattedAmount.contentEquals(",.;+-x/")) && state.selectedCurrency != null,
+                enabled = !state.isRestoreLoading &&
+                    state.walletName.isNotBlank() &&
+                    (state.formattedAmount.isNotBlank() && !state.formattedAmount.contentEquals(",.;+-x/")) &&
+                    state.selectedCurrency != null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .navigationBarsPadding()
@@ -426,6 +473,8 @@ fun WalletSetupScreenContentPreview() {
                 isCreating = false,
                 error = null
             ),
+            allowSkip = false,
+            onSkipSetup = {},
             onChangeIcon = {},
             onUpdateName = {},
             onChangeCurrency = {},

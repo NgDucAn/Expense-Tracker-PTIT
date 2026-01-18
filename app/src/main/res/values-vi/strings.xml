@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- CategoryScreen strings -->
     <string name="select_category_title">Chọn danh mục</string>
@@ -152,7 +152,7 @@
     <string name="debt_error_load_wallets">Không tải được danh sách ví</string>
     <string name="debt_error_load_data">Không tải được dữ liệu nợ</string>
     <string name="debt_error_load_data_with_message">Lỗi tải dữ liệu: %1$s</string>
-    
+
     <!-- Debt Management Screen UI -->
     <string name="debt_management_screen_title">Quản lý nợ</string>
     <string name="debt_management_back_cd">Quay lại</string>
@@ -180,7 +180,7 @@
     <string name="debt_management_empty_payable_description">Tất cả các khoản vay đã được thanh toán</string>
     <string name="debt_management_empty_receivable_title">Không có nợ cần thu</string>
     <string name="debt_management_empty_receivable_description">Tất cả các khoản vay đã được thu</string>
-    
+
     <!-- Debt Components -->
     <string name="debt_card_paid_label">Đã trả</string>
     <string name="debt_card_collected_label">Đã thu</string>
@@ -304,7 +304,6 @@
     <string name="adjust_spending_limit">Điều chỉnh giới hạn chi tiêu</string>
     <string name="adjustment">Điều chỉnh số dư</string>
     <string name="adjustment_guide">Nhập số dư hiện tại của ví này</string>
-    <string name="ads_interstitial_unit_id">ca-app-pub-9895422139050049/2015481812</string>
     <string name="advanced_budget_reports">Báo cáo Ngân sách Nâng cao</string>
     <string name="advanced_budget_reports_description">Phân tích sâu hành vi chi tiêu của bạn trong từng giai đoạn.</string>
     <string name="advanced_recommendations">Khuyến nghị Nâng cao</string>
@@ -362,6 +361,25 @@
     <string name="onboarding_skip_for_now">Bỏ qua tạm thời</string>
     <string name="onboarding_login_or_create">Đăng nhập hoặc tạo tài khoản</string>
     <string name="onboarding_illustration_cd">Hình minh họa giới thiệu</string>
+    <string name="onboarding_login_or_create_account">Đăng nhập hoặc tạo tài khoản</string>
+    <string name="onboarding_illustration_desc">Hình minh hoạ onboarding</string>
+    <string name="onboarding_slide_1_title">Chào mừng đến với Expense Tracker</string>
+    <string name="onboarding_slide_1_desc">Kiểm soát tài chính của bạn với lập ngân sách thông minh, theo dõi chi tiêu và các gợi ý cá nhân hóa.</string>
+    <string name="onboarding_slide_2_title">Theo dõi mọi khoản chi</string>
+    <string name="onboarding_slide_2_desc">Tự động phân loại chi tiêu và xem tiền của bạn đã đi đâu theo thời gian thực.</string>
+    <string name="onboarding_slide_3_title">Lập ngân sách thông minh</string>
+    <string name="onboarding_slide_3_desc">Thiết lập ngân sách phù hợp và nhận cảnh báo khi bạn sắp vượt hạn mức.</string>
+    <string name="onboarding_slide_4_title">Sẵn sàng bắt đầu!</string>
+    <string name="onboarding_slide_4_desc">Bắt đầu hành trình tự do tài chính. Tạo ví chính và theo dõi ngay hôm nay.</string>
+
+    <!-- Google Login -->
+    <string name="google_login_title">Đăng nhập bằng Google</string>
+    <string name="google_login_desc">Đăng nhập để đồng bộ và sao lưu dữ liệu. Bạn vẫn có thể tạo ví sau hoặc bỏ qua để vào app ngay.</string>
+    <string name="google_login_button">Tiếp tục với Google</string>
+    <string name="google_login_sign_in_canceled">Đã hủy đăng nhập</string>
+    <string name="google_login_sign_in_error">Lỗi đăng nhập</string>
+    <string name="google_login_error_no_token">Không nhận được token</string>
+    <string name="google_login_error_auth_failed_format">Xác thực thất bại: %1$s</string>
 
     <!-- Wallet Setup screen -->
     <string name="wallet_setup_title">Đầu tiên, tạo một ví</string>
@@ -489,7 +507,7 @@
     <string name="transfer_money_title">Chuyển tiền</string>
     <string name="transfer_money_close_cd">Đóng</string>
     <string name="transfer_money_save_button">LƯU</string>
-    <string name="transfer_money_from_label">Từ</string> 
+    <string name="transfer_money_from_label">Từ</string>
     <string name="transfer_money_to_label">Đến</string>
     <string name="transfer_money_options_label">Tùy chọn</string>
     <string name="transfer_money_select_wallet">Chọn Ví</string>
@@ -542,6 +560,14 @@
     <string name="transactions_add_first">Thêm giao dịch đầu tiên</string>
     <string name="transactions_wallet_icon_cd">Biểu tượng Ví</string>
     <string name="transactions_select_wallet_cd">Chọn Ví</string>
+
+    <!-- Errors (shared) -->
+    <string name="error_please_sign_in_first">Vui lòng đăng nhập trước</string>
+    <string name="error_restore_db_failed">Khôi phục dữ liệu thất bại (db)</string>
+    <string name="error_restore_wal_failed">Khôi phục dữ liệu thất bại (wal)</string>
+    <string name="error_restore_shm_failed">Khôi phục dữ liệu thất bại (shm)</string>
+    <string name="error_restore_generic">Lỗi khôi phục dữ liệu</string>
+    <string name="error_init_categories_failed">Khởi tạo danh mục thất bại</string>
 
     <!-- Detail Transaction screen -->
     <string name="detail_transaction_preview">Xem trước Giao dịch</string>
@@ -915,7 +941,7 @@
     <string name="cate_children_babies">Trẻ em &amp; Em bé</string>
     <string name="cate_clothing">Quần áo</string>
     <string name="cate_collect_interest">Thu lãi</string>
-    <string name="cate_debt">Nợ</string>
+    <string name="cate_debt">Đi vay</string>
     <string name="cate_debt_collection">Thu nợ</string>
     <string name="cate_deposit">Tiền gửi</string>
     <string name="cate_doctor">Bác sĩ</string>
@@ -931,7 +957,7 @@
     <string name="cate_food">Thực phẩm &amp; Đồ uống</string>
     <string name="cate_footwear">Giày dép</string>
     <string name="cate_friend">Bạn bè &amp; Người yêu</string>
-    <string name="cate_fun_money">Tiền vui</string>
+    <string name="cate_fun_money">Tiền vui chơi</string>
     <string name="cate_funeral">Tang lễ</string>
     <string name="cate_games">Trò chơi</string>
     <string name="cate_gas">Hóa đơn Gas</string>
@@ -946,7 +972,7 @@
     <string name="cate_interest">Tiền lãi</string>
     <string name="cate_internet">Hóa đơn Internet</string>
     <string name="cate_invest">Đầu tư</string>
-    <string name="cate_loan">Vay</string>
+    <string name="cate_loan">Cho vay</string>
     <string name="cate_maintenance">Bảo trì</string>
     <string name="cate_makeup">Trang điểm</string>
     <string name="cate_marriage">Kết hôn</string>
@@ -1073,7 +1099,6 @@
     <string name="common_google_play_services_install_title">Lấy dịch vụ Google Play</string>
     <string name="common_google_play_services_notification_channel_name">Tính khả dụng của dịch vụ Google Play</string>
     <string name="common_google_play_services_notification_ticker">Lỗi dịch vụ Google Play</string>
-    <string name="common_google_play_services_unknown_issue">%1$s đang gặp sự cố với dịch vụ Google Play. Vui lòng thử lại.</string>
     <string name="common_google_play_services_unsupported_text">%1$s sẽ không chạy mà không có dịch vụ Google Play, dịch vụ này không được thiết bị của bạn hỗ trợ.</string>
     <string name="common_google_play_services_update_button">Cập nhật</string>
     <string name="common_google_play_services_update_text">%1$s sẽ không chạy trừ khi bạn cập nhật dịch vụ Google Play.</string>
@@ -1186,7 +1211,6 @@
     <string name="default_error_msg">Lỗi không xác định</string>
     <string name="default_note_transfer">Đã chuyển đến %1$s</string>
     <string name="default_note_transfer_add_fee">Thêm phí chuyển tiền</string>
-    <string name="default_web_client_id">221181791952-uut9r8952ef6mualol4ds081vjksvmat.apps.googleusercontent.com</string>
     <string name="deficit_budget_onboarding_step1">Điều chỉnh ngân sách giúp bạn cân bằng chi tiêu vượt quá. Do đó, bạn vẫn có thể đạt được các mục tiêu tài chính của mình.</string>
     <string name="deficit_budget_onboarding_step2">Ngân sách này là ngân sách bạn vừa chọn.</string>
     <string name="deficit_budget_onboarding_step3">Đây là ngân sách thặng dư. Bạn có thể chuyển quỹ từ ngân sách thặng dư sang ngân sách thâm hụt để tránh chi tiêu vượt quá.\nVuốt sang trái để chọn ngân sách thặng dư khác.</string>
@@ -1450,13 +1474,10 @@
     <string name="fab_transformation_scrim_behavior">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
     <string name="facebook">Facebook</string>
-    <string name="facebook_app_id">186738618063436</string>
-    <string name="facebook_client_token">8fbbaa314f3fde28899c69cee076f8d7</string>
     <string name="fallback_menu_item_copy_link">Sao chép liên kết</string>
     <string name="fallback_menu_item_open_in_browser">Mở trong trình duyệt</string>
     <string name="fallback_menu_item_share_link">Chia sẻ liên kết</string>
     <string name="family_wallet">Ví gia đình</string>
-    <string name="fb_login_protocol_scheme">fb186738618063436</string>
     <string name="fb_notification_content">Tính năng \"Kết nối với Facebook\" không còn khả dụng. Để đăng nhập, vui lòng sử dụng email và mật khẩu của bạn thay thế</string>
     <string name="fcm_fallback_notification_channel_label">Khác</string>
     <string name="fcm_sender_id">558891751052</string>
@@ -1487,7 +1508,6 @@
     <string name="finsify_selling_point_2_title">Báo cáo thông minh</string>
     <string name="finsify_selling_point_3_description">Mã hóa dữ liệu nhạy cảm của bạn bằng RSA1024 bit. Ví Liên kết được phát triển với chế độ Chỉ đọc.</string>
     <string name="finsify_selling_point_3_title">Bảo vệ quyền riêng tư</string>
-    <string name="firebase_database_url">https://api-project-558891751052.firebaseio.com</string>
     <string name="first_auto_reply_message">Chúng tôi rất muốn nghe từ bạn ❤️.</string>
     <string name="fishing">câu cá</string>
     <string name="fix">Sửa nó</string>
@@ -1526,7 +1546,6 @@
     <string name="future_plan">Tương lai</string>
     <string name="futute_period_three_months">Trong ba tháng tới</string>
     <string name="ga_trackingId">UA-39420218-1</string>
-    <string name="gcm_defaultSenderId">558891751052</string>
     <string name="generic_error_no_device_credential">Chưa đặt PIN, mẫu hoặc mật khẩu.</string>
     <string name="generic_error_no_keyguard">Thiết bị này không hỗ trợ PIN, mẫu hoặc mật khẩu.</string>
     <string name="generic_error_user_canceled">Xác thực đã bị người dùng hủy.</string>
@@ -1550,14 +1569,8 @@
     <string name="goal_wallet_introduction">Một ví giúp bạn tạo động lực, đặt kế hoạch tiết kiệm chi tiết và đạt được kết quả hiệu quả.</string>
     <string name="goal_wallet_replaced_savings">Ví mục tiêu là ví mới đã thay thế cho tính năng Tiết kiệm. Money Lover sẽ không tiếp tục hỗ trợ Tiết kiệm và xóa tính năng này trong tương lai. Bạn nên tạo Ví Mục tiêu mới để thay thế Tiết kiệm của bạn.</string>
     <string name="google">Google</string>
-    <string name="google_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
-    <string name="google_app_id">1:558891751052:android:8dc7d59128c3c522</string>
-    <string name="google_banner_unit_id">ca-app-pub-9895422139050049/1180314723</string>
-    <string name="google_crash_reporting_api_key">AIzaSyCnXAjCCKXjkXMNX4FIPK_Q0eRcqXfkFq4</string>
-    <string name="google_maps_key">AIzaSyCbF5rl8POZ7EwOI47K3F8lv5vmtZO-BFE</string>
     <string name="google_play">Cửa hàng Google Play</string>
     <string name="google_search">Tìm kiếm Google</string>
-    <string name="google_storage_bucket">api-project-558891751052.appspot.com</string>
     <string name="goto_home">Về trang chủ</string>
     <string name="goto_settings">Đi đến cài đặt</string>
     <string name="goto_today">Nhảy đến hôm nay</string>
@@ -2628,7 +2641,6 @@
     <string name="product_tour__scene_3__title">Sẵn sàng. Luôn luôn.</string>
     <string name="product_tour__skip">Bỏ qua</string>
     <string name="progress">Tiến trình</string>
-    <string name="project_id">api-project-558891751052</string>
     <string name="projected_spending_desciption_money_insider_2">Bạn đã chi %1$s %2$s cho %3$s trong %4$s</string>
     <string name="projected_spending_desciption_money_insider_3">Bạn đã chi %1$s cho %2$s trong %3$s</string>
     <string name="projected_spending_desciption_money_insider_4">Bạn đã chi %1$s cho %2$s</string>
@@ -3043,7 +3055,6 @@
     <string name="send_mail">Gửi email</string>
     <string name="sending">Đang gửi…</string>
     <string name="sep">Tháng Chín</string>
-    <string name="server_client_id">558891751052-07sp24jhj6jknjf35qd9vqr1ff7csn5p.apps.googleusercontent.com</string>
     <string name="services">Dịch vụ</string>
     <string name="set">Đặt</string>
     <string name="set_a_budget">Đặt một ngân sách</string>
@@ -3808,4 +3819,31 @@
     <!-- Common (Vietnamese) -->
     <string name="common_ok">OK</string>
     <string name="common_cancel">Hủy</string>
+    <string name="common_back">Quay lại</string>
+    <string name="common_skip">Bỏ qua</string>
+    <string name="common_skip_for_now">Bỏ qua tạm thời</string>
+    <string name="common_error_format">Lỗi: %1$s</string>
+    <string name="common_navigate">Điều hướng</string>
+    <string name="common_version_format">Phiên bản %1$s</string>
+    <string name="common_user_fallback">Người dùng</string>
+
+    <!-- Account -->
+    <string name="account_feature_wallets">Ví</string>
+    <string name="account_feature_category">Danh mục</string>
+    <string name="account_feature_debts">Nợ</string>
+    <string name="account_feature_ai_assistant">Trợ lý AI</string>
+    <string name="account_backup_success">Sao lưu thành công</string>
+    <string name="account_restore_success">Khôi phục thành công</string>
+    <string name="account_sign_out_title">Đăng xuất</string>
+    <string name="account_sign_out_body">Bạn có muốn sao lưu dữ liệu trước khi đăng xuất không?</string>
+    <string name="account_signing_out">Đang đăng xuất…</string>
+    <string name="account_signing_out_dots">Đang đăng xuất...</string>
+    <string name="account_sign_out_and_backup">Đăng xuất &amp; sao lưu</string>
+    <string name="account_sign_out_without_backup">Đăng xuất (không sao lưu)</string>
+    <string name="account_restore_prompt_title">Khôi phục dữ liệu?</string>
+    <string name="account_restore_prompt_body">Bạn có muốn khôi phục dữ liệu từ bản sao lưu trên đám mây không?</string>
+    <string name="account_restore_prompt_restoring">Đang khôi phục bản sao lưu của bạn…</string>
+    <string name="account_restore_action">Khôi phục dữ liệu</string>
 </resources>
+
+

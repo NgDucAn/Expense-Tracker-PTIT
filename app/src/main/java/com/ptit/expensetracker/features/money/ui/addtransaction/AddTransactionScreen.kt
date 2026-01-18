@@ -52,7 +52,8 @@ fun AddTransactionScreen(
     transactionId: Int? = null, // For edit mode
     initialAmount: String? = null,
     initialCategory: String? = null,
-    initialDate: String? = null
+    initialDate: String? = null,
+    initialDescription: String? = null
 ) {
     val state by viewModel.viewState.collectAsState()
     val context = LocalContext.current
@@ -145,30 +146,32 @@ fun AddTransactionScreen(
                 // Process the date - convert string to Date in ViewModel
                 viewModel.processIntent(AddTransactionIntent.InitializeDate(dateString))
             }
+
+            initialDescription?.let { desc ->
+                viewModel.processIntent(AddTransactionIntent.InitializeDescription(desc))
+            }
         }
     }
 
     // Observe the selected category when returning from CategoryScreen
-    // Check savedStateHandle reactively - similar to AddBudgetScreen approach
     val currentBackStackEntry = navController.currentBackStackEntry
     val savedStateHandle = currentBackStackEntry?.savedStateHandle
     
-    // Observe category - check savedStateHandle whenever backStackEntry changes
-    LaunchedEffect(currentBackStackEntry?.id) {
-        savedStateHandle?.get<Category>("selected_category")?.let { category ->
-            // Remove immediately to avoid processing multiple times
-            savedStateHandle.remove<Category>("selected_category")
-            viewModel.processIntent(AddTransactionIntent.SelectCategory(category))
+    // Use lifecycle observer to detect when returning from CategoryScreen
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // Check for selected category when screen resumes
+                savedStateHandle?.get<Category>("selected_category")?.let { category ->
+                    savedStateHandle.remove<Category>("selected_category")
+                    viewModel.processIntent(AddTransactionIntent.SelectCategory(category))
+                }
+            }
         }
-    }
-    
-    // Also check on every recomposition to catch cases where entry doesn't change
-    // but savedStateHandle is updated (when returning from CategoryScreen)
-    val selectedCategory = savedStateHandle?.get<Category>("selected_category")
-    LaunchedEffect(selectedCategory) {
-        selectedCategory?.let { category ->
-            savedStateHandle?.remove<Category>("selected_category")
-            viewModel.processIntent(AddTransactionIntent.SelectCategory(category))
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
     

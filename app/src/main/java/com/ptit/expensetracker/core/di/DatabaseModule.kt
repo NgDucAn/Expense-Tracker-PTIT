@@ -2,6 +2,8 @@ package com.ptit.expensetracker.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetAlertDao
+import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetAlertSettingsDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.BudgetDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.CategoryDao
 import com.ptit.expensetracker.features.money.data.data_source.local.dao.CurrencyDao
@@ -52,5 +54,17 @@ object DatabaseModule {
     @Singleton
     fun provideBudgetDao(database: LocalDatabase): BudgetDao {
         return database.budgetDao
+    }
+    
+    @Provides
+    @Singleton
+    fun provideBudgetAlertDao(database: LocalDatabase): BudgetAlertDao {
+        return database.budgetAlertDao
+    }
+    
+    @Provides
+    @Singleton
+    fun provideBudgetAlertSettingsDao(database: LocalDatabase): BudgetAlertSettingsDao {
+        return database.budgetAlertSettingsDao
     }
 }
